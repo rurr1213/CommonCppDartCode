@@ -35,21 +35,24 @@ const int PROTOCOL_CODE = 1122;
 class Msg {
 public:
     short int prot;
+    short int length;
     short int subSys;
-    int command;
+    short int command;
     Msg() {
         prot = PROTOCOL_CODE;
     }
     int serialize(SerDes& sd) {
         sd.setInt16(prot);
+        sd.setLength16(length);
         sd.setInt16(subSys);
-        sd.setInt32(command);
+        sd.setInt16(command);
         return sd.length();
     }
     int deserialize(SerDes& sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
+        length = sd.getInt16();
         subSys = sd.getInt16();
-        command = sd.getInt32();
+        command = sd.getInt16();
         return sd.length();
     }
 };
