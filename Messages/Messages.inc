@@ -12,12 +12,15 @@
    Run the Generate.bat file that will covert this file to an equivalent Dart file.
    Essentially the sed script does the following:
 
+    (*) add a line to import the needed SerDes Serialize Deserialize class
+    (*) replace }; to remove ; from class declaration endings
     (*) replace ": public" Keyword with "extends" - for Dart base classes
-    (*) replace "std::string" Keyword with "String" - for Dart String objects
     (*) remove "public:" Keyword - Dart methods are public depending on namee
+    (*) replace "std::string" Keyword with "String" - for Dart String objects
     (*) replace "short int" with "int" - Dart has no short int
-    (*) replace "TSerDes" with "SerDes"
-    (*) replace BASECLASS(name, none) with super.
+    (*) replace "SerDes&" with "SerDes" - Dart all objects passed by reference
+    (*) replace Msg:: with super. - This is NOT generic and ONLY works for Msg
+            IF Other classes are needed - then the script will need to be modified.
 
     Ravi Rajapakse
 
