@@ -69,6 +69,13 @@ public:
     String ipAddress;
     String ipGateway;
     int port;
+    MsgPCInfo() {
+        uid = 0;
+        name = "";
+        ipAddress = "";
+        ipGateway = "";
+        port = 0;
+    }
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg,serialize(sd));
         sd.setInt32(uid);
@@ -134,6 +141,10 @@ public:
     int listLength;
     List<MsgStatItem> statList;
     MsgStatSet() {
+        name = "";
+        description = "";
+        id = 0;
+        listLength = 0;
         M_ALLOCATELIST(MsgStatItem,statList)
 	}
     int serialize(RSerDes sd) {

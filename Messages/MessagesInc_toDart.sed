@@ -7,12 +7,12 @@ s/public://g
 s/short int/int/g
 s/std::string/String/g
 s/std::list/List/g
-s/TSerDes/SerDes/g
+s/RSerDes/SerDes/g
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by
 # being between \( and \). The first is \1 the second is \2
-s/M_ALLOCATELIST(\(.*\),\(.*\))/\1 = List<\2>();/g
+s/M_ALLOCATELIST(\(.*\),\(.*\))/\2 = List<\1>();/g
 s/M_DECLAREVARIABLE(\(.*\),\(.*\))/var \2 = \1()/g
 s/M_BASECLASS(\(.*\),\(.*\))/super.\2/g
 s/M_LISTFORLOOPSTART(\(.*\),\(.*\))/for ( var \1 in \2 ) {/g
