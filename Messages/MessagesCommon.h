@@ -46,14 +46,14 @@ public:
         prot = PROTOCOL_CODE;
         length = 0;
     }
-    int serialize(RSerDes sd) {
+    virtual int serialize(RSerDes sd) {
         sd.setInt16(prot);
         sd.setLength16(length);
         sd.setInt16(subSys);
         sd.setInt16(command);
         return sd.length();
     }
-    int deserialize(RSerDes sd) {
+    virtual int deserialize(RSerDes sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
         length = sd.getInt16();
         subSys = sd.getInt16();
@@ -76,7 +76,7 @@ public:
         ipGateway = "";
         port = 0;
     }
-    int serialize(RSerDes sd) {
+    virtual int serialize(RSerDes sd) {
         M_BASECLASS(Msg,serialize(sd));
         sd.setInt32(uid);
         sd.setString(name);
@@ -85,7 +85,7 @@ public:
         sd.setInt32(port);
         return sd.length();
     }
-    int deserialize(RSerDes sd) {
+    virtual int deserialize(RSerDes sd) {
         M_BASECLASS(Msg,deserialize(sd));
         uid = sd.getInt32();
         name = sd.getString();
