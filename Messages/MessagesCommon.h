@@ -155,6 +155,7 @@ public:
         M_ALLOCATELIST(MsgNamedStatItem,statList)
 	}
     int serialize(RSerDes sd) {
+        listLength = M_LISTLEN(statList);
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(name);
         sd.setString(description);
