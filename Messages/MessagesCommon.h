@@ -27,11 +27,14 @@
     -------------------------------------------------------------------------------------------
 */
 
-const int SUBSYS_DISCOVERY = 1;
+const int PROTOCOL_CODE = 1122;
+
+const int SUBSYS_DISCOVERY      = 1;
 const int DISCOVERY_HELLO       = 1;
 const int DISCOVERY_HELLOACK    = 2;
 
-const int PROTOCOL_CODE = 1122;
+const int SUBSYS_STATS          = 2;
+const int STATS_NAMEDITEMSET    = 1;
 
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
@@ -132,7 +135,6 @@ public:
     }
 };
 
-
 class MsgStatSet :public Msg {
 public:
     String name;
@@ -165,6 +167,68 @@ public:
         listLength = sd.getInt32();
         for (int i = 0; i < listLength; i++) {
             M_DECLAREVARIABLE(MsgStatItem,statItem);
+            statItem.deserialize(sd);
+            statList.add(statItem);
+        }
+        return sd.length();
+    }
+};
+
+class MsgNamedStatItem {
+public:
+    String name;
+    int value;
+    int timeStamp;
+    MsgNamedStatItem() {
+        value = 0;
+        timeStamp = 0;
+    }
+    void serialize(RSerDes sd) {
+        sd.setString(name);
+        sd.setInt32(value);
+        sd.setInt32(timeStamp);
+    }
+    void deserialize(RSerDes sd) {
+        name = sd.getString();
+        value = sd.getInt32();
+        timeStamp = sd.getInt32();
+    }
+};
+
+class MsgNamedStatItemSet :public Msg {
+public:
+    String name;
+    String description;
+    int id;
+    int listLength;
+    List<MsgNamedStatItem> statList;
+    MsgNamedStatItemSet() {
+        subSys = SUBSYS_STATS;
+        command = STATS_NAMEDITEMSET;
+        name = "";
+        description = "";
+        id = 0;
+        listLength = 0;
+        M_ALLOCATELIST(MsgStatItem,statList)
+	}
+    int serialize(RSerDes sd) {
+        sd.setString(name);
+        sd.setString(description);
+        sd.setInt32(id);
+        sd.setInt32(listLength);
+        M_LISTFORLOOPSTART(statItem,statList)
+            statItem.serialize(sd);
+		}
+        return sd.length();
+    }
+    
+    int deserialize(RSerDes sd) {
+        name = sd.getString();
+        description = sd.getString();
+        id = sd.getInt32();
+        listLength = sd.getInt32();
+        for (int i = 0; i < listLength; i++) {
+            M_DECLAREVARIABLE(MsgNamedStatItem,statItem);
             statItem.deserialize(sd);
             statList.add(statItem);
         }
