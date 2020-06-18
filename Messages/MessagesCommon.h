@@ -209,7 +209,7 @@ public:
         description = "";
         id = 0;
         listLength = 0;
-        M_ALLOCATELIST(MsgStatItem,statList)
+        M_ALLOCATELIST(MsgNamedStatItem,statList)
 	}
     int serialize(RSerDes sd) {
         sd.setString(name);
