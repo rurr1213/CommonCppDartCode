@@ -117,63 +117,6 @@ public:
 
 // ------------------------------------------------------------------
 
-class MsgStatItem {
-public:
-    int value;
-    int timeStamp;
-    MsgStatItem() {
-       value = 0;
-       timeStamp = 0;
-	}
-    void serialize(RSerDes sd) {
-        sd.setInt32(value);
-        sd.setInt32(timeStamp);
-    }
-    void deserialize(RSerDes sd) {
-        value = sd.getInt32();
-        timeStamp = sd.getInt32();
-    }
-};
-
-class MsgStatSet :public Msg {
-public:
-    String name;
-    String description;
-    int id;
-    int listLength;
-    List<MsgStatItem> statList;
-    MsgStatSet() {
-        name = "";
-        description = "";
-        id = 0;
-        listLength = 0;
-        M_ALLOCATELIST(MsgStatItem,statList)
-	}
-    int serialize(RSerDes sd) {
-        sd.setString(name);
-        sd.setString(description);
-        sd.setInt32(id);
-        sd.setInt32(listLength);
-        M_LISTFORLOOPSTART(statItem,statList)
-            statItem.serialize(sd);
-		}
-        return sd.length();
-    }
-    
-    int deserialize(RSerDes sd) {
-        name = sd.getString();
-        description = sd.getString();
-        id = sd.getInt32();
-        listLength = sd.getInt32();
-        for (int i = 0; i < listLength; i++) {
-            M_DECLAREVARIABLE(MsgStatItem,statItem);
-            statItem.deserialize(sd);
-            statList.add(statItem);
-        }
-        return sd.length();
-    }
-};
-
 class MsgNamedStatItem {
 public:
     String name;
@@ -212,6 +155,7 @@ public:
         M_ALLOCATELIST(MsgNamedStatItem,statList)
 	}
     int serialize(RSerDes sd) {
+        M_BASECLASS(Msg, serialize(sd));
         sd.setString(name);
         sd.setString(description);
         sd.setInt32(id);
@@ -223,6 +167,7 @@ public:
     }
     
     int deserialize(RSerDes sd) {
+        M_BASECLASS(Msg, deserialize(sd));
         name = sd.getString();
         description = sd.getString();
         id = sd.getInt32();
