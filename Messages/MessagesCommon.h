@@ -34,7 +34,8 @@ const int DISCOVERY_HELLO       = 1;
 const int DISCOVERY_HELLOACK    = 2;
 
 const int SUBSYS_STATS          = 2;
-const int STATS_NAMEDITEMSET    = 1;
+const int STATS_STATINFO        = 1;
+const int STATS_NAMEDITEMSET    = 2;
 
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
@@ -117,42 +118,48 @@ public:
 
 // ------------------------------------------------------------------
 
-class MsgNamedStatItem {
+class MsgIddStatItem {
 public:
-    String name;
+    short int nameId;
+    short int groupId;
+    short int chanId;
     int value;
     int timeStamp;
-    MsgNamedStatItem() {
+    MsgIddStatItem() {
         value = 0;
         timeStamp = 0;
     }
     void serialize(RSerDes sd) {
-        sd.setString(name);
+        sd.setInt16(nameId);
+        sd.setInt16(groupId);
+        sd.setInt16(chanId);
         sd.setInt32(value);
         sd.setInt32(timeStamp);
     }
     void deserialize(RSerDes sd) {
-        name = sd.getString();
+        nameId = sd.getInt16();
+        groupId = sd.getInt16();
+        chanId = sd.getInt16();
         value = sd.getInt32();
         timeStamp = sd.getInt32();
     }
 };
 
-class MsgNamedStatItemSet :public Msg {
+class MsgIddStatItemSet :public Msg {
 public:
     String name;
     String description;
     int id;
     int listLength;
-    List<MsgNamedStatItem> statList;
-    MsgNamedStatItemSet() {
+    List<MsgIddStatItem> statList;
+    MsgIddStatItemSet() {
         subSys = SUBSYS_STATS;
         command = STATS_NAMEDITEMSET;
         name = "";
         description = "";
         id = 0;
         listLength = 0;
-        M_ALLOCATELIST(MsgNamedStatItem,statList)
+        M_ALLOCATELIST(MsgIddStatItem,statList)
 	}
     int serialize(RSerDes sd) {
         listLength = M_LISTLEN(statList);
@@ -174,10 +181,31 @@ public:
         id = sd.getInt32();
         listLength = sd.getInt32();
         for (int i = 0; i < listLength; i++) {
-            M_DECLAREVARIABLE(MsgNamedStatItem,statItem);
+            M_DECLAREVARIABLE(MsgIddStatItem,statItem);
             statItem.deserialize(sd);
             statList.add(statItem);
         }
+        return sd.length();
+    }
+};
+
+class MsgStatInfo :public Msg {
+public:
+    String jsonStatInfoString;
+    MsgStatInfo() {
+        subSys = SUBSYS_STATS;
+        command = STATS_STATINFO;
+        M_ALLOCATELIST(MsgIddStatItem, statList)
+    }
+    int serialize(RSerDes sd) {
+        M_BASECLASS(Msg, serialize(sd));
+        sd.setString(jsonStatInfoString);
+        return sd.length();
+    }
+
+    int deserialize(RSerDes sd) {
+        M_BASECLASS(Msg, deserialize(sd));
+        jsonStatInfoString = sd.getString();
         return sd.length();
     }
 };
