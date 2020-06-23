@@ -35,7 +35,7 @@ const int DISCOVERY_HELLOACK    = 2;
 
 const int SUBSYS_STATS          = 2;
 const int STATS_STATINFO        = 1;
-const int STATS_NAMEDITEMSET    = 2;
+const int STATS_IDDITEMSET      = 2;
 
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
@@ -120,7 +120,7 @@ public:
 
 class MsgIddStatItem {
 public:
-    short int nameId;
+    short int statId;
     short int groupId;
     short int chanId;
     int value;
@@ -130,14 +130,14 @@ public:
         timeStamp = 0;
     }
     void serialize(RSerDes sd) {
-        sd.setInt16(nameId);
+        sd.setInt16(statId);
         sd.setInt16(groupId);
         sd.setInt16(chanId);
         sd.setInt32(value);
         sd.setInt32(timeStamp);
     }
     void deserialize(RSerDes sd) {
-        nameId = sd.getInt16();
+        statId = sd.getInt16();
         groupId = sd.getInt16();
         chanId = sd.getInt16();
         value = sd.getInt32();
@@ -154,7 +154,7 @@ public:
     List<MsgIddStatItem> statList;
     MsgIddStatItemSet() {
         subSys = SUBSYS_STATS;
-        command = STATS_NAMEDITEMSET;
+        command = STATS_IDDITEMSET;
         name = "";
         description = "";
         id = 0;
@@ -195,7 +195,6 @@ public:
     MsgStatInfo() {
         subSys = SUBSYS_STATS;
         command = STATS_STATINFO;
-        M_ALLOCATELIST(MsgIddStatItem, statList)
     }
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
