@@ -122,24 +122,27 @@ class MsgIddStatItem {
 public:
     short int statId;
     short int groupId;
-    short int chanId;
+    short int streamId;
     int value;
     int timeStamp;
     MsgIddStatItem() {
         value = 0;
         timeStamp = 0;
+        statId = 0;
+        groupId = 0;
+        streamId = 0;
     }
     void serialize(RSerDes sd) {
         sd.setInt16(statId);
         sd.setInt16(groupId);
-        sd.setInt16(chanId);
+        sd.setInt16(streamId);
         sd.setInt32(value);
         sd.setInt32(timeStamp);
     }
     void deserialize(RSerDes sd) {
         statId = sd.getInt16();
         groupId = sd.getInt16();
-        chanId = sd.getInt16();
+        streamId = sd.getInt16();
         value = sd.getInt32();
         timeStamp = sd.getInt32();
     }
