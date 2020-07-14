@@ -9,6 +9,7 @@ s/std::string/String/g
 s/std::list/List/g
 s/RSerDes/SerDes/g
 s/virtual //g
+s/int64_t/int/g
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by

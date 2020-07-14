@@ -46,6 +46,7 @@ public:
     short int length;   // this will be updated by the SerDes class on calls to length()
     short int subSys;   // to be set by derived classes
     short int command;  // to be set by derived classes
+    int seqNumber;
     Msg() {
         prot = PROTOCOL_CODE;
         length = 0;
@@ -55,6 +56,7 @@ public:
         sd.setLength16(length);
         sd.setInt16(subSys);
         sd.setInt16(command);
+        sd.setInt32(seqNumber);
         return sd.length();
     }
     virtual int deserialize(RSerDes sd) {
@@ -62,13 +64,14 @@ public:
         length = sd.getInt16();
         subSys = sd.getInt16();
         command = sd.getInt16();
+        seqNumber = sd.getInt32();
         return sd.length();
     }
 };
 
 class MsgPCInfo :public Msg {
 public:
-    int uid;
+    int64_t uid;
     String name;
     String ipAddress;
     String ipGateway;
@@ -82,7 +85,7 @@ public:
     }
     virtual int serialize(RSerDes sd) {
         M_BASECLASS(Msg,serialize(sd));
-        sd.setInt32(uid);
+        sd.setInt64(uid);
         sd.setString(name);
         sd.setString(ipAddress);
         sd.setString(ipGateway);
@@ -91,7 +94,7 @@ public:
     }
     virtual int deserialize(RSerDes sd) {
         M_BASECLASS(Msg,deserialize(sd));
-        uid = sd.getInt32();
+        uid = sd.getInt64();
         name = sd.getString();
         ipAddress = sd.getString();
         ipGateway = sd.getString();
