@@ -37,6 +37,10 @@ const int SUBSYS_STATS          = 2;
 const int STATS_STATINFO        = 1;
 const int STATS_IDDITEMSET      = 2;
 
+const int SUBSYS_CMD            = 3;
+const int CMD_PCJSON            = 1;
+
+
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
 
@@ -211,6 +215,29 @@ public:
     int deserialize(RSerDes sd) {
         M_BASECLASS(Msg, deserialize(sd));
         jsonStatInfoString = sd.getString();
+        return sd.length();
+    }
+};
+
+
+//---------------------------------------
+
+class MsgCmd :public Msg {
+public:
+    String jsonCmdString;
+    MsgCmd() {
+        subSys = SUBSYS_CMD;
+        command = CMD_PCJSON;
+    }
+    int serialize(RSerDes sd) {
+        M_BASECLASS(Msg, serialize(sd));
+        sd.setString(jsonCmdString);
+        return sd.length();
+    }
+
+    int deserialize(RSerDes sd) {
+        M_BASECLASS(Msg, deserialize(sd));
+        jsonCmdString = sd.getString();
         return sd.length();
     }
 };
