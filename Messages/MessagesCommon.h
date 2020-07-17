@@ -54,6 +54,9 @@ public:
     Msg() {
         prot = PROTOCOL_CODE;
         length = 0;
+        subSys = 0;
+        command = 0;
+        seqNumber = 0;
     }
     virtual int serialize(RSerDes sd) {
         sd.setInt16(prot);
@@ -225,9 +228,10 @@ public:
 class MsgCmd :public Msg {
 public:
     String jsonCmdString;
-    MsgCmd() {
+    MsgCmd(String cmdString) {
         subSys = SUBSYS_CMD;
         command = CMD_PCJSON;
+        jsonCmdString = cmdString;
     }
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
