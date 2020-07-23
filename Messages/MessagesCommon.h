@@ -261,13 +261,7 @@ class MsgObject :public Msg {
 public:
     String jsonObjectString;
     int objectId;
-    MsgObject() {
-        subSys = SUBSYS_OBJ;
-        command = OBJ_DOM_UNKNOWN;
-        objectId = OBJ_ID_UNKNOWN;
-        jsonObjectString = "";
-    }
-    MsgObject(String objString, int objDom, int objId) {
+    MsgObject(int objDom, int objId, String objString) {
         subSys = SUBSYS_OBJ;
         command = objDom;
         objectId = objId;
