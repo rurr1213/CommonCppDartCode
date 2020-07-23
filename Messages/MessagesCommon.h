@@ -40,6 +40,11 @@ const int STATS_IDDITEMSET      = 2;
 const int SUBSYS_CMD            = 3;
 const int CMD_PCJSON            = 1;
 
+const int SUBSYS_OBJ                = 4;
+const int OBJ_DOM_UNKNOWN           = 0;
+const int OBJ_ID_UNKNOWN            = 0;
+const int OBJ_DOM_PROCESSMGR        = 1;
+const int OBJ_ID_PROCESSMGRSTATS    = 1;
 
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
@@ -242,6 +247,32 @@ public:
     int deserialize(RSerDes sd) {
         M_BASECLASS(Msg, deserialize(sd));
         jsonCmdString = sd.getString();
+        return sd.length();
+    }
+};
+
+
+class MsgObject :public Msg {
+public:
+    String jsonObjectString;
+    int objectId;
+    MsgObject(int objDom, int objId, String objString) {
+        subSys = SUBSYS_OBJ;
+        command = objDom;
+        objectId = objId;
+        jsonObjectString = objString;
+    }
+    int serialize(RSerDes sd) {
+        M_BASECLASS(Msg, serialize(sd));
+        sd.setInt32(objectId);
+        sd.setString(jsonObjectString);
+        return sd.length();
+    }
+
+    int deserialize(RSerDes sd) {
+        M_BASECLASS(Msg, deserialize(sd));
+        objectId = sd.getInt32();
+        jsonObjectString = sd.getString();
         return sd.length();
     }
 };
