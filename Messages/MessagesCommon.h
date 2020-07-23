@@ -233,11 +233,6 @@ public:
 class MsgCmd :public Msg {
 public:
     String jsonCmdString;
-    MsgCmd() {
-        subSys = SUBSYS_CMD;
-        command = CMD_PCJSON;
-        jsonCmdString = "";
-    }
     MsgCmd(String cmdString) {
         subSys = SUBSYS_CMD;
         command = CMD_PCJSON;
