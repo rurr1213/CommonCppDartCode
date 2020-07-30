@@ -31,7 +31,8 @@ const int PROTOCOL_CODE = 1122;
 
 const int SUBSYS_DISCOVERY      = 1;
 const int DISCOVERY_HELLO       = 1;
-const int DISCOVERY_HELLOACK    = 2;
+const int DISCOVERY_HELLOACK    = 2;   // not used
+const int DISCOVERY_CLOSESOCKET = 3;   // notify other end that connection is to be ended
 
 const int SUBSYS_STATS          = 2;
 const int STATS_STATINFO        = 1;
