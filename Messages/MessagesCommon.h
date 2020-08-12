@@ -44,8 +44,9 @@ const int CMD_PCJSON            = 1;
 const int SUBSYS_OBJ                = 4;
 const int OBJ_DOM_UNKNOWN           = 0;
 const int OBJ_ID_UNKNOWN            = 0;
-const int OBJ_DOM_PROCESSMGR        = 1;
-const int OBJ_ID_PROCESSMGRSTATS    = 1;
+const int OBJ_DOM_APPMGR            = 1;
+const int OBJ_ID_APPMGRSTATS        = 1;
+const int OBJ_ID_APPMGRINFO         = 2;
 
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
