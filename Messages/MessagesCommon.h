@@ -29,17 +29,21 @@
 
 const int PROTOCOL_CODE = 1122;
 
-const int SUBSYS_DISCOVERY      = 1;
-const int DISCOVERY_HELLO       = 1;
-const int DISCOVERY_HELLOACK    = 2;   // not used
-const int DISCOVERY_CLOSESOCKET = 3;   // notify other end that connection is to be ended
+const int SUBSYS_DISCOVERY          = 1;
+const int DISCOVERY_HELLO           = 1;
+const int DISCOVERY_HELLOACK        = 2;   // not used
+const int DISCOVERY_CLOSESOCKET     = 3;   // notify other end that connection is to be ended
 
-const int SUBSYS_STATS          = 2;
-const int STATS_STATINFO        = 1;
-const int STATS_IDDITEMSET      = 2;
+const int SUBSYS_STATS              = 2;
+const int STATS_STATINFO            = 1;
+const int STATS_IDDITEMSET          = 2;
 
-const int SUBSYS_CMD            = 3;
-const int CMD_PCJSON            = 1;
+const int SUBSYS_CMD                = 3;
+const int CMD_PCJSON                = 1;
+const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to check pc - app performance
+const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
+const int CMD_PINGTOPC              = 4;   // ping app to pc
+const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
 
 const int SUBSYS_OBJ                = 4;
 const int OBJ_DOM_UNKNOWN           = 0;
@@ -52,33 +56,54 @@ const int OBJ_ID_APPMGRINFO         = 1;
 
 class Msg {
 public:
-    short int prot;     // this should alway be set to the PROTOCOL_CODE
-    short int length;   // this will be updated by the SerDes class on calls to length()
-    short int subSys;   // to be set by derived classes
-    short int command;  // to be set by derived classes
-    int seqNumber;
+    short int prot;             // this should alway be set to the PROTOCOL_CODE
+    short int length;           // this will be updated by the SerDes class on calls to length()
+    short int deviceAppKey;     // a device and app identifier
+    short int sessionNumber;    // a session number / key
+    int seqNumber;              // sequence number within the session
+    short int subSys;           // to be set by derived classes
+    short int command;          // to be set by derived classes
+    int argument;               // optional command argument / data
+    short int crc;              // header crc
     Msg() {
         prot = PROTOCOL_CODE;
         length = 0;
+        deviceAppKey = 0;
+        sessionNumber = 0;
+        seqNumber = 0;
         subSys = 0;
         command = 0;
-        seqNumber = 0;
+        argument = 0;
+        crc = 0;
     }
     virtual int serialize(RSerDes sd) {
+        crc = calcCrc();
         sd.setInt16(prot);
         sd.setLength16(length);
+        sd.setInt16(deviceAppKey);
+        sd.setInt16(sessionNumber);
+        sd.setInt32(seqNumber);
         sd.setInt16(subSys);
         sd.setInt16(command);
-        sd.setInt32(seqNumber);
-        return sd.length();
+        sd.setInt32(argument);
+        sd.setCrc16(crc);
+        return sd.finalize();
     }
     virtual int deserialize(RSerDes sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
         length = sd.getInt16();
+        deviceAppKey = sd.getInt16();
+        sessionNumber = sd.getInt16();
+        seqNumber = sd.getInt32();
         subSys = sd.getInt16();
         command = sd.getInt16();
-        seqNumber = sd.getInt32();
+        argument = sd.getInt32();
+        crc = sd.getInt16();
         return sd.length();
+    }
+    short int calcCrc() {
+        short int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionNumber ^ deviceAppKey;
+        return crc;
     }
 };
 
@@ -103,7 +128,10 @@ public:
         sd.setString(ipAddress);
         sd.setString(ipGateway);
         sd.setInt32(port);
-        return sd.length();
+
+        sd.updateLength();
+        sd.updateCrc(calcCrc());
+        return sd.finalize();
     }
     virtual int deserialize(RSerDes sd) {
         M_BASECLASS(Msg,deserialize(sd));
@@ -190,7 +218,9 @@ public:
         M_LISTFORLOOPSTART(statItem,statList)
             statItem.serialize(sd);
 		}
-        return sd.length();
+        sd.updateLength();
+        sd.updateCrc(calcCrc());
+        return sd.finalize();
     }
     
     int deserialize(RSerDes sd) {
@@ -218,7 +248,9 @@ public:
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(jsonStatInfoString);
-        return sd.length();
+        sd.updateLength();
+        sd.updateCrc(calcCrc());
+        return sd.finalize();
     }
 
     int deserialize(RSerDes sd) {
@@ -242,7 +274,9 @@ public:
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(jsonCmdString);
-        return sd.length();
+        sd.updateLength();
+        sd.updateCrc(calcCrc());
+        return sd.finalize();
     }
 
     int deserialize(RSerDes sd) {
@@ -267,7 +301,9 @@ public:
         M_BASECLASS(Msg, serialize(sd));
         sd.setInt32(objectId);
         sd.setString(jsonObjectString);
-        return sd.length();
+        sd.updateLength();
+        sd.updateCrc(calcCrc());
+        return sd.finalize();
     }
 
     int deserialize(RSerDes sd) {
