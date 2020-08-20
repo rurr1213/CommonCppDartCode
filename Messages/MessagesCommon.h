@@ -59,7 +59,7 @@ public:
     short int prot;             // this should alway be set to the PROTOCOL_CODE
     short int length;           // this will be updated by the SerDes class on calls to length()
     short int deviceAppKey;     // a device and app identifier
-    short int sessionNumber;    // a session number / key
+    short int sessionKey;    // a session number / key
     int seqNumber;              // sequence number within the session
     short int subSys;           // to be set by derived classes
     short int command;          // to be set by derived classes
@@ -69,7 +69,7 @@ public:
         prot = PROTOCOL_CODE;
         length = 0;
         deviceAppKey = 0;
-        sessionNumber = 0;
+        sessionKey = 0;
         seqNumber = 0;
         subSys = 0;
         command = 0;
@@ -77,23 +77,25 @@ public:
         crc = 0;
     }
     virtual int serialize(RSerDes sd) {
-        crc = calcCrc();
         sd.setInt16(prot);
         sd.setLength16(length);
         sd.setInt16(deviceAppKey);
-        sd.setInt16(sessionNumber);
+        sd.setInt16(sessionKey);
         sd.setInt32(seqNumber);
         sd.setInt16(subSys);
         sd.setInt16(command);
         sd.setInt32(argument);
-        sd.setCrc16(crc);
+        sd.setCrc16(0);
+
+        length = sd.updateLength();
+        sd.updateCrc(calcCrc());
         return sd.finalize();
     }
     virtual int deserialize(RSerDes sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
         length = sd.getInt16();
         deviceAppKey = sd.getInt16();
-        sessionNumber = sd.getInt16();
+        sessionKey = sd.getInt16();
         seqNumber = sd.getInt32();
         subSys = sd.getInt16();
         command = sd.getInt16();
@@ -102,7 +104,7 @@ public:
         return sd.length();
     }
     short int calcCrc() {
-        short int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionNumber ^ deviceAppKey;
+        short int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
         return crc;
     }
 };
@@ -129,7 +131,7 @@ public:
         sd.setString(ipGateway);
         sd.setInt32(port);
 
-        sd.updateLength();
+        length = sd.updateLength();
         sd.updateCrc(calcCrc());
         return sd.finalize();
     }
@@ -218,7 +220,7 @@ public:
         M_LISTFORLOOPSTART(statItem,statList)
             statItem.serialize(sd);
 		}
-        sd.updateLength();
+        length = sd.updateLength();
         sd.updateCrc(calcCrc());
         return sd.finalize();
     }
@@ -248,7 +250,7 @@ public:
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(jsonStatInfoString);
-        sd.updateLength();
+        length = sd.updateLength();
         sd.updateCrc(calcCrc());
         return sd.finalize();
     }
@@ -274,7 +276,7 @@ public:
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(jsonCmdString);
-        sd.updateLength();
+        length = sd.updateLength();
         sd.updateCrc(calcCrc());
         return sd.finalize();
     }
@@ -301,7 +303,7 @@ public:
         M_BASECLASS(Msg, serialize(sd));
         sd.setInt32(objectId);
         sd.setString(jsonObjectString);
-        sd.updateLength();
+        length = sd.updateLength();
         sd.updateCrc(calcCrc());
         return sd.finalize();
     }
