@@ -77,7 +77,10 @@ public:
         crc = 0;
     }
     virtual int serialize(RSerDes sd) {
+<<<<<<< HEAD
 //        crc = calcCrc();
+=======
+>>>>>>> 7cdd7605ec7c80ff540eea27c9934862faabe0df
         sd.setInt16(prot);
         sd.setLength16(length);
         sd.setInt16(deviceAppKey);
