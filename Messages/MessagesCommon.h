@@ -170,10 +170,10 @@ public:
     short int groupId;
     short int streamId;
     int value;
-    int timeStamp;
+    int time;
     MsgIddStatItem() {
         value = 0;
-        timeStamp = 0;
+        time = 0;
         statId = 0;
         groupId = 0;
         streamId = 0;
@@ -183,14 +183,14 @@ public:
         sd.setInt16(groupId);
         sd.setInt16(streamId);
         sd.setInt32(value);
-        sd.setInt32(timeStamp);
+        sd.setInt32(time);
     }
     void deserialize(RSerDes sd) {
         statId = sd.getInt16();
         groupId = sd.getInt16();
         streamId = sd.getInt16();
         value = sd.getInt32();
-        timeStamp = sd.getInt32();
+        time = sd.getInt32();
     }
 };
 
