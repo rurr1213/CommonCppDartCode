@@ -44,12 +44,14 @@ const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to chec
 const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
 const int CMD_PINGTOPC              = 4;   // ping app to pc
 const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
+const int CMD_BOTEVENT              = 6;    // diagnositc bot event
 
 const int SUBSYS_OBJ                = 4;
 const int OBJ_DOM_UNKNOWN           = 0;
 const int OBJ_ID_UNKNOWN            = 0;
 const int OBJ_DOM_APPMGR            = 1;
-const int OBJ_ID_APPMGR_APPINFOLIST     = 1;
+const int OBJ_ID_APPMGR_APPINFOLIST = 1;
+
 
 // Base message class. This can be moved out of here if it needs to be specific to each
 // Language. For the moment it seems it can be common.
