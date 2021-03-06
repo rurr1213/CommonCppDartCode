@@ -23,6 +23,7 @@ const int STATS_STATID_INVALID      = 0;
 const int STATS_GROUPID_NET         = 1;
 const int STATS_STATID_INTERNET     = 1;
 const int STATS_STATID_GATEWAY      = 2;
+const int STATS_STATID_SITES        = 3;
 
 const int STATS_GROUPID_CPU         = 2;
 const int STATS_STATID_SPEED        = 1;
