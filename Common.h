@@ -30,3 +30,6 @@ const int STATS_STATID_SPEED        = 1;
 
 const int STATS_GROUPID_GPU         = 3;
 const int STATS_STATID_FPS          = 1;
+
+const int STATS_GROUPID_APP         = 4;
+const int STATS_STATID_APP          = 1;
