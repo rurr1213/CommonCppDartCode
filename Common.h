@@ -21,7 +21,6 @@ const int STATS_GROUPID_INVALID     = 0;    // invalid group
 const int STATS_STATID_INVALID      = 0;
 
 const int STATS_GROUPID_NET         = 1;
-//const int STATS_STATID_INTERNET     = 1;
 const int STATS_STATID_GATEWAY      = 1;
 const int STATS_STATID_SITES        = 2;
 
