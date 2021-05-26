@@ -210,7 +210,7 @@ public:
         description = "";
         id = 0;
         listLength = 0;
-        M_ALLOCATELIST(MsgIddStatItem,statList)
+//        M_ALLOCATELIST(MsgIddStatItem,statList)
 	}
     int serialize(RSerDes sd) {
         listLength = M_LISTLEN(statList);
