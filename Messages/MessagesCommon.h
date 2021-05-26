@@ -58,15 +58,15 @@ const int OBJ_ID_APPMGR_APPINFOLIST = 1;
 
 class Msg {
 public:
-    short int prot;             // this should alway be set to the PROTOCOL_CODE
-    short int length;           // this will be updated by the SerDes class on calls to length()
-    short int deviceAppKey;     // a device and app identifier
-    short int sessionKey;    // a session number / key
-    int seqNumber;              // sequence number within the session
-    short int subSys;           // to be set by derived classes
-    short int command;          // to be set by derived classes
-    int argument;               // optional command argument / data
-    short int crc;              // header crc
+    short int prot = 0;             // this should alway be set to the PROTOCOL_CODE
+    short int length = 0;           // this will be updated by the SerDes class on calls to length()
+    short int deviceAppKey = 0;     // a device and app identifier
+    short int sessionKey = 0;    // a session number / key
+    int seqNumber = 0;              // sequence number within the session
+    short int subSys = 0;           // to be set by derived classes
+    short int command = 0;          // to be set by derived classes
+    int argument = 0;               // optional command argument / data
+    short int crc = 0;              // header crc
     Msg() {
         prot = PROTOCOL_CODE;
         length = 0;
@@ -113,11 +113,11 @@ public:
 
 class MsgPCInfo :public Msg {
 public:
-    int64_t uid;
-    String name;
-    String ipAddress;
-    String ipGateway;
-    int port;
+    int64_t uid = 0;
+    String name = "";
+    String ipAddress = "";
+    String ipGateway = "";
+    int port = 0;
     MsgPCInfo() {
         uid = 0;
         name = "";
@@ -168,11 +168,11 @@ public:
 
 class MsgIddStatItem {
 public:
-    short int statId;
-    short int groupId;
-    short int streamId;
-    int value;
-    int time;
+    short int statId = 0;
+    short int groupId = 0;
+    short int streamId = 0;
+    int value = 0;
+    int time = 0;
     MsgIddStatItem() {
         value = 0;
         time = 0;
@@ -198,10 +198,10 @@ public:
 
 class MsgIddStatItemSet :public Msg {
 public:
-    String name;
-    String description;
-    int id;
-    int listLength;
+    String name = "";
+    String description = "";
+    int id = 0;
+    int listLength = 0;
     List<MsgIddStatItem> statList;
     MsgIddStatItemSet() {
         subSys = SUBSYS_STATS;
@@ -244,7 +244,7 @@ public:
 
 class MsgStatInfo :public Msg {
 public:
-    String jsonStatInfoString;
+    String jsonStatInfoString = "";
     MsgStatInfo() {
         subSys = SUBSYS_STATS;
         command = STATS_STATINFO;
@@ -269,7 +269,7 @@ public:
 
 class MsgCmd :public Msg {
 public:
-    String jsonCmdString;
+    String jsonCmdString = "";
     MsgCmd(String cmdString) {
         subSys = SUBSYS_CMD;
         command = CMD_PCJSON;
@@ -293,8 +293,8 @@ public:
 
 class MsgObject :public Msg {
 public:
-    String jsonObjectString;
-    int objectId;
+    String jsonObjectString = "";
+    int objectId = 0;
     MsgObject(int objDom, int objId, String objString) {
         subSys = SUBSYS_OBJ;
         command = objDom;
