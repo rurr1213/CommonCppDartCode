@@ -1,6 +1,6 @@
 # This script uses windows sed and is run from the command line
 #       sed -f MessagesInc_toDart.sed Messages.inc > Messages_generated.dart
-1s/^/import \'package:watchman_fl\/entities\/SerDes.dart\';/
+1s/^/import \'..\/..\/SerDes.dart\';/
 s/^};/}/g
 s/:.*public/extends/g
 s/public://g
@@ -10,6 +10,7 @@ s/std::list/List/g
 s/RSerDes/SerDes/g
 s/virtual //g
 s/int64_t/int/g
+s/statList;/statList = [];/g
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by
