@@ -26,6 +26,8 @@ const int STATS_STATID_SITES        = 2;
 
 const int STATS_GROUPID_CPU         = 2;
 const int STATS_STATID_SPEED        = 1;
+const int STATS_STATID_BUSY         = 2;
+const int STATS_STATID_FREQ         = 3;
 
 const int STATS_GROUPID_GPU         = 3;
 const int STATS_STATID_FPS          = 1;
