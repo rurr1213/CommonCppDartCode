@@ -66,6 +66,7 @@ public:
     short int subSys = 0;           // to be set by derived classes
     short int command = 0;          // to be set by derived classes
     int argument = 0;               // optional command argument / data
+    int localParam1 = 0;            // Local parameter is NOT SERIALIZED. Used to embed local data
     short int crc = 0;              // header crc
     Msg() {
         prot = PROTOCOL_CODE;
@@ -78,6 +79,7 @@ public:
         argument = 0;
         crc = 0;
     }
+    M_CPPONLY(virtual ~Msg() {})
     virtual int serialize(RSerDes sd) {
         sd.setInt16(prot);
         sd.setLength16(length);
