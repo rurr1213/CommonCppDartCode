@@ -49,7 +49,9 @@ const int CMD_BOTEVENT              = 6;    // diagnositc bot event
 const int SUBSYS_OBJ                = 4;
 const int OBJ_DOM_UNKNOWN           = 0;
 const int OBJ_ID_UNKNOWN            = 0;
-const int OBJ_DOM_APPMGR            = 1;
+const int OBJ_DOM_LOGGER            = 1;
+const int OBJ_DOM_APPMGR            = 2;
+const int OBJ_ID_LOGGER_LOGLINE     = 1;
 const int OBJ_ID_APPMGR_APPINFOLIST = 1;
 
 
