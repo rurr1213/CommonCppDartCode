@@ -44,14 +44,20 @@ const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to chec
 const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
 const int CMD_PINGTOPC              = 4;   // ping app to pc
 const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
-const int CMD_BOTEVENT              = 6;    // diagnositc bot event
+const int CMD_BOTEVENT              = 6;   // diagnositc bot event
 
+// For the following. MsgObject constructor Msg variables as follows
+// subSys = SUBSYS_OBJ
+// command = OBJ_DOM_XXXX
+// objectId = OBJ_ID_XXXX
+// jsonObjectString = objectString
 const int SUBSYS_OBJ                = 4;
 const int OBJ_DOM_UNKNOWN           = 0;
 const int OBJ_ID_UNKNOWN            = 0;
 const int OBJ_DOM_LOGGER            = 1;
 const int OBJ_ID_LOGGER_LOGLINE     = 1;
 const int OBJ_ID_LOGGER_STATELIST   = 2;
+const int OBJ_ID_LOGGER_COMMAND     = 3;
 const int OBJ_DOM_APPMGR            = 2;
 const int OBJ_ID_APPMGR_APPINFOLIST = 1;
 
@@ -300,6 +306,12 @@ class MsgObject :public Msg {
 public:
     String jsonObjectString = "";
     int objectId = 0;
+    MsgObject() {
+        subSys = SUBSYS_OBJ;
+        command = 0;
+        objectId = 0;
+        jsonObjectString = "";
+    }
     MsgObject(int objDom, int objId, String objString) {
         subSys = SUBSYS_OBJ;
         command = objDom;
