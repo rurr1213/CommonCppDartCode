@@ -306,12 +306,6 @@ class MsgObject :public Msg {
 public:
     String jsonObjectString = "";
     int objectId = 0;
-    MsgObject() {
-        subSys = SUBSYS_OBJ;
-        command = 0;
-        objectId = 0;
-        jsonObjectString = "";
-    }
     MsgObject(int objDom, int objId, String objString) {
         subSys = SUBSYS_OBJ;
         command = objDom;
