@@ -1,36 +1,48 @@
 
 /* -------------------------------------------------------------------------------------------
 
-   This is common code tha MAY be by both the C++ compiler and then coverted to Dart code
-   The code used here is carefully chosen to be easily coverted to Dart code using 
-   sed and a sed script. 
+   This is common code that is used by both the C++ code and the Dart compiler.
+   Therefore code used has to be Compatible with both languages.
 
    See comments in Message/MessageCommon.h
 
-    Ravi Rajapakse
+   Ravi Rajapakse
 
     -------------------------------------------------------------------------------------------
 */
 
 
-/* The following are constants used on the PC side. This info is passed to flutter/dart embedded in messages 
-    sent over. These codes do NOT NEED to be used in flutter code, except to easily override, text, without having
-    to search for the corresponding text. Use with care on the flutter side.
+/* The following are constants used on the PC side and Dart side. This info is passed to flutter/dart embedded in messages 
+    sent over. 
+
+    NOTE:
+    
+        1) STATID need to be globally unique. There is no special significance to the values used
+        2) ONLY add new IDs at the END of the list to maintain compatibility
 */
-const int STATS_GROUPID_INVALID     = 0;    // invalid group
-const int STATS_STATID_INVALID      = 0;
 
-const int STATS_GROUPID_NET         = 1;
-const int STATS_STATID_GATEWAY      = 1;
-const int STATS_STATID_SITES        = 2;
+const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
 
-const int STATS_GROUPID_CPU         = 2;
-const int STATS_STATID_SPEED        = 1;
-const int STATS_STATID_BUSY         = 2;
-const int STATS_STATID_FREQ         = 3;
+enum GROUPIDS {
+    STATS_GROUPID_INVALID,
+    STATS_GROUPID_NET,
+    STATS_GROUPID_CPU,
+    STATS_GROUPID_GPU,
+    STATS_GROUPID_APP
+};
 
-const int STATS_GROUPID_GPU         = 3;
-const int STATS_STATID_FPS          = 1;
+enum STATIDS {
+    STATS_STATID_INVALID,
+    STATS_STATID_GATEWAY,      // PING - gateway 
+    STATS_STATID_SITES,     // PING - Sites
+    STATS_STATID_SPEED,     // CPU Speed
+    STATS_STATID_BUSY,      // CPU Busy
+    STATS_STATID_FREQ,      // CPU Clock
+    STATS_STATID_FPS,      // GPU FPS
+    STATS_STATID_APP,
 
-const int STATS_GROUPID_APP         = 4;
-const int STATS_STATID_APP          = 1;
+    // add new IDs here
+};
+
+
+
