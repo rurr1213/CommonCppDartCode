@@ -24,22 +24,22 @@
 const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
 
 enum GROUPIDS {
-    STATS_GROUPID_INVALID,
-    STATS_GROUPID_NET,
-    STATS_GROUPID_CPU,
-    STATS_GROUPID_GPU,
-    STATS_GROUPID_APP
+    INVALID_GROUPID,
+    NETWORKING,
+    CPU,
+    GPU,
+    APP
 };
 
 enum STATIDS {
-    STATS_STATID_INVALID,
-    STATS_STATID_GATEWAY,      // PING - gateway 
-    STATS_STATID_SITES,     // PING - Sites
-    STATS_STATID_SPEED,     // CPU Speed
-    STATS_STATID_BUSY,      // CPU Busy
-    STATS_STATID_FREQ,      // CPU Clock
-    STATS_STATID_FPS,      // GPU FPS
-    STATS_STATID_APP,
+    INVALID_STATID,
+    PING_GATEWAY,      // PING - gateway 
+    PING_SITES,     // PING - Sites
+    CPU_SPEED,     // CPU Speed
+    CPU_BUSY,      // CPU Busy
+    CPU_CLOCK,      // CPU Clock
+    GPU_FPS,      // GPU FPS
+    APP_STATS,
 
     // add new IDs here
 };
