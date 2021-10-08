@@ -1,4 +1,4 @@
-
+import '../../SerDes.dart';
 /* -------------------------------------------------------------------------------------------
 
    This is common code that is used by both the C++ code and the Dart compiler.
@@ -29,7 +29,7 @@ enum GROUPIDS {
     CPU,
     GPU,
     APP
-};
+}
 
 enum STATIDS {
     INVALID_STATID,
@@ -42,7 +42,7 @@ enum STATIDS {
     APP_STATS,
 
     // add new IDs here
-};
+}
 
 
 

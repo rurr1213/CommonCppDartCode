@@ -1,1 +1,1 @@
-sed -f MessagesInc_toDart.sed MessagesCommon.h > MessagesCommon_generated.dart
+sed -f ..\CppToDart.sed MessagesCommon.h > MessagesCommon_generated.dart
