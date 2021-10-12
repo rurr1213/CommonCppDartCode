@@ -1,4 +1,3 @@
-
 /* -------------------------------------------------------------------------------------------
 
    This is common code used by both the C++ compiler and then coverted to Dart code
@@ -57,7 +56,9 @@ const int OBJ_UNKNOWN               = 0;
 const int OBJ_LOGGER                = 1;
 const int OBJ_LOGGER_LOGLINE        = 1;
 const int OBJ_LOGGER_STATELIST      = 2;
-const int OBJ_LOGGER_COMMAND        = 3;
+const int OBJ_LOGGER_COMMAND_TO_MATRIX        = 3;
+
+inline const std::string OBJ_LOGGER_COMMAND_REQUEST_LOGS = "requestLogs";
 
 const int OBJ_APPMGR                = 2;
 const int OBJ_APPMGR_APPINFOLIST    = 1;
