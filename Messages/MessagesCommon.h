@@ -58,18 +58,16 @@ inline const int OBJ_LOGGER_LOGLINE                        = 1;
 inline const int OBJ_LOGGER_STATELIST                      = 2;
 inline const int OBJ_LOGGER_COMMAND_TO_MATRIX              = 3;
 inline const int OBJ_LOGGER_JCOMMAND_REQUEST_LOGS               = 1;
-inline const int OBJ_LOGGER_RESPONSE_FROM_MATRIX           = 4;
+inline const int OBJ_LOGGER_JRESPONSE_FROM_MATRIX          = 4;
 
 inline const int OBJ_APPMGR                        = 2;
 inline const int OBJ_APPMGR_APPINFOLIST                    = 1;
-inline const int OBJ_APPMGR_COMMAND_TO_MATRIX              = 2;
+inline const int OBJ_APPMGR_SUSPENDLIST                    = 2;
+inline const int OBJ_APPMGR_COMMAND_TO_MATRIX              = 3;
 inline const int OBJ_APPMGR_JCOMMAND_REQUEST_SUSPENDLIST       = 1;
 inline const int OBJ_APPMGR_JCOMMAND_ADD_SUSPENDLISTITEMS      = 2;
 inline const int OBJ_APPMGR_JCOMMAND_DEL_SUSPENDLISTITEMS      = 3;
-
-const int OBJ_APPMGR_REQSUSPENDLIST = 1;
-const int OBJ_APPMGR_ADDSUSPENDLIST = 2;
-const int OBJ_APPMGR_DELSUSPENDLIST = 3;
+inline const int OBJ_APPMGR_JRESPONSE_FROM_MATRIX          = 4;
 
 
 
