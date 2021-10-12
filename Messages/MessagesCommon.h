@@ -48,18 +48,22 @@ const int CMD_BOTEVENT              = 6;   // diagnositc bot event
 
 // For the following. MsgObject constructor Msg variables as follows
 // subSys = SUBSYS_OBJ
-// command = OBJ_DOM_XXXX
-// objectId = OBJ_ID_XXXX
+// command = OBJ_XXX
+// objectId = OBJ_XXX_XXXX
 // jsonObjectString = objectString
 const int SUBSYS_OBJ                = 4;
-const int OBJ_DOM_UNKNOWN           = 0;
-const int OBJ_ID_UNKNOWN            = 0;
-const int OBJ_DOM_LOGGER            = 1;
-const int OBJ_ID_LOGGER_LOGLINE     = 1;
-const int OBJ_ID_LOGGER_STATELIST   = 2;
-const int OBJ_ID_LOGGER_COMMAND     = 3;
-const int OBJ_DOM_APPMGR            = 2;
-const int OBJ_ID_APPMGR_APPINFOLIST = 1;
+const int OBJ_UNKNOWN               = 0;
+
+const int OBJ_LOGGER                = 1;
+const int OBJ_LOGGER_LOGLINE        = 1;
+const int OBJ_LOGGER_STATELIST      = 2;
+const int OBJ_LOGGER_COMMAND        = 3;
+
+const int OBJ_APPMGR                = 2;
+const int OBJ_APPMGR_APPINFOLIST    = 1;
+const int OBJ_APPMGR_REQSUSPENDLIST = 1;
+const int OBJ_APPMGR_ADDSUSPENDLIST = 2;
+const int OBJ_APPMGR_DELSUSPENDLIST = 3;
 
 
 // Base message class. This can be moved out of here if it needs to be specific to each
