@@ -47,7 +47,7 @@ inline const int CMD_BOTEVENT              = 6;   // diagnositc bot event
 
 // For the following. MsgObject constructor Msg variables as follows
 // subSys = SUBSYS_OBJ
-// command = OBJ_XXX
+// command/domain = OBJ_XXX
 // objectId = OBJ_XXX_XXXX
 // jsonObjectString = objectString
 inline const int SUBSYS_OBJ                = 4;
@@ -61,13 +61,16 @@ inline const int OBJ_LOGGER_JCOMMAND_REQUEST_LOGS               = 1;
 inline const int OBJ_LOGGER_JRESPONSE_FROM_MATRIX          = 4;
 
 inline const int OBJ_APPMGR                        = 2;
-inline const int OBJ_APPMGR_APPINFOLIST                    = 1;
-inline const int OBJ_APPMGR_SUSPENDLIST                    = 2;
-inline const int OBJ_APPMGR_COMMAND_TO_MATRIX              = 3;
-inline const int OBJ_APPMGR_JCOMMAND_REQUEST_SUSPENDLIST       = 1;
-inline const int OBJ_APPMGR_JCOMMAND_ADD_SUSPENDLISTITEMS      = 2;
-inline const int OBJ_APPMGR_JCOMMAND_DEL_SUSPENDLISTITEMS      = 3;
-inline const int OBJ_APPMGR_JRESPONSE_FROM_MATRIX          = 4;
+inline const int OBJ_APPMGR_APPINFOLIST                     = 1;
+inline const int OBJ_APPMGR_SUSPENDLIST                     = 2;
+inline const int OBJ_APPMGR_COMMAND_TO_MATRIX               = 3;
+inline const int OBJ_APPMGR_JCOMMAND_REQUEST_SUSPENDLIST        = 1;
+inline const int OBJ_APPMGR_JCOMMAND_ADD_SUSPENDLISTITEMS       = 2;
+inline const int OBJ_APPMGR_JCOMMAND_DEL_SUSPENDLISTITEMS       = 3;
+inline const int OBJ_APPMGR_RESPONSE_FROM_MATRIX            = 4;
+inline const int OBJ_APPMGR_JRESPONSE_REQUEST_SUSPENDLIST       = 1;
+inline const int OBJ_APPMGR_JRESPONSE_ADD_SUSPENDLISTITEMS      = 2;
+inline const int OBJ_APPMGR_JRESPONSE_DEL_SUSPENDLISTITEMS      = 3;
 
 
 
