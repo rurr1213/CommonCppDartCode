@@ -1,4 +1,3 @@
-
 /* -------------------------------------------------------------------------------------------
 
    This is common code used by both the C++ compiler and then coverted to Dart code
@@ -27,39 +26,52 @@
     -------------------------------------------------------------------------------------------
 */
 
-const int PROTOCOL_CODE = 1122;
+inline const int PROTOCOL_CODE = 1122;
 
-const int SUBSYS_DISCOVERY          = 1;
-const int DISCOVERY_HELLO           = 1;
-const int DISCOVERY_HELLOACK        = 2;   // not used
-const int DISCOVERY_CLOSESOCKET     = 3;   // notify other end that connection is to be ended
+inline const int SUBSYS_DISCOVERY          = 1;
+inline const int DISCOVERY_HELLO           = 1;
+inline const int DISCOVERY_HELLOACK        = 2;   // not used
+inline const int DISCOVERY_CLOSESOCKET     = 3;   // notify other end that connection is to be ended
 
-const int SUBSYS_STATS              = 2;
-const int STATS_STATINFO            = 1;
-const int STATS_IDDITEMSET          = 2;
+inline const int SUBSYS_STATS              = 2;
+inline const int STATS_STATINFO            = 1;
+inline const int STATS_IDDITEMSET          = 2;
 
-const int SUBSYS_CMD                = 3;
-const int CMD_PCJSON                = 1;
-const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to check pc - app performance
-const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
-const int CMD_PINGTOPC              = 4;   // ping app to pc
-const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
-const int CMD_BOTEVENT              = 6;   // diagnositc bot event
+inline const int SUBSYS_CMD                = 3;
+inline const int CMD_PCJSON                = 1;
+inline const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to check pc - app performance
+inline const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
+inline const int CMD_PINGTOPC              = 4;   // ping app to pc
+inline const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
+inline const int CMD_BOTEVENT              = 6;   // diagnositc bot event
 
 // For the following. MsgObject constructor Msg variables as follows
 // subSys = SUBSYS_OBJ
-// command = OBJ_DOM_XXXX
-// objectId = OBJ_ID_XXXX
+// command/domain = OBJ_XXX
+// objectId = OBJ_XXX_XXXX
 // jsonObjectString = objectString
-const int SUBSYS_OBJ                = 4;
-const int OBJ_DOM_UNKNOWN           = 0;
-const int OBJ_ID_UNKNOWN            = 0;
-const int OBJ_DOM_LOGGER            = 1;
-const int OBJ_ID_LOGGER_LOGLINE     = 1;
-const int OBJ_ID_LOGGER_STATELIST   = 2;
-const int OBJ_ID_LOGGER_COMMAND     = 3;
-const int OBJ_DOM_APPMGR            = 2;
-const int OBJ_ID_APPMGR_APPINFOLIST = 1;
+inline const int SUBSYS_OBJ                = 4;
+inline const int OBJ_UNKNOWN                       = 0;
+
+inline const int OBJ_LOGGER                        = 1;
+inline const int OBJ_LOGGER_LOGLINE                        = 1;
+inline const int OBJ_LOGGER_STATELIST                      = 2;
+inline const int OBJ_LOGGER_COMMAND_TO_MATRIX              = 3;
+inline const int OBJ_LOGGER_JCOMMAND_REQUEST_LOGS               = 1;
+inline const int OBJ_LOGGER_JRESPONSE_FROM_MATRIX          = 4;
+
+inline const int OBJ_APPMGR                        = 2;
+inline const int OBJ_APPMGR_APPINFOLIST                     = 1;
+inline const int OBJ_APPMGR_SUSPENDLIST                     = 2;
+inline const int OBJ_APPMGR_COMMAND_TO_MATRIX               = 3;
+inline const int OBJ_APPMGR_JCOMMAND_REQUEST_SUSPENDLIST        = 1;
+inline const int OBJ_APPMGR_JCOMMAND_ADD_SUSPENDLISTITEMS       = 2;
+inline const int OBJ_APPMGR_JCOMMAND_DEL_SUSPENDLISTITEMS       = 3;
+inline const int OBJ_APPMGR_RESPONSE_FROM_MATRIX            = 4;
+inline const int OBJ_APPMGR_JRESPONSE_REQUEST_SUSPENDLIST       = 1;
+inline const int OBJ_APPMGR_JRESPONSE_ADD_SUSPENDLISTITEMS      = 2;
+inline const int OBJ_APPMGR_JRESPONSE_DEL_SUSPENDLISTITEMS      = 3;
+
 
 
 // Base message class. This can be moved out of here if it needs to be specific to each
