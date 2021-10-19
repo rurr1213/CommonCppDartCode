@@ -1,4 +1,4 @@
-
+#pragma once
 /* -------------------------------------------------------------------------------------------
 
    This is common code that is used by both the C++ code and the Dart compiler.
@@ -21,28 +21,76 @@
         2) ONLY add new IDs at the END of the list to maintain compatibility
 */
 
-const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
+inline const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
 
-enum GROUPIDS {
-    INVALID_GROUPID,
+enum class GROUPIDS {
+    INVALID,
     NETWORKING,
     CPU,
     GPU,
     APP
 };
 
-enum STATIDS {
-    INVALID_STATID,
-    PING_GATEWAY,      // PING - gateway 
-    PING_SITES,     // PING - Sites
-    CPU_SPEED,     // CPU Speed
-    CPU_BUSY,      // CPU Busy
-    CPU_CLOCK,      // CPU Clock
-    GPU_FPS,      // GPU FPS
+enum class STATIDS {
+    INVALID,
+    CPU_SPEED,    
+    CPU_BUSY,     
+    CPU_CLOCK,    
+    GPU_FPS,     
+    PING_GATEWAY,    // PING - gateway 
+    PING_SITE_1,     // PING - Sites
+    PING_SITE_2,     // PING - Sites
+    PING_SITE_3,     // PING - Sites
+    PING_SITE_4,     // PING - Sites
+    PING_SITE_5,     // PING - Sites
     APP_STATS,
-
-    // add new IDs here
 };
 
+/*
+// --------------------------------------------------------------------
+// ALL STATIDS are designed to be unique. So they are defined in sets
+// The following are simply defined as consecutively incrementing
+enum STATIDS_CPU {
+    INVALID,
+    SPEED,     
+    BUSY,      
+    CLOCK     
+};
 
+enum STATIDS_GPU {
+    INVALID,
+    FPS
+};
 
+enum STATIDS_PING {
+    INVALID,
+    PING_GATEWAY,      // PING - gateway 
+    PING_SITE_N      // Start of ping sites
+};
+
+// CwstatDB::StatAppDataTable::AppDataItem fields
+enum STATIDS_FIELDS {           // SUMMARY (by APPNAME)
+    // FIELDS
+    INVALID,
+    TIMESTAMP,                  // MIN
+    APPNAME,                    
+    PROCESSES,                  // MAX
+    THREADS,                    // MAX
+    MEMORY,                     // MAX
+    CYCLES,                     // SUM
+    IOACTTIVITY,                // SUM
+    PAGEFAULTS,                 // SUM
+    WINDOWS,                    // MAX
+    WINZORDER                   // MIN
+};
+
+*/
+
+enum class STAT_FUNCTION 
+{
+    AVG,
+    MAX,
+    MIN,
+    COUNT,
+    SUMMARY1
+};
