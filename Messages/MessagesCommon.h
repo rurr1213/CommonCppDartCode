@@ -72,6 +72,13 @@ inline const int OBJ_APPMGR_JRESPONSE_REQUEST_SUSPENDLIST       = 1;
 inline const int OBJ_APPMGR_JRESPONSE_ADD_SUSPENDLISTITEMS      = 2;
 inline const int OBJ_APPMGR_JRESPONSE_DEL_SUSPENDLISTITEMS      = 3;
 
+inline const int OBJ_STATSMGR                       = 3;
+inline const int OBJ_STATSMGR_COMMAND_TO_MATRIX            = 1;
+inline const int OBJ_STATSMGR_JCOMMAND_QUERY_STATSSUMMARY       = 1;
+inline const int OBJ_STATSMGR_RESPONSE_FROM_MATRIX          = 2;
+inline const int OBJ_STATSMGR_JRESPONSE_QUERY_STATSSUMMARY_GENERAL   = 1;
+inline const int OBJ_STATSMGR_JRESPONSE_QUERY_STATSSUMMARY_APPSTATS  = 2;
+
 
 
 // Base message class. This can be moved out of here if it needs to be specific to each
