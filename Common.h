@@ -86,8 +86,9 @@ enum STATIDS_FIELDS {           // SUMMARY (by APPNAME)
 
 */
 
-enum class STAT_FUNCTION 
+enum class QUERY_FUNCTION 
 {
+    INVALID,
     AVG,
     MAX,
     MIN,
