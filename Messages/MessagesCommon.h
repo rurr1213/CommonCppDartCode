@@ -74,16 +74,16 @@ inline const int OBJ_APPMGR_JRESPONSE_DEL_SUSPENDLISTITEMS      = 3;
 
 inline const int OBJ_STATSMGR                       = 3;
 inline const int OBJ_STATSMGR_COMMAND_TO_MATRIX            = 1;
-inline const int OBJ_STATSMGR_JCOMMAND_QUERY_STATSSUMMARY       = 1;
-inline const int OBJ_STATSMGR_JCOMMAND_SET_STATSSUMMARY         = 2;
-inline const int OBJ_STATSMGR_JCOMMAND_DEL_STATSSUMMARY         = 3;
-inline const int OBJ_STATSMGR_RESPONSE_FROM_MATRIX          = 2;
-inline const int OBJ_STATSMGR_JRESPONSE_QUERY_STATSSUMMARY_GENERAL   = 1;
-inline const int OBJ_STATSMGR_JRESPONSE_QUERY_STATSSUMMARY_APPSTATS  = 2;
-inline const int OBJ_STATSMGR_JRESPONSE_SET_STATSSUMMARY_GENERAL     = 3;
-inline const int OBJ_STATSMGR_JRESPONSE_SET_STATSSUMMARY_APPSTATS    = 4;
-inline const int OBJ_STATSMGR_JRESPONSE_DEL_STATSSUMMARY_GENERAL     = 5;
-inline const int OBJ_STATSMGR_JRESPONSE_DEL_STATSSUMMARY_APPSTATS    = 6;
+inline const int OBJ_STATSMGR_JCOMMAND_QUERY_STAT               = 1;
+inline const int OBJ_STATSMGR_JCOMMAND_SET_STAT                 = 2;
+inline const int OBJ_STATSMGR_JCOMMAND_DEL_STAT                 = 3;
+inline const int OBJ_STATSMGR_RESPONSE_FROM_MATRIX         = 2;
+inline const int OBJ_STATSMGR_JRESPONSE_QUERY_GENERALSTAT       = 1;
+inline const int OBJ_STATSMGR_JRESPONSE_QUERY_APPSTAT           = 2;
+inline const int OBJ_STATSMGR_JRESPONSE_SET_GENERALSTAT         = 3;
+inline const int OBJ_STATSMGR_JRESPONSE_SET_APPSTAT             = 4;
+inline const int OBJ_STATSMGR_JRESPONSE_DEL_GENERALSTAT         = 5;
+inline const int OBJ_STATSMGR_JRESPONSE_DEL_APPSTAT             = 6;
 
 
 

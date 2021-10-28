@@ -46,46 +46,6 @@ enum STATIDS {
     APP_STATS,
 }
 
-/*
-// --------------------------------------------------------------------
-// ALL STATIDS are designed to be unique. So they are defined in sets
-// The following are simply defined as consecutively incrementing
-enum STATIDS_CPU {
-    INVALID,
-    SPEED,     
-    BUSY,      
-    CLOCK     
-}
-
-enum STATIDS_GPU {
-    INVALID,
-    FPS
-}
-
-enum STATIDS_PING {
-    INVALID,
-    PING_GATEWAY,      // PING - gateway 
-    PING_SITE_N      // Start of ping sites
-}
-
-// CwstatDB::StatAppDataTable::AppDataItem fields
-enum STATIDS_FIELDS {           // SUMMARY (by APPNAME)
-    // FIELDS
-    INVALID,
-    TIMESTAMP,                  // MIN
-    APPNAME,                    
-    PROCESSES,                  // MAX
-    THREADS,                    // MAX
-    MEMORY,                     // MAX
-    CYCLES,                     // SUM
-    IOACTTIVITY,                // SUM
-    PAGEFAULTS,                 // SUM
-    WINDOWS,                    // MAX
-    WINZORDER                   // MIN
-}
-
-*/
-
 enum QUERY_FUNCTION 
 {
     INVALID,
