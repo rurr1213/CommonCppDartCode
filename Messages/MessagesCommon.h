@@ -67,10 +67,12 @@ inline const int OBJ_APPMGR_COMMAND_TO_MATRIX               = 3;
 inline const int OBJ_APPMGR_JCOMMAND_REQUEST_SUSPENDLIST        = 1;
 inline const int OBJ_APPMGR_JCOMMAND_ADD_SUSPENDLISTITEMS       = 2;
 inline const int OBJ_APPMGR_JCOMMAND_DEL_SUSPENDLISTITEMS       = 3;
+inline const int OBJ_APPMGR_JCOMMAND_REPLACE_SUSPENDLISTITEMS   = 4;
 inline const int OBJ_APPMGR_RESPONSE_FROM_MATRIX            = 4;
 inline const int OBJ_APPMGR_JRESPONSE_REQUEST_SUSPENDLIST       = 1;
 inline const int OBJ_APPMGR_JRESPONSE_ADD_SUSPENDLISTITEMS      = 2;
 inline const int OBJ_APPMGR_JRESPONSE_DEL_SUSPENDLISTITEMS      = 3;
+inline const int OBJ_APPMGR_JRESPONSE_REPLACE_SUSPENDLISTITEMS  = 4;
 
 inline const int OBJ_STATSMGR                       = 3;
 inline const int OBJ_STATSMGR_COMMAND_TO_MATRIX            = 1;
