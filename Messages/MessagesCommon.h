@@ -81,7 +81,7 @@ inline const int OBJ_STATSMGR_JCOMMAND_SET_STAT                 = 2;
 inline const int OBJ_STATSMGR_JCOMMAND_DEL_STAT                 = 3;
 inline const int OBJ_STATSMGR_JCOMMAND_FPS_STATUS               = 4;
 inline const int OBJ_STATSMGR_JCOMMAND_FPS_ON_OFF               = 5;
-inline const int OBJ_STATSMGR_JCOMMAND_FPS_INFO                 = 6;
+inline const int OBJ_STATSMGR_JCOMMAND_FPS_GETINFO              = 6;
 inline const int OBJ_STATSMGR_RESPONSE_FROM_MATRIX         = 2;
 inline const int OBJ_STATSMGR_JRESPONSE_QUERY_GENERALSTAT       = 1;
 inline const int OBJ_STATSMGR_JRESPONSE_QUERY_APPSTAT           = 2;
@@ -91,7 +91,7 @@ inline const int OBJ_STATSMGR_JRESPONSE_DEL_GENERALSTAT         = 5;
 inline const int OBJ_STATSMGR_JRESPONSE_DEL_APPSTAT             = 6;
 inline const int OBJ_STATSMGR_JRESPONSE_FPS_STATUS              = 7;
 inline const int OBJ_STATSMGR_JRESPONSE_FPS_ON_OFF              = 8;
-inline const int OBJ_STATSMGR_JRESPONSE_FPS_INFO                = 9;
+inline const int OBJ_STATSMGR_JRESPONSE_FPS_GETINFO             = 9;
 
 
 
