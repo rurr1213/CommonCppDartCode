@@ -68,20 +68,26 @@ inline const int OBJ_APPMGR_JCOMMAND_REQUEST_SUSPENDLIST        = 1;
 inline const int OBJ_APPMGR_JCOMMAND_ADD_SUSPENDLISTITEMS       = 2;
 inline const int OBJ_APPMGR_JCOMMAND_DEL_SUSPENDLISTITEMS       = 3;
 inline const int OBJ_APPMGR_JCOMMAND_REPLACE_SUSPENDLISTITEMS   = 4;
+inline const int OBJ_APPMGR_JCOMMAND_SUSPEND_GETSTATUS          = 5;
+inline const int OBJ_APPMGR_JCOMMAND_SUSPEND_ON_OFF             = 6;
+
 inline const int OBJ_APPMGR_RESPONSE_FROM_MATRIX            = 4;
 inline const int OBJ_APPMGR_JRESPONSE_REQUEST_SUSPENDLIST       = 1;
 inline const int OBJ_APPMGR_JRESPONSE_ADD_SUSPENDLISTITEMS      = 2;
 inline const int OBJ_APPMGR_JRESPONSE_DEL_SUSPENDLISTITEMS      = 3;
 inline const int OBJ_APPMGR_JRESPONSE_REPLACE_SUSPENDLISTITEMS  = 4;
+inline const int OBJ_APPMGR_JRESPONSE_SUSPEND_GETSTATUS         = 5;
+inline const int OBJ_APPMGR_JRESPONSE_SUSPEND_ON_OFF            = 6;
 
 inline const int OBJ_STATSMGR                       = 3;
 inline const int OBJ_STATSMGR_COMMAND_TO_MATRIX            = 1;
 inline const int OBJ_STATSMGR_JCOMMAND_QUERY_STAT               = 1;
 inline const int OBJ_STATSMGR_JCOMMAND_SET_STAT                 = 2;
 inline const int OBJ_STATSMGR_JCOMMAND_DEL_STAT                 = 3;
-inline const int OBJ_STATSMGR_JCOMMAND_FPS_STATUS               = 4;
+inline const int OBJ_STATSMGR_JCOMMAND_FPS_GETSTATUS            = 4;
 inline const int OBJ_STATSMGR_JCOMMAND_FPS_ON_OFF               = 5;
 inline const int OBJ_STATSMGR_JCOMMAND_FPS_GETINFO              = 6;
+
 inline const int OBJ_STATSMGR_RESPONSE_FROM_MATRIX         = 2;
 inline const int OBJ_STATSMGR_JRESPONSE_QUERY_GENERALSTAT       = 1;
 inline const int OBJ_STATSMGR_JRESPONSE_QUERY_APPSTAT           = 2;
@@ -89,7 +95,7 @@ inline const int OBJ_STATSMGR_JRESPONSE_SET_GENERALSTAT         = 3;
 inline const int OBJ_STATSMGR_JRESPONSE_SET_APPSTAT             = 4;
 inline const int OBJ_STATSMGR_JRESPONSE_DEL_GENERALSTAT         = 5;
 inline const int OBJ_STATSMGR_JRESPONSE_DEL_APPSTAT             = 6;
-inline const int OBJ_STATSMGR_JRESPONSE_FPS_STATUS              = 7;
+inline const int OBJ_STATSMGR_JRESPONSE_FPS_GETSTATUS           = 7;
 inline const int OBJ_STATSMGR_JRESPONSE_FPS_ON_OFF              = 8;
 inline const int OBJ_STATSMGR_JRESPONSE_FPS_GETINFO             = 9;
 
