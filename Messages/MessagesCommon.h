@@ -159,6 +159,8 @@ public:
         short int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
         return crc;
     }
+
+    virtual int size() { return 22; }     // bytes
 };
 
 class MsgPCInfo :public Msg {
@@ -174,6 +176,15 @@ public:
         ipAddress = "";
         ipGateway = "";
         port = 0;
+    }
+    virtual int size() {
+        int _size = M_BASECLASS(Msg, size());
+        _size += 8;
+        _size += M_SIZE(name) + 1;
+        _size += M_SIZE(ipAddress) + 1;
+        _size += M_SIZE(ipGateway) + 1;
+        _size += 4;
+        return _size;
     }
     virtual int serialize(RSerDes sd) {
         M_BASECLASS(Msg,serialize(sd));
@@ -230,6 +241,12 @@ public:
         groupId = 0;
         streamId = 0;
     }
+    virtual int size() {
+        int _size = 0;
+        _size += 2 * 3;
+        _size += 4 * 2;
+        return _size;
+    }
     void serialize(RSerDes sd) {
         sd.setInt16(statId);
         sd.setInt16(groupId);
@@ -260,8 +277,17 @@ public:
         description = "";
         id = 0;
         listLength = 0;
-//        M_ALLOCATELIST(MsgIddStatItem,statList)
 	}
+    int size() {
+        int _size = M_BASECLASS(Msg, size());;
+        _size += M_SIZE(name) + 1;
+        _size += M_SIZE(description) + 1;
+        _size += 4 * 2;
+        M_LISTFORLOOPSTART(statItem, statList)
+            _size += statItem.size();
+        }
+        return _size;
+    }
     int serialize(RSerDes sd) {
         listLength = M_LISTLEN(statList);
         M_BASECLASS(Msg, serialize(sd));
@@ -299,6 +325,11 @@ public:
         subSys = SUBSYS_STATS;
         command = STATS_STATINFO;
     }
+    int size() {
+        int _size = M_BASECLASS(Msg, size());;
+        _size += M_SIZE(jsonStatInfoString) + 1;
+        return _size;
+    }
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(jsonStatInfoString);
@@ -325,6 +356,11 @@ public:
         command = CMD_PCJSON;
         jsonCmdString = cmdString;
     }
+    int size() {
+        int _size = M_BASECLASS(Msg, size());;
+        _size += M_SIZE(jsonCmdString) + 1;
+        return _size;
+    }
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
         sd.setString(jsonCmdString);
@@ -350,6 +386,12 @@ public:
         command = objDom;
         objectId = objId;
         jsonObjectString = objString;
+    }
+    int size() {
+        int _size = M_BASECLASS(Msg, size());;
+        _size += M_SIZE(jsonObjectString) + 1;
+        _size += 4;
+        return _size;
     }
     int serialize(RSerDes sd) {
         M_BASECLASS(Msg, serialize(sd));
