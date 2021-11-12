@@ -163,7 +163,8 @@ public:
         return sd.length();
     }
     short int calcCrc() {
-        short int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
+        int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
+        crc &= 0x7FF;
         return crc;
     }
 
