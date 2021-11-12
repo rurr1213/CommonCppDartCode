@@ -50,17 +50,24 @@ inline const int CMD_BOTEVENT              = 6;   // diagnositc bot event
 // command/domain = OBJ_XXX
 // objectId = OBJ_XXX_XXXX
 // jsonObjectString = objectString
+
 inline const int SUBSYS_OBJ                = 4;
 inline const int OBJ_UNKNOWN                       = 0;
 
-inline const int OBJ_LOGGER                        = 1;
+inline const int OBJ_MATRIXMGR                     = 1;
+inline const int OBJ_MATRIXMGR_COMMAND_TO_MATRIX            = 1;
+inline const int OBJ_MATRIXMGR_JCOMMAND_ECHO_COMMAND            = 1;
+inline const int OBJ_MATRIXMGR_RESPONSE_FROM_MATRIX         = 2;
+inline const int OBJ_MATRIXMGR_JRESPONSE_ECHO_ACK               = 1;
+
+inline const int OBJ_LOGGER                        = 2;
 inline const int OBJ_LOGGER_LOGLINE                        = 1;
 inline const int OBJ_LOGGER_STATELIST                      = 2;
 inline const int OBJ_LOGGER_COMMAND_TO_MATRIX              = 3;
 inline const int OBJ_LOGGER_JCOMMAND_REQUEST_LOGS               = 1;
 inline const int OBJ_LOGGER_JRESPONSE_FROM_MATRIX          = 4;
 
-inline const int OBJ_APPMGR                        = 2;
+inline const int OBJ_APPMGR                        = 3;
 inline const int OBJ_APPMGR_APPINFOLIST                     = 1;
 inline const int OBJ_APPMGR_SUSPENDLIST                     = 2;
 inline const int OBJ_APPMGR_COMMAND_TO_MATRIX               = 3;
@@ -79,7 +86,7 @@ inline const int OBJ_APPMGR_JRESPONSE_REPLACE_SUSPENDLISTITEMS  = 4;
 inline const int OBJ_APPMGR_JRESPONSE_SUSPEND_GETSTATUS         = 5;
 inline const int OBJ_APPMGR_JRESPONSE_SUSPEND_ON_OFF            = 6;
 
-inline const int OBJ_STATSMGR                       = 3;
+inline const int OBJ_STATSMGR                       = 4;
 inline const int OBJ_STATSMGR_COMMAND_TO_MATRIX            = 1;
 inline const int OBJ_STATSMGR_JCOMMAND_QUERY_STAT               = 1;
 inline const int OBJ_STATSMGR_JCOMMAND_SET_STAT                 = 2;
