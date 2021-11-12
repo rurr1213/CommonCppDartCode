@@ -107,7 +107,7 @@ inline const int OBJ_STATSMGR_JRESPONSE_FPS_GETINFO             = 9;
 class Msg {
 public:
     short int prot = 0;             // this should alway be set to the PROTOCOL_CODE
-    short int length = 0;           // this will be updated by the SerDes class on calls to length()
+    int length = 0;           // this will be updated by the SerDes class on calls to length()
     short int deviceAppKey = 0;     // a device and app identifier
     short int sessionKey = 0;    // a session number / key
     int seqNumber = 0;              // sequence number within the session
@@ -130,7 +130,7 @@ public:
     M_CPPONLY(virtual ~Msg() {})
     virtual int serialize(RSerDes sd) {
         sd.setInt16(prot);
-        sd.setLength16(length);
+        sd.setLength32(length);
         sd.setInt16(deviceAppKey);
         sd.setInt16(sessionKey);
         sd.setInt32(seqNumber);
@@ -145,7 +145,7 @@ public:
     }
     virtual int deserialize(RSerDes sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
-        length = sd.getInt16();
+        length = sd.getInt32();
         deviceAppKey = sd.getInt16();
         sessionKey = sd.getInt16();
         seqNumber = sd.getInt32();
@@ -160,7 +160,7 @@ public:
         return crc;
     }
 
-    virtual int size() { return 22; }     // bytes
+    virtual int size() { return 24; }     // bytes
 };
 
 class MsgPCInfo :public Msg {
