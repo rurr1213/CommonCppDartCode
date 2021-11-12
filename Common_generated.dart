@@ -23,6 +23,8 @@
 
 const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
 
+const int COMMON_PACKETSIZE_MAX = 64 * 1000;
+
 enum GROUPIDS {
     INVALID,
     NETWORKING,

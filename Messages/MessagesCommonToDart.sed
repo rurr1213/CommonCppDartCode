@@ -22,3 +22,4 @@ s/M_BASECLASS(\(.*\),\(.*\))/super.\2/g
 s/M_LISTFORLOOPSTART(\(.*\),\(.*\))/for ( var \1 in \2 ) {/g
 s/M_LISTLEN(\(.*\))/\1.length/g
 s/M_CPPONLY(\(.*\))//g
+s/M_SIZE(\(.*\))/\1.length/g
