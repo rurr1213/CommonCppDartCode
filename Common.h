@@ -27,9 +27,11 @@ inline const int COMMON_PACKETSIZE_MAX = 64 * 1000;
 
 enum class GROUPIDS {
     INVALID,
-    NETWORKING,
+    NET,    //
     CPU,
     GPU,
+    MEM,    //
+    DISK,   //
     APP
 };
 
@@ -38,7 +40,12 @@ enum class STATIDS {
     CPU_SPEED,    
     CPU_BUSY,     
     CPU_CLOCK,    
-    GPU_FPS,     
+    GPU_FPS,
+    GPU_BUSY,
+    MEM_PAGEF,       // page faults
+    MEM_COMM,        // commited bytes
+    NET_TRAFFIC,     // Network transfers      
+    DISK_TRANSFERS,  // Disk transfers
     PING_GATEWAY,    // PING - gateway 
     PING_SITE_1,     // PING - Sites
     PING_SITE_2,     // PING - Sites
