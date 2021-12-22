@@ -28,16 +28,15 @@
 
 inline const int PROTOCOL_CODE = 1122;
 
-inline const int SUBSYS_DISCOVERY          = 1;
+inline const int SUBSYS_SIGNALLING         = 10;  // route signalling system
+inline const int CMD_JSON                  = 1;
+
+inline const int SUBSYS_DISCOVERY          = 20;
 inline const int DISCOVERY_HELLO           = 1;
 inline const int DISCOVERY_HELLOACK        = 2;   // not used
 inline const int DISCOVERY_CLOSESOCKET     = 3;   // notify other end that connection is to be ended
 
-inline const int SUBSYS_STATS              = 2;
-inline const int STATS_STATINFO            = 1;
-inline const int STATS_IDDITEMSET          = 2;
-
-inline const int SUBSYS_CMD                = 3;
+inline const int SUBSYS_CMD                = 40;
 inline const int CMD_PCJSON                = 1;
 inline const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to check pc - app performance
 inline const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
@@ -45,13 +44,18 @@ inline const int CMD_PINGTOPC              = 4;   // ping app to pc
 inline const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
 inline const int CMD_BOTEVENT              = 6;   // diagnositc bot event
 
+inline const int SUBSYS_STATS              = 42;
+inline const int STATS_STATINFO            = 1;
+inline const int STATS_IDDITEMSET          = 2;
+
+
 // For the following. MsgObject constructor Msg variables as follows
 // subSys = SUBSYS_OBJ
 // command/domain = OBJ_XXX
 // objectId = OBJ_XXX_XXXX
 // jsonObjectString = objectString
 
-inline const int SUBSYS_OBJ                = 4;
+inline const int SUBSYS_OBJ                = 44;
 inline const int OBJ_UNKNOWN                       = 0;
 
 inline const int OBJ_MATRIXMGR                     = 1;
@@ -115,35 +119,35 @@ class Msg {
 public:
     short int prot = 0;             // this should alway be set to the PROTOCOL_CODE
     int length = 0;           // this will be updated by the SerDes class on calls to length()
-    short int deviceAppKey = 0;     // a device and app identifier
-    short int sessionKey = 0;    // a session number / key
-    int seqNumber = 0;              // sequence number within the session
     short int subSys = 0;           // to be set by derived classes
     short int command = 0;          // to be set by derived classes
     int argument = 0;               // optional command argument / data
+    short int deviceAppKey = 0;     // a device and app identifier
+    short int sessionKey = 0;    // a session number / key
+    int seqNumber = 0;              // sequence number within the session
     int localParam1 = 0;            // Local parameter is NOT SERIALIZED. Used to embed local data
     short int crc = 0;              // header crc
     Msg() {
         prot = PROTOCOL_CODE;
         length = 0;
-        deviceAppKey = 0;
-        sessionKey = 0;
-        seqNumber = 0;
         subSys = 0;
         command = 0;
         argument = 0;
+        deviceAppKey = 0;
+        sessionKey = 0;
+        seqNumber = 0;
         crc = 0;
     }
     M_CPPONLY(virtual ~Msg() {})
     virtual int serialize(RSerDes sd) {
         sd.setInt16(prot);
         sd.setLength32(length);
-        sd.setInt16(deviceAppKey);
-        sd.setInt16(sessionKey);
-        sd.setInt32(seqNumber);
         sd.setInt16(subSys);
         sd.setInt16(command);
         sd.setInt32(argument);
+        sd.setInt16(deviceAppKey);
+        sd.setInt16(sessionKey);
+        sd.setInt32(seqNumber);
         sd.setCrc16(0);
 
         length = sd.updateLength();
@@ -153,12 +157,12 @@ public:
     virtual int deserialize(RSerDes sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
         length = sd.getInt32();
-        deviceAppKey = sd.getInt16();
-        sessionKey = sd.getInt16();
-        seqNumber = sd.getInt32();
         subSys = sd.getInt16();
         command = sd.getInt16();
         argument = sd.getInt32();
+        deviceAppKey = sd.getInt16();
+        sessionKey = sd.getInt16();
+        seqNumber = sd.getInt32();
         crc = sd.getInt16();
         return sd.length();
     }
@@ -170,6 +174,47 @@ public:
 
     virtual int size() { return 24; }     // bytes
 };
+
+class MsgJson :public Msg {
+public:
+    String jsonData = "";
+    MsgJson() {
+        subSys = 0;
+        command = 0;
+        jsonData = "";
+    }
+    void set(short int _subSys, short int _command, String _jsonData) {
+        subSys = _subSys;
+        command = _command;
+        jsonData = _jsonData;
+    }
+    int size() {
+        int _size = M_BASECLASS(Msg, size());;
+        _size += M_SIZE(jsonData) + 1;
+        return _size;
+    }
+    int serialize(RSerDes sd) {
+        M_BASECLASS(Msg, serialize(sd));
+        sd.setString(jsonData);
+        length = sd.updateLength();
+        sd.updateCrc(calcCrc());
+        return sd.finalize();
+    }
+
+    int deserialize(RSerDes sd) {
+        M_BASECLASS(Msg, deserialize(sd));
+        jsonData = sd.getString();
+        return sd.length();
+    }
+};
+
+class SignallingMsg :public MsgJson {
+public:
+    SignallingMsg(String _jsonMsg) {
+        set(SUBSYS_SIGNALLING, CMD_JSON, _jsonMsg);
+    }
+};
+
 
 class MsgPCInfo :public Msg {
 public:
@@ -356,31 +401,10 @@ public:
 
 //---------------------------------------
 
-class MsgCmd :public Msg {
+class MsgCmd :public MsgJson {
 public:
-    String jsonCmdString = "";
-    MsgCmd(String cmdString) {
-        subSys = SUBSYS_CMD;
-        command = CMD_PCJSON;
-        jsonCmdString = cmdString;
-    }
-    int size() {
-        int _size = M_BASECLASS(Msg, size());;
-        _size += M_SIZE(jsonCmdString) + 1;
-        return _size;
-    }
-    int serialize(RSerDes sd) {
-        M_BASECLASS(Msg, serialize(sd));
-        sd.setString(jsonCmdString);
-        length = sd.updateLength();
-        sd.updateCrc(calcCrc());
-        return sd.finalize();
-    }
-
-    int deserialize(RSerDes sd) {
-        M_BASECLASS(Msg, deserialize(sd));
-        jsonCmdString = sd.getString();
-        return sd.length();
+    MsgCmd(String _jsonSubCmd) {
+        set(SUBSYS_CMD, CMD_PCJSON, _jsonSubCmd);
     }
 };
 
