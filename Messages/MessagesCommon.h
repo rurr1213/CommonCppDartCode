@@ -28,8 +28,8 @@
 
 inline const int PROTOCOL_CODE = 1122;
 
-inline const int SUBSYS_SIGNALLING         = 10;  // route signalling system
-inline const int CMD_JSON                  = 1;
+inline const int SUBSYS_SIG                = 10;  // route signalling system
+inline const int SIG_JSON                  = 1;
 
 inline const int SUBSYS_DISCOVERY          = 20;
 inline const int DISCOVERY_HELLO           = 1;
@@ -37,12 +37,13 @@ inline const int DISCOVERY_HELLOACK        = 2;   // not used
 inline const int DISCOVERY_CLOSESOCKET     = 3;   // notify other end that connection is to be ended
 
 inline const int SUBSYS_CMD                = 40;
-inline const int CMD_PCJSON                = 1;
-inline const int CMD_PINGFROMPC            = 2;   // ping pc to app - these are to check pc - app performance
-inline const int CMD_PINGFROMPCACK         = 3;   // ping pc to app ack
-inline const int CMD_PINGTOPC              = 4;   // ping app to pc
-inline const int CMD_PINGTOPCACK           = 5;   // ping app to pc ack
-inline const int CMD_BOTEVENT              = 6;   // diagnositc bot event
+inline const int CMD_JSON                  = 1;
+inline const int CMD_PCJSON                = 11;
+inline const int CMD_PINGFROMPC            = 12;   // ping pc to app - these are to check pc - app performance
+inline const int CMD_PINGFROMPCACK         = 13;   // ping pc to app ack
+inline const int CMD_PINGTOPC              = 14;   // ping app to pc
+inline const int CMD_PINGTOPCACK           = 15;   // ping app to pc ack
+inline const int CMD_BOTEVENT              = 16;   // diagnositc bot event
 
 inline const int SUBSYS_STATS              = 42;
 inline const int STATS_STATINFO            = 1;
@@ -208,10 +209,10 @@ public:
     }
 };
 
-class SignallingMsg :public MsgJson {
+class SigMsg :public MsgJson {
 public:
-    SignallingMsg(String _jsonMsg) {
-        set(SUBSYS_SIGNALLING, CMD_JSON, _jsonMsg);
+    SigMsg(String _jsonMsg) {
+        set(SUBSYS_SIG, SIG_JSON, _jsonMsg);
     }
 };
 
