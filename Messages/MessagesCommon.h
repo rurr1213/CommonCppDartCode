@@ -175,7 +175,7 @@ public:
 
     virtual int size() { return 24; }     // bytes
 
-    copy(Msg otherMsg) {
+    bool copy(Msg otherMsg) {
       prot = otherMsg.prot;
       length = otherMsg.length;
       subSys = otherMsg.subSys;
@@ -186,6 +186,7 @@ public:
       seqNumber = otherMsg.seqNumber;
       localParam1 = otherMsg.localParam1;
       crc = otherMsg.crc;
+      return true;
     }
 };
 
