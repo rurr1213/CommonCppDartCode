@@ -174,6 +174,19 @@ public:
     }
 
     virtual int size() { return 24; }     // bytes
+
+    copy(Msg otherMsg) {
+      prot = otherMsg.prot;
+      length = otherMsg.length;
+      subSys = otherMsg.subSys;
+      command = otherMsg.command;
+      argument = otherMsg.argument;
+      deviceAppKey = otherMsg.deviceAppKey;
+      sessionKey = otherMsg.sessionKey;
+      seqNumber = otherMsg.seqNumber;
+      localParam1 = otherMsg.localParam1;
+      crc = otherMsg.crc;
+    }
 };
 
 class MsgJson :public Msg {
