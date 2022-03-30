@@ -167,7 +167,7 @@ public:
         crc = sd.getInt16();
         return sd.length();
     }
-    short int calcCrc() {
+    virtual short int calcCrc() {
         int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
         crc &= 0x7FF;
         return crc;
@@ -188,6 +188,15 @@ public:
       crc = otherMsg.crc;
       return true;
     }
+
+    // This may be used by derived classes that have string data
+    virtual short int calcCrcOnString(String dataString) {
+        short int _dataCrc = 0;
+        for (int i = 0; i < M_SIZE(dataString); i++) {
+            _dataCrc ^= M_ELEMENT(dataString, i);
+        }
+        return _dataCrc;
+    }
 };
 
 class MsgJson :public Msg {
@@ -204,7 +213,7 @@ public:
         jsonData = _jsonData;
     }
     int size() {
-        int _size = M_BASECLASS(Msg, size());;
+        int _size = M_BASECLASS(Msg, size());
         _size += M_SIZE(jsonData) + 1;
         return _size;
     }
@@ -220,6 +229,14 @@ public:
         M_BASECLASS(Msg, deserialize(sd));
         jsonData = sd.getString();
         return sd.length();
+    }
+    virtual short int calcCrc() {
+        short int _headerCrc = M_BASECLASS(Msg, calcCrc());
+        short int _dataCrc = M_BASECLASS(Msg, calcCrcOnString(jsonData));
+//        M_LISTFORLOOPSTART(character, jsonData)
+//            _stringCrc ^= character;
+//        }
+        return _headerCrc ^ _dataCrc;
     }
 };
 
@@ -454,5 +471,11 @@ public:
         objectId = sd.getInt32();
         jsonObjectString = sd.getString();
         return sd.length();
+    }
+    virtual short int calcCrc() {
+        short int _headerCrc = M_BASECLASS(Msg, calcCrc());
+        short int _dataCrc = M_BASECLASS(Msg, calcCrcOnString(jsonObjectString));
+        _dataCrc ^= objectId;
+        return _headerCrc ^ _dataCrc;
     }
 };
