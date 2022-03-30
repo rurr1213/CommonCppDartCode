@@ -192,7 +192,7 @@ public:
     // This may be used by derived classes that have string data
     virtual short int calcCrcOnString(String dataString) {
         short int _dataCrc = 0;
-        for (int i = 0; i < M_SIZE(dataString); i++) {
+        for (int i = 0; i < M_LISTLEN(dataString); i++) {
             _dataCrc ^= M_ELEMENT(dataString, i);
         }
         return _dataCrc;

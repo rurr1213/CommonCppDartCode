@@ -18,9 +18,9 @@ s/inline//g
 # being between \( and \). The first is \1 the second is \2
 s/M_ALLOCATELIST(\(.*\),\(.*\))/\2 = List<\1>();/g
 s/M_DECLAREVARIABLE(\(.*\),\(.*\))/var \2 = \1()/g
-s/M_BASECLASS(\(.*\),\(.*\))/super.\2/g
+s/M_BASECLASS(\([-a-zA-Z0-9_]*\),\(.*\))/super.\2/g
 s/M_LISTFORLOOPSTART(\(.*\),\(.*\))/for ( var \1 in \2 ) {/g
-s/M_LISTLEN(\(.*\))/\1.length/g
+s/M_LISTLEN(\([-a-zA-Z0-9_]*\))/\1.length/g
 s/M_CPPONLY(\(.*\))//g
-s/M_SIZE(\(.*\))/\1.length/g
-s/M_ELEMENT(\(.*\),\(.*\))/\1.codeUnitAt(\2)/g
+s/M_SIZE(\([-a-zA-Z0-9_]*\))/\1.length/g
+s/M_ELEMENT(\([-a-zA-Z0-9_]*\),\(.*\))/\1.codeUnitAt(\2)/g
