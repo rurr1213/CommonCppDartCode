@@ -12,6 +12,9 @@ s/virtual //g
 s/int64_t/int/g
 s/statList;/statList = [];/g
 s/inline//g
+s/nlohmann::json/Map<String, Dynamic>/g
+s/json::parse/jsonDecode/g
+s/void//g
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by
@@ -24,3 +27,5 @@ s/M_LISTLEN(\([-a-zA-Z0-9_]*\))/\1.length/g
 s/M_CPPONLY(\(.*\))//g
 s/M_SIZE(\([-a-zA-Z0-9_]*\))/\1.length/g
 s/M_ELEMENT(\([-a-zA-Z0-9_]*\),\(.*\))/\1.codeUnitAt(\2)/g
+s/M_JSONPAIR(\([-a-zA-Z0-9_]*\),\(.*\))/\1:\2,/g
+s/M_ENUM(\([-a-zA-Z0-9_]*\),\(.*\))/\1.\2,/g

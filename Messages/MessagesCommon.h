@@ -479,3 +479,37 @@ public:
         return _headerCrc ^ _dataCrc;
     }
 };
+
+// -----------------------------------------------------------------------------------------------------
+
+class ConnectionInfo {
+public:
+    std::string connectionName;
+    std::string systemName;
+    std::string appInstanceUUID;
+    std::string serverIpAddress;
+    enum ACCESS {
+        ANY,
+        PROTECTED,
+        SUPER
+    } access;
+    ConnectionInfo() {
+        access = M_ENUM(ACCESS, ANY);
+    }
+    json to_json() {
+        return {
+            M_JSONPAIR("connectionName", connectionName),
+            M_JSONPAIR("appInstanceUUID", appInstanceUUID),
+            M_JSONPAIR("systemName", systemName),
+            M_JSONPAIR("serverIpAddress", serverIpAddress),
+            M_JSONPAIR("access", access)
+        };
+    }
+    void from_json(json jsonData) {
+        connectionName = jsonData["connectionName"];
+        systemName = jsonData["systemName"];
+        appInstanceUUID = jsonData["appInstanceUUID"];
+        serverIpAddress = jsonData["serverIpAddress"];
+        access = jsonData["access"];
+    }
+};
