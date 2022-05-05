@@ -512,4 +512,7 @@ public:
         serverIpAddress = jsonData["serverIpAddress"];
         access = jsonData["access"];
     }
+    operator std::string()  { 
+        return connectionName; 
+    }
 };
