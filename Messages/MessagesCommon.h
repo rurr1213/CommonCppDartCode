@@ -514,7 +514,7 @@ public:
         serverIpAddress = jsonData["serverIpAddress"];
         access = jsonData["access"];
     }
-    bool find(std::string searchWord) {
+    bool hasWord(std::string searchWord) {
         bool stat = false;
         stat = M_FIND(connectionName,searchWord);
         if (stat) return stat;
@@ -522,6 +522,7 @@ public:
         if (stat) return stat;
         stat = M_FIND(appInstanceUUID,searchWord);
         return stat;
+    }
     operator std::string()  { 
         return connectionName; 
     }
