@@ -482,21 +482,21 @@ public:
 
 // -----------------------------------------------------------------------------------------------------
 
+enum CONNECTIONINFO_ACCESS {
+    ANY,
+    PROTECTED,
+    SUPER
+};
+
 class ConnectionInfo {
 public:
-    std::string connectionName;
-    std::string systemName;
-    std::string appInstanceUUID;
-    std::string serverIpAddress;
-    enum ACCESS {
-        ANY,
-        PROTECTED,
-        SUPER
-    } access;
-    ConnectionInfo() {
-        access = M_ENUM(ACCESS, ANY);
-    }
-    json to_json() {
+    std::string connectionName = "";
+    std::string systemName = "";
+    std::string appInstanceUUID = "";
+    std::string serverIpAddress = "";
+    CONNECTIONINFO_ACCESS access = M_ENUM(CONNECTIONINFO_ACCESS,ANY);
+    ConnectionInfo() {}
+    M_JSON to_json() {
         return {
             M_JSONPAIR("connectionName", connectionName),
             M_JSONPAIR("appInstanceUUID", appInstanceUUID),
@@ -505,7 +505,7 @@ public:
             M_JSONPAIR("access", access)
         };
     }
-    void from_json(json jsonData) {
+    void from_json(M_JSON jsonData) {
         connectionName = jsonData["connectionName"];
         systemName = jsonData["systemName"];
         appInstanceUUID = jsonData["appInstanceUUID"];
