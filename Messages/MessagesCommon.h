@@ -522,5 +522,7 @@ public:
         if (stat) return stat;
         stat = M_FIND(appInstanceUUID,searchWord);
         return stat;
+    operator std::string()  { 
+        return connectionName; 
     }
 };
