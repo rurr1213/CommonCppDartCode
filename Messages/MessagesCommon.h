@@ -26,6 +26,8 @@
     -------------------------------------------------------------------------------------------
 */
 
+inline const int HC_APPID_VORTEX = 1000;
+
 inline const int PROTOCOL_CODE = 1122;
 
 inline const int SUBSYS_SIG                = 10;  // route signalling system
@@ -490,10 +492,10 @@ enum CONNECTIONINFO_ACCESS {
 
 class ConnectionInfo {
 public:
-    std::string connectionName = "";
-    std::string systemName = "";
-    std::string appInstanceUUID = "";
-    std::string serverIpAddress = "";
+    std::string connectionName = "undefined";
+    std::string systemName = "unknown";
+    std::string appInstanceUUID = "noUUID";
+    std::string serverIpAddress = "noset";
     CONNECTIONINFO_ACCESS access = M_ENUM(CONNECTIONINFO_ACCESS,ANY);
     ConnectionInfo() {}
     M_JSON to_json() {
@@ -502,7 +504,7 @@ public:
             M_JSONPAIR("appInstanceUUID", appInstanceUUID),
             M_JSONPAIR("systemName", systemName),
             M_JSONPAIR("serverIpAddress", serverIpAddress),
-            M_JSONPAIR("access", access)
+            M_JSONPAIR("access", M_ENUMINDEX(access))
         };
     }
     void from_json(M_JSON jsonData) {
@@ -511,5 +513,14 @@ public:
         appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
         access = jsonData["access"];
+    }
+    bool find(std::string searchWord) {
+        bool stat = false;
+        stat = M_FIND(connectionName,searchWord);
+        if (stat) return stat;
+        stat = M_FIND(systemName,searchWord);
+        if (stat) return stat;
+        stat = M_FIND(appInstanceUUID,searchWord);
+        return stat;
     }
 };

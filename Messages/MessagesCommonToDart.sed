@@ -31,3 +31,5 @@ s/M_SIZE(\([-a-zA-Z0-9_]*\))/\1.length/g
 s/M_ELEMENT(\([-a-zA-Z0-9_]*\),\(.*\))/\1.codeUnitAt(\2)/g
 s/M_JSONPAIR(\(.*\),\(.*\))/\1:\2/g
 s/M_ENUM(\(.*\),\([-a-zA-Z0-9 ]*\))/\1.\2/g
+s/M_ENUMINDEX(\(.*\))/\1.index/g
+s/M_FIND(\(.*\),\(.*\))/\1.contains(\2)/g
