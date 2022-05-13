@@ -13,10 +13,12 @@ s/int64_t/int/g
 s/statList;/statList = [];/g
 s/inline//g
 s/M_JSON /Map<String, dynamic> /g
+s/M_JSONL /List<dynamic> /g
 s/json::parse/jsonDecode/g
 s/to_json/toJson/g
 s/from_json/fromJson/g
 s/void //g
+s/enum class /enum /g
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by
@@ -33,3 +35,6 @@ s/M_JSONPAIR(\(.*\),\(.*\))/\1:\2/g
 s/M_ENUM(\(.*\),\([-a-zA-Z0-9 ]*\))/\1.\2/g
 s/M_ENUMINDEX(\(.*\))/\1.index/g
 s/M_FIND(\(.*\),\(.*\))/\1.contains(\2)/g
+s/M_BYREF(\(.*\))/\1/g
+s/M_JSONPUSHBACK(\(.*\),\(.*\))/\1.add(\2)/g
+s/M_LISTPUSHBACK(\(.*\),\(.*\))/\1.add(\2)/g
