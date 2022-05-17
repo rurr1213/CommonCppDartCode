@@ -26,6 +26,8 @@
     -------------------------------------------------------------------------------------------
 */
 
+M_IMPORT_SERDES
+
 inline const int PROTOCOL_CODE = 1122;
 
 inline const int SUBSYS_SIG                = 10;  // route signalling system

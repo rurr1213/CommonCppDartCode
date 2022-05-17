@@ -22,6 +22,7 @@ enum class CONNECTIONINFO_ACCESS {
 };
 
 enum class HYPERCUBECOMMANDS {
+    NONE,
     LOCALPING,
     REMOTEPING,
     ECHODATA,
@@ -60,9 +61,9 @@ static const std::string COMMANDACK_UNSUBSCRIBE = COMMAND_UNSUBSCRIBE + "Ack";
 
 class CommonInfoBase {
     public:
-    CommonInfoBase() {};
-    virtual void from_json(M_JSON jsonData) {};
-    virtual M_JSON to_json() { return 0; };
+    CommonInfoBase() {}
+    virtual void from_json(M_JSONORDYNAMIC jsonData) { }
+    virtual M_JSONORDYNAMIC to_json() { return 0; }
 };
 
 class ConnectionInfo : public CommonInfoBase {
@@ -82,14 +83,14 @@ public:
             M_JSONPAIR("access", M_ENUMINDEX(access))
         };
     }
-    void from_json(M_JSON jsonData) {
+    void from_json(M_JSONORDYNAMIC jsonData) {
         connectionName = jsonData["connectionName"];
         systemName = jsonData["systemName"];
         appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
         access = jsonData["access"];
     }
-    void copy(M_BYREF(ConnectionInfo) other) {
+    void copy(M_BYREF(ConnectionInfo,other)) {
         connectionName = other.connectionName;
         systemName = other.systemName;
         appInstanceUUID = other.appInstanceUUID;
@@ -115,11 +116,11 @@ class ConnectionInfoAck : public ConnectionInfo
     public:
     std::string alternateHyperCubeIp = "alternateHyperCubeIp";
     M_JSON to_json() {
-        json jsonData = M_BASECLASS(ConnectionInfo, to_json());
+        M_JSON jsonData = M_BASECLASS(ConnectionInfo, to_json());
         jsonData["alternateHyperCubeIp"] = alternateHyperCubeIp;
         return jsonData;
     }
-    void copyConnectonInfo(M_BYREF(ConnectionInfo) other) {
+    void copyConnectonInfo(M_BYREF(ConnectionInfo,other)) {
         M_BASECLASS(ConnectionInfo, copy(other));
     }
 };
@@ -137,14 +138,14 @@ class GroupInfo : public CommonInfoBase {
         GROUPINFO_ACCESS access =  M_ENUM(GROUPINFO_ACCESS,ANY);
         int maxMembers = 0;
 
-        GroupInfo() {};
+        GroupInfo() {}
 
         M_JSON to_json() {
             return {
                 M_JSONPAIR("groupName", groupName)
             };
         }
-        void from_json(M_JSON jsonData) {
+        void from_json(M_JSONORDYNAMIC jsonData) {
             groupName = jsonData["groupName"];
         }
 
@@ -161,14 +162,14 @@ class SubscriberInfo : public CommonInfoBase {
         std::string groupName = "none";
         GROUPINFO_ACCESS access =  M_ENUM(GROUPINFO_ACCESS,ANY);
 
-        SubscriberInfo() {};
+        SubscriberInfo() {}
 
         M_JSON to_json() {
             return {
                 M_JSONPAIR("groupName", groupName)
             };
         }
-        void from_json(M_JSON jsonData) {
+        void from_json(M_JSONORDYNAMIC jsonData) {
             groupName = jsonData["groupName"];
         }
 
@@ -186,7 +187,7 @@ class GetGroupsInfo : public CommonInfoBase {
         int startingIndex = 0;
         int maxItems = 0;
 
-        GetGroupsInfo() {};
+        GetGroupsInfo() {}
 
         M_JSON to_json() {
             return {
@@ -195,7 +196,7 @@ class GetGroupsInfo : public CommonInfoBase {
                 M_JSONPAIR("maxItems", maxItems)
             };
         }
-        void from_json(M_JSON jsonData) {
+        void from_json(M_JSONORDYNAMIC jsonData) {
             searchWord = jsonData["searchWord"];
             startingIndex = jsonData["startingIndex"];
             maxItems = jsonData["maxItems"];
@@ -204,24 +205,24 @@ class GetGroupsInfo : public CommonInfoBase {
 
 class GroupsInfoList : public CommonInfoBase {
     public:
-        List<GroupInfo> list;
+        M_DECLARELIST(List<GroupInfo>,list);
 
-        GroupsInfoList() {};
+        GroupsInfoList() {}
 
         M_JSONL to_json() {
-            M_JSONL jgroupInfoList;
+            M_DECLAREJSONLIST(jgroupInfoList);
             M_LISTFORLOOPSTART(item,list)
-				GroupInfo groupInfo = item;
-				M_JSON jgroupInfo = groupInfo.to_json();
-				M_JSONPUSHBACK(jgroupInfoList,jgroupInfo);
-			}            
+                GroupInfo groupInfo = item;
+                M_JSON jgroupInfo = groupInfo.to_json();
+                M_JSONPUSHBACK(jgroupInfoList,jgroupInfo);
+            }            
             return jgroupInfoList;
         }
-        void from_json(M_JSON jsonData) {
+        void from_json(M_JSONORDYNAMIC jsonData) {
             M_LISTFORLOOPSTART(item,jsonData)
-				GroupInfo groupInfo;
+                M_DECLAREVARIABLE(GroupInfo,groupInfo);
                 groupInfo.from_json(item);
-                M_LISTPUSHBACK(groupInfo, list);
+                M_LISTPUSHBACK(list, groupInfo);
             }
         }
 };
@@ -232,7 +233,7 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
         int maskIp = 0;
         std::string alternateHyperCubeIp = "";
 
-        AlternateHyperCubeInfo() {};
+        AlternateHyperCubeInfo() {}
 
         M_JSON to_json() {
             return {
@@ -241,7 +242,7 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
                 M_JSONPAIR("alternateHyperCubeIp", alternateHyperCubeIp)
             };
         }
-        void from_json(M_JSON jsonData) {
+        void from_json(M_JSONORDYNAMIC jsonData) {
             targetIp = jsonData["targetIp"];
             maskIp = jsonData["ipMask"];
             alternateHyperCubeIp = jsonData["alternateHyperCubeIp"];
@@ -253,9 +254,9 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
 
 class HyperCubeCommand {
 public:
-    HYPERCUBECOMMANDS command;
-    M_JSON jsonData;
-    bool status;
+    HYPERCUBECOMMANDS command = M_ENUM(HYPERCUBECOMMANDS,NONE);
+    M_JSON jsonData = M_JSONNULL;
+    bool status = true;
     void from_json(M_JSON _jsonData) {
         command = _jsonData["command"];
         jsonData = _jsonData["data"];
@@ -268,7 +269,7 @@ public:
             M_JSONPAIR("status", status)
         };
     }
-    void init(HYPERCUBECOMMANDS _command, M_BYREF(CommonInfoBase) commonInfoBase, bool _status) {
+    void init(HYPERCUBECOMMANDS _command, M_BYREF(CommonInfoBase,commonInfoBase), bool _status) {
         command = _command;
         jsonData = commonInfoBase.to_json();
         status = _status;
