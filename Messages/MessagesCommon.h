@@ -26,7 +26,7 @@
     -------------------------------------------------------------------------------------------
 */
 
-M_IMPORT_SERDES
+#include M_SERDES
 
 inline const int PROTOCOL_CODE = 1122;
 

@@ -23,7 +23,9 @@ s/void //g
 s/enum class /enum /g
 s/ {}/;/g
 s/NULL/null/g
-s/M_IMPORT_SERDES/import \'..\/..\/SerDes.dart\';/g
+s/SERDES/\'..\/..\/SerDes.dart\';/g
+s/#include/import/g
+
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by
