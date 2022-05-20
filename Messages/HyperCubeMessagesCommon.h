@@ -254,6 +254,7 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
 // -----------------------------------------------------------------------------------------------------------------
 
 class HyperCubeCommand {
+    M_JSON _jsonData = M_JSONNULL;
 public:
     HYPERCUBECOMMANDS command = M_ENUM(HYPERCUBECOMMANDS,NONE);
     M_JSONORDYNAMIC jsonData;
