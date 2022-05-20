@@ -42,7 +42,8 @@ enum HYPERCUBECOMMANDS {
     GETGROUPS,
     GETGROUPSACK,
     ALTERNATEHYPERCUBEIP,
-    ALTERNATEHYPERCUBEIPACK
+    ALTERNATEHYPERCUBEIPACK,
+    CLOSEDFORDATA
 }
 
 /*
@@ -88,7 +89,7 @@ class ConnectionInfo extends CommonInfoBase {
         systemName = jsonData["systemName"];
         appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
-        access = jsonData["access"];
+        access = CONNECTIONINFO_ACCESS.values[jsonData["access"]];
     }
     copy(ConnectionInfo other) {
         connectionName = other.connectionName;
@@ -255,23 +256,42 @@ class AlternateHyperCubeInfo extends CommonInfoBase {
 class HyperCubeCommand {
 
     HYPERCUBECOMMANDS command = HYPERCUBECOMMANDS.NONE;
-    Map<String, dynamic> jsonData = Map<String, dynamic>();
+    dynamic jsonData;
     bool status = true;
+    bool ack = false;
+    HyperCubeCommand(HYPERCUBECOMMANDS _command, dynamic _jsonData, bool _status) 
+    {
+        command = _command;
+        jsonData = _jsonData;
+        status = _status;
+        ack = false;
+    }
     fromJson(Map<String, dynamic> _jsonData) {
-        command = _jsonData["command"];
-        jsonData = _jsonData["data"];
+        command = HYPERCUBECOMMANDS.values[jsonData["command"]];
+        if (_jsonData["data"] != null) {
+            jsonData = _jsonData["data"];
+        }
         status = _jsonData["status"];
+        ack = _jsonData["ack"];
     }
     Map<String, dynamic> toJson() {
         return {
-            "command": command,
+            "command": command.index,
             "data": jsonData,
-            "status": status
+            "status": status,
+            "ack": ack
         };
     }
     init(HYPERCUBECOMMANDS _command, CommonInfoBase commonInfoBase, bool _status) {
         command = _command;
         jsonData = commonInfoBase.toJson();
         status = _status;
+        ack = false;
+    }
+    copy(HyperCubeCommand other) {
+        command = other.command;
+        jsonData = other.jsonData;
+        status = other.status;
+        ack = other.ack;
     }
 }

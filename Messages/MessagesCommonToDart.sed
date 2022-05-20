@@ -23,7 +23,7 @@ s/void //g
 s/enum class /enum /g
 s/ {}/;/g
 s/NULL/null/g
-s/SERDES/\'..\/..\/SerDes.dart\';/g
+s/M_SERDES/\'..\/..\/SerDes.dart\';/g
 s/#include/import/g
 
 #
@@ -47,3 +47,4 @@ s/M_FIND(\(.*\),\(.*\))/\1.contains(\2)/g
 s/M_BYREF(\([-a-zA-Z0-9_]*\),\([-a-zA-Z0-9_]*\))/\1 \2/g
 s/M_JSONPUSHBACK(\(.*\),\(.*\))/\1.add(\2)/g
 s/M_LISTPUSHBACK(\(.*\),\(.*\))/\1.add(\2)/g
+s/M_INTTODARTENUM(\(.*\),\(.*\))/\1.values[\2]/g

@@ -42,7 +42,8 @@ enum class HYPERCUBECOMMANDS {
     GETGROUPS,
     GETGROUPSACK,
     ALTERNATEHYPERCUBEIP,
-    ALTERNATEHYPERCUBEIPACK
+    ALTERNATEHYPERCUBEIPACK,
+    CLOSEDFORDATA
 };
 
 /*
@@ -88,7 +89,7 @@ public:
         systemName = jsonData["systemName"];
         appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
-        access = jsonData["access"];
+        access = M_INTTODARTENUM(CONNECTIONINFO_ACCESS,jsonData["access"]);
     }
     void copy(M_BYREF(ConnectionInfo,other)) {
         connectionName = other.connectionName;
@@ -255,23 +256,42 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
 class HyperCubeCommand {
 public:
     HYPERCUBECOMMANDS command = M_ENUM(HYPERCUBECOMMANDS,NONE);
-    M_JSON jsonData = M_JSONNULL;
+    M_JSONORDYNAMIC jsonData;
     bool status = true;
+    bool ack = false;
+    HyperCubeCommand(HYPERCUBECOMMANDS _command, M_JSONORDYNAMIC _jsonData, bool _status) 
+    {
+        command = _command;
+        jsonData = _jsonData;
+        status = _status;
+        ack = false;
+    }
     void from_json(M_JSON _jsonData) {
-        command = _jsonData["command"];
-        jsonData = _jsonData["data"];
+        command = M_INTTODARTENUM(HYPERCUBECOMMANDS,jsonData["command"]);
+        if (_jsonData["data"] != NULL) {
+            jsonData = _jsonData["data"];
+        }
         status = _jsonData["status"];
+        ack = _jsonData["ack"];
     }
     M_JSON to_json() {
         return {
-            M_JSONPAIR("command", command),
+            M_JSONPAIR("command", M_ENUMINDEX(command)),
             M_JSONPAIR("data", jsonData),
-            M_JSONPAIR("status", status)
+            M_JSONPAIR("status", status),
+            M_JSONPAIR("ack", ack)
         };
     }
     void init(HYPERCUBECOMMANDS _command, M_BYREF(CommonInfoBase,commonInfoBase), bool _status) {
         command = _command;
         jsonData = commonInfoBase.to_json();
         status = _status;
+        ack = false;
+    }
+    void copy(HyperCubeCommand other) {
+        command = other.command;
+        jsonData = other.jsonData;
+        status = other.status;
+        ack = other.ack;
     }
 };
