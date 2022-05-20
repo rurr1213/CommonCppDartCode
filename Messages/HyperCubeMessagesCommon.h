@@ -253,25 +253,28 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
 // -----------------------------------------------------------------------------------------------------------------
 
 class HyperCubeCommand {
+    M_JSON _jsonData = M_JSONNULL;
 public:
     HYPERCUBECOMMANDS command = M_ENUM(HYPERCUBECOMMANDS,NONE);
-    M_JSON jsonData = M_JSONNULL;
     bool status = true;
-    void from_json(M_JSON _jsonData) {
-        command = _jsonData["command"];
-        jsonData = _jsonData["data"];
-        status = _jsonData["status"];
+    void init(HYPERCUBECOMMANDS _command, M_BYREF(CommonInfoBase,commonInfoBase), bool _status) {
+        command = _command;
+        _jsonData = commonInfoBase.to_json();
+        status = _status;
+    }
+    void from_json(M_JSON __jsonData) {
+        command = __jsonData["command"];
+        _jsonData = __jsonData["data"];
+        status = __jsonData["status"];
     }
     M_JSON to_json() {
         return {
             M_JSONPAIR("command", command),
-            M_JSONPAIR("data", jsonData),
+            M_JSONPAIR("data", _jsonData),
             M_JSONPAIR("status", status)
         };
     }
-    void init(HYPERCUBECOMMANDS _command, M_BYREF(CommonInfoBase,commonInfoBase), bool _status) {
-        command = _command;
-        jsonData = commonInfoBase.to_json();
-        status = _status;
+    M_JSON getJsonData() {
+        return _jsonData;
     }
 };
