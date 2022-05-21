@@ -268,7 +268,7 @@ public:
         ack = false;
     }
     void from_json(M_JSON _jsonData) {
-        command = M_INTTODARTENUM(HYPERCUBECOMMANDS,jsonData["command"]);
+        command = M_INTTODARTENUM(HYPERCUBECOMMANDS,_jsonData["command"]);
         if (_jsonData["data"] != NULL) {
             jsonData = _jsonData["data"];
         }

@@ -254,6 +254,7 @@ class AlternateHyperCubeInfo extends CommonInfoBase {
 // -----------------------------------------------------------------------------------------------------------------
 
 class HyperCubeCommand {
+    Map<String, dynamic> _jsonData = Map<String, dynamic>();
 
     HYPERCUBECOMMANDS command = HYPERCUBECOMMANDS.NONE;
     dynamic jsonData;
@@ -267,7 +268,7 @@ class HyperCubeCommand {
         ack = false;
     }
     fromJson(Map<String, dynamic> _jsonData) {
-        command = HYPERCUBECOMMANDS.values[jsonData["command"]];
+        command = HYPERCUBECOMMANDS.values[_jsonData["command"]];
         if (_jsonData["data"] != null) {
             jsonData = _jsonData["data"];
         }
