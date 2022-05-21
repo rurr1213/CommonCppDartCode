@@ -267,13 +267,14 @@ class HyperCubeCommand {
         status = _status;
         ack = false;
     }
-    fromJson(Map<String, dynamic> _jsonData) {
-        command = HYPERCUBECOMMANDS.values[_jsonData["command"]];
-        if (_jsonData["data"] != null) {
-            jsonData = _jsonData["data"];
+    fromJson(Map<String, dynamic> __jsonData) {
+        int _command = __jsonData["command"];
+        command = HYPERCUBECOMMANDS.values[_command];
+        if (__jsonData["data"] != null) {
+            jsonData = __jsonData["data"];
         }
-        status = _jsonData["status"];
-        ack = _jsonData["ack"];
+        status = __jsonData["status"];
+        ack = __jsonData["ack"];
     }
     Map<String, dynamic> toJson() {
         return {
