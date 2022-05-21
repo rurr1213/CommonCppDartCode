@@ -295,4 +295,7 @@ public:
         status = other.status;
         ack = other.ack;
     }
+    M_JSONORDYNAMIC getJsonData() {
+        return jsonData;
+    }
 };
