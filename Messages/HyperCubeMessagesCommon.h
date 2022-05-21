@@ -267,13 +267,14 @@ public:
         status = _status;
         ack = false;
     }
-    void from_json(M_JSON _jsonData) {
-        command = M_INTTODARTENUM(HYPERCUBECOMMANDS,_jsonData["command"]);
-        if (_jsonData["data"] != NULL) {
-            jsonData = _jsonData["data"];
+    void from_json(M_JSON __jsonData) {
+        int _command = __jsonData["command"];
+        command = M_INTTODARTENUM(HYPERCUBECOMMANDS,_command);
+        if (__jsonData["data"] != NULL) {
+            jsonData = __jsonData["data"];
         }
-        status = _jsonData["status"];
-        ack = _jsonData["ack"];
+        status = __jsonData["status"];
+        ack = __jsonData["ack"];
     }
     M_JSON to_json() {
         return {
