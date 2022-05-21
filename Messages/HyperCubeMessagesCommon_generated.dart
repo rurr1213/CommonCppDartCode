@@ -295,4 +295,7 @@ class HyperCubeCommand {
         status = other.status;
         ack = other.ack;
     }
+    dynamic getJsonData() {
+        return jsonData;
+    }
 }
