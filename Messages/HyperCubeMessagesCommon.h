@@ -41,6 +41,7 @@ enum class HYPERCUBECOMMANDS {
     UNSUBSCRIBER,
     GETGROUPS,
     GETGROUPSACK,
+    PUBLISHINFO,
     ALTERNATEHYPERCUBEIP,
     ALTERNATEHYPERCUBEIPACK,
     CLOSEDFORDATA
@@ -65,6 +66,20 @@ class CommonInfoBase {
     CommonInfoBase() {}
     virtual void from_json(M_JSONORDYNAMIC jsonData) { }
     virtual M_JSONORDYNAMIC to_json() { return 0; }
+};
+
+class StringInfo : public CommonInfoBase {
+public:
+    std::string data = "";
+    StringInfo() {}
+    M_JSON to_json() {
+        return {
+            M_JSONPAIR("data", data)
+        };
+    }
+    void from_json(M_JSONORDYNAMIC jsonData) {
+        data = jsonData["data"];
+    }
 };
 
 class ConnectionInfo : public CommonInfoBase {
@@ -180,6 +195,25 @@ class SubscriberInfo : public CommonInfoBase {
         }
 
         std::string toString() { return groupName; }
+};
+
+class PublishInfo : public CommonInfoBase {
+public:
+    std::string groupName = "";
+    std::string publishData = "";
+
+    PublishInfo() {}
+
+    M_JSON to_json() {
+        return {
+            M_JSONPAIR("groupName", groupName),
+            M_JSONPAIR("publishData", publishData)
+        };
+    }
+    void from_json(M_JSONORDYNAMIC jsonData) {
+        groupName = jsonData["groupName"];
+        publishData = jsonData["publishData "];
+    }
 };
 
 class GetGroupsInfo : public CommonInfoBase {
