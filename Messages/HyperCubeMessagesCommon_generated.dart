@@ -41,6 +41,7 @@ enum HYPERCUBECOMMANDS {
     UNSUBSCRIBER,
     GETGROUPS,
     GETGROUPSACK,
+    PUBLISHINFO,
     ALTERNATEHYPERCUBEIP,
     ALTERNATEHYPERCUBEIPACK,
     CLOSEDFORDATA
@@ -65,6 +66,20 @@ class CommonInfoBase {
     CommonInfoBase();
     fromJson(dynamic jsonData) { }
     dynamic toJson() { return 0; }
+}
+
+class StringInfo extends CommonInfoBase {
+
+    String data = "";
+    StringInfo();
+    Map<String, dynamic> toJson() {
+        return {
+            "data": data
+        };
+    }
+    fromJson(dynamic jsonData) {
+        data = jsonData["data"];
+    }
 }
 
 class ConnectionInfo extends CommonInfoBase {
@@ -180,6 +195,25 @@ class SubscriberInfo extends CommonInfoBase {
         }
 
         String toString() { return groupName; }
+}
+
+class PublishInfo extends CommonInfoBase {
+
+    String groupName = "";
+    String publishData = "";
+
+    PublishInfo();
+
+    Map<String, dynamic> toJson() {
+        return {
+            "groupName": groupName,
+            "publishData": publishData
+        };
+    }
+    fromJson(dynamic jsonData) {
+        groupName = jsonData["groupName"];
+        publishData = jsonData["publishData "];
+    }
 }
 
 class GetGroupsInfo extends CommonInfoBase {
