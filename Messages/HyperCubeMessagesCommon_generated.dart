@@ -87,7 +87,8 @@ class ConnectionInfo extends CommonInfoBase {
     String connectionName = "undefined";
     String systemName = "unknown";
     String appInstanceUUID = "noUUID";
-    String serverIpAddress = "noset";
+    String serverIpAddress = "notset";
+    String userName = "notset";
     CONNECTIONINFO_ACCESS access = CONNECTIONINFO_ACCESS.ANY;
     ConnectionInfo();
     Map<String, dynamic> toJson() {
@@ -96,6 +97,7 @@ class ConnectionInfo extends CommonInfoBase {
             "appInstanceUUID": appInstanceUUID,
             "systemName": systemName,
             "serverIpAddress": serverIpAddress,
+            "userName": userName,
             "access": access.index
         };
     }
@@ -104,6 +106,7 @@ class ConnectionInfo extends CommonInfoBase {
         systemName = jsonData["systemName"];
         appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
+        userName = jsonData["userName"];
         access = CONNECTIONINFO_ACCESS.values[jsonData["access"]];
     }
     copy(ConnectionInfo other) {
@@ -111,6 +114,7 @@ class ConnectionInfo extends CommonInfoBase {
         systemName = other.systemName;
         appInstanceUUID = other.appInstanceUUID;
         serverIpAddress = other.serverIpAddress;
+        userName = other.userName;
         access = other.access;
     }
     bool hasWord(String searchWord) {
@@ -120,6 +124,8 @@ class ConnectionInfo extends CommonInfoBase {
         stat = systemName.contains(searchWord);
         if (stat) return stat;
         stat = appInstanceUUID.contains(searchWord);
+        if (stat) return stat;
+        stat = userName.contains( searchWord);
         return stat;
     }
     String toString() {
@@ -153,20 +159,24 @@ class GroupInfo extends CommonInfoBase {
         String groupName = "none";
         GROUPINFO_ACCESS access =  GROUPINFO_ACCESS.ANY;
         int maxMembers = 0;
+        var creatorConnectionInfo = ConnectionInfo();
 
         GroupInfo();
 
         Map<String, dynamic> toJson() {
             return {
-                "groupName": groupName
+                "groupName": groupName,
+                "creator": creatorConnectionInfo.toJson()
             };
         }
         fromJson(dynamic jsonData) {
             groupName = jsonData["groupName"];
+            creatorConnectionInfo.fromJson(jsonData["creator"]);
         }
 
         bool hasWord(String searchWord) {
             bool stat = groupName.contains(searchWord);
+            if (!stat) stat = creatorConnectionInfo.hasWord(searchWord);
             return stat;
         }
 

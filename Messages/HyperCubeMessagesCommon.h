@@ -159,7 +159,7 @@ class GroupInfo : public CommonInfoBase {
         std::string groupName = "none";
         GROUPINFO_ACCESS access =  M_ENUM(GROUPINFO_ACCESS,ANY);
         int maxMembers = 0;
-        ConnectionInfo creatorConnectionInfo;
+        M_DECLAREVARIABLE(ConnectionInfo,creatorConnectionInfo);
 
         GroupInfo() {}
 
