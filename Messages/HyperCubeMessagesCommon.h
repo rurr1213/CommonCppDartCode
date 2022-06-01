@@ -87,7 +87,8 @@ public:
     std::string connectionName = "undefined";
     std::string systemName = "unknown";
     std::string appInstanceUUID = "noUUID";
-    std::string serverIpAddress = "noset";
+    std::string serverIpAddress = "notset";
+    std::string userName = "notset";
     CONNECTIONINFO_ACCESS access = M_ENUM(CONNECTIONINFO_ACCESS,ANY);
     ConnectionInfo() {}
     M_JSON to_json() {
@@ -96,6 +97,7 @@ public:
             M_JSONPAIR("appInstanceUUID", appInstanceUUID),
             M_JSONPAIR("systemName", systemName),
             M_JSONPAIR("serverIpAddress", serverIpAddress),
+            M_JSONPAIR("userName", userName),
             M_JSONPAIR("access", M_ENUMINDEX(access))
         };
     }
@@ -104,6 +106,7 @@ public:
         systemName = jsonData["systemName"];
         appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
+        userName = jsonData["userName"];
         access = M_INTTODARTENUM(CONNECTIONINFO_ACCESS,jsonData["access"]);
     }
     void copy(M_BYREF(ConnectionInfo,other)) {
@@ -111,6 +114,7 @@ public:
         systemName = other.systemName;
         appInstanceUUID = other.appInstanceUUID;
         serverIpAddress = other.serverIpAddress;
+        userName = other.userName;
         access = other.access;
     }
     bool hasWord(std::string searchWord) {
@@ -120,6 +124,8 @@ public:
         stat = M_FIND(systemName,searchWord);
         if (stat) return stat;
         stat = M_FIND(appInstanceUUID,searchWord);
+        if (stat) return stat;
+        stat = M_FIND(userName, searchWord);
         return stat;
     }
     std::string toString() {
@@ -153,20 +159,24 @@ class GroupInfo : public CommonInfoBase {
         std::string groupName = "none";
         GROUPINFO_ACCESS access =  M_ENUM(GROUPINFO_ACCESS,ANY);
         int maxMembers = 0;
+        ConnectionInfo creatorConnectionInfo;
 
         GroupInfo() {}
 
         M_JSON to_json() {
             return {
-                M_JSONPAIR("groupName", groupName)
+                M_JSONPAIR("groupName", groupName),
+                M_JSONPAIR("creator", creatorConnectionInfo.to_json())
             };
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
             groupName = jsonData["groupName"];
+            creatorConnectionInfo.from_json(jsonData["creator"]);
         }
 
         bool hasWord(std::string searchWord) {
             bool stat = M_FIND(groupName,searchWord);
+            if (!stat) stat = creatorConnectionInfo.hasWord(searchWord);
             return stat;
         }
 
