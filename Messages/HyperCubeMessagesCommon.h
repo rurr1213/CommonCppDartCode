@@ -47,20 +47,6 @@ enum class HYPERCUBECOMMANDS {
     CLOSEDFORDATA
 };
 
-/*
-static const std::string COMMAND_CONNECTIONINFO = "connectionInfo";
-static const std::string COMMANDACK_CONNECTIONINFO = COMMAND_CONNECTIONINFO + "Ack";
-static const std::string COMMAND_CREATEGROUP = "createGroup";
-static const std::string COMMANDACK_CREATEGROUP = COMMANDACK_CREATEGROUP + "Ack";
-static const std::string COMMAND_DESTROYGROUP = "destroyGroup";
-static const std::string COMMANDACK_DESTROYGROUP = COMMAND_DESTROYGROUP + "Ack";
-static const std::string COMMAND_DESTROYINGGROUP = "destroyingGroup";
-static const std::string COMMAND_SUBSCRIBE = "subscribe";
-static const std::string COMMANDACK_SUBSCRIBE = COMMAND_SUBSCRIBE + "Ack";
-static const std::string COMMAND_UNSUBSCRIBE = "unsubscribe";
-static const std::string COMMANDACK_UNSUBSCRIBE = COMMAND_UNSUBSCRIBE + "Ack";
-*/
-
 class CommonInfoBase {
     public:
     CommonInfoBase() {}
