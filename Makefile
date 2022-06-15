@@ -1,6 +1,9 @@
 
-all: 
+SUBDIRS := $(wildcard */.)
+SUBDIRSCLEAN=$(addsuffix clean,$(SUBDIRS))
+
+all: $(SUBDIRS)
 
 
-clean: 
+clean: $(SUBDIRSCLEAN)
 
