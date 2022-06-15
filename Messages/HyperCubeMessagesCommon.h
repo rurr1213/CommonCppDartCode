@@ -71,47 +71,63 @@ public:
 class ConnectionInfo : public CommonInfoBase {
 public:
     std::string connectionName = "undefined";
+    std::string appUUID = "noUUID";
+    std::string appInstallUUID = "noUUID";
     std::string systemName = "unknown";
-    std::string appInstanceUUID = "noUUID";
     std::string serverIpAddress = "notset";
     std::string userName = "notset";
+    std::string userUUID = "noUUID";
+    std::string displayName = "notSet";
     CONNECTIONINFO_ACCESS access = M_ENUM(CONNECTIONINFO_ACCESS,ANY);
     ConnectionInfo() {}
     M_JSON to_json() {
         return {
             M_JSONPAIR("connectionName", connectionName),
-            M_JSONPAIR("appInstanceUUID", appInstanceUUID),
+            M_JSONPAIR("appUUID", appUUID),
+            M_JSONPAIR("appInstallUUID", appInstallUUID),
             M_JSONPAIR("systemName", systemName),
             M_JSONPAIR("serverIpAddress", serverIpAddress),
             M_JSONPAIR("userName", userName),
+            M_JSONPAIR("userUUID", userUUID),
+            M_JSONPAIR("displayName", displayName),
             M_JSONPAIR("access", M_ENUMINDEX(access))
         };
     }
     void from_json(M_JSONORDYNAMIC jsonData) {
         connectionName = jsonData["connectionName"];
+        appUUID = jsonData["appUUID"];
+        appInstallUUID = jsonData["appInstallUUID"];
         systemName = jsonData["systemName"];
-        appInstanceUUID = jsonData["appInstanceUUID"];
         serverIpAddress = jsonData["serverIpAddress"];
         userName = jsonData["userName"];
+        userUUID = jsonData["userUUID"];
+        displayName = jsonData["displayName"];
         access = M_INTTODARTENUM(CONNECTIONINFO_ACCESS,jsonData["access"]);
     }
     void copy(M_BYREF(ConnectionInfo,other)) {
         connectionName = other.connectionName;
+        appUUID = other.appUUID;
+        appInstallUUID = other.appInstallUUID;
         systemName = other.systemName;
-        appInstanceUUID = other.appInstanceUUID;
         serverIpAddress = other.serverIpAddress;
         userName = other.userName;
+        userUUID = other.userUUID;
+        displayName = other.displayName;
         access = other.access;
     }
     bool hasWord(std::string searchWord) {
         bool stat = false;
         stat = M_FIND(connectionName,searchWord);
         if (stat) return stat;
+        stat = M_FIND(appInstallUUID,searchWord);
+        if (stat) return stat;
         stat = M_FIND(systemName,searchWord);
         if (stat) return stat;
-        stat = M_FIND(appInstanceUUID,searchWord);
-        if (stat) return stat;
         stat = M_FIND(userName, searchWord);
+        if (stat) return stat;
+        stat = M_FIND(userUUID, searchWord);
+        if (stat) return stat;
+        stat = M_FIND(displayName, searchWord);
         return stat;
     }
     std::string toString() {
