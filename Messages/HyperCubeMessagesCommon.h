@@ -65,7 +65,7 @@ class CommonInfoBase {
             M_JSONPAIR("commonInfoVersion", version)
         }; 
     }
-    virtual void copy(M_BYREF(HyperCubeInfo,other)) {
+    virtual void copy(M_BYREF(CommonInfoBase,other)) {
         version = other.version;
     }
 };
