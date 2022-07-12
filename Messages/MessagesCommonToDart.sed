@@ -13,6 +13,7 @@ s/statList;/statList = [];/g
 s/inline//g
 s/M_JSONNULL/Map<String, dynamic>()/g
 s/M_JSON /Map<String, dynamic> /g
+s/M_JSONREF/Map<String, dynamic>/g
 s/M_JSONL /List<dynamic> /g
 s/M_JSONLNULL/List<dynamic>()/g
 s/M_JSONORDYNAMIC/dynamic/g

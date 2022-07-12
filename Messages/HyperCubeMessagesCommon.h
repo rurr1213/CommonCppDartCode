@@ -57,15 +57,18 @@ class CommonInfoBase {
     public:
     int version = 100;
     CommonInfoBase() {}
-    virtual void from_json(M_JSONORDYNAMIC jsonData) {
+    virtual void from_json(M_JSON jsonData) {
         version = jsonData["commonInfoVersion"];
     }
-    virtual M_JSONORDYNAMIC to_json() { 
+    virtual M_JSON to_json() { 
         return {
             M_JSONPAIR("commonInfoVersion", version)
         }; 
     }
-    virtual void copy(M_BYREF(CommonInfoBase,other)) {
+    virtual void updateJson(M_JSONREF jsonData) { 
+        jsonData["commonInfoVersion"] = version;
+    }
+    virtual void copyBase(M_BYREF(CommonInfoBase,other)) {
         version = other.version;
     }
 };
@@ -75,13 +78,14 @@ public:
     std::string data = "";
     StringInfo() {}
     M_JSON to_json() {
-        return {
-            M_BASECLASS(CommonInfoBase, to_json()),
+        M_JSON jdata = {
             M_JSONPAIR("data", data)
         };
+        M_BASECLASS(CommonInfoBase, updateJson(jdata));
+        return jdata;
     }
     void from_json(M_JSONORDYNAMIC jsonData) {
-        M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+        M_BASECLASS(CommonInfoBase, from_json(jsonData));
         data = jsonData["data"];
     }
 };
@@ -96,18 +100,19 @@ public:
     int serverType = 1;
     HyperCubeInfo() {}
     M_JSON to_json() {
-        return {
-            M_BASECLASS(CommonInfoBase, to_json()),
+        M_JSON jdata = {
             M_JSONPAIR("systemName", systemName),
             M_JSONPAIR("serverName", serverName),
             M_JSONPAIR("appUUID", appUUID),
             M_JSONPAIR("appInstallUUID", appInstallUUID),
             M_JSONPAIR("serverIpAddress", serverIpAddress),
-            M_JSONPAIR("serverType", M_ENUMINDEX(serverType))
+            M_JSONPAIR("serverType", serverType)
         };
+        M_BASECLASS(CommonInfoBase, updateJson(jdata));
+        return jdata;
     }
     void from_json(M_JSONORDYNAMIC jsonData) {
-        M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+        M_BASECLASS(CommonInfoBase, from_json(jsonData));
         systemName = jsonData["systemName"];
         serverName = jsonData["serverName"];
         appUUID = jsonData["appUUID"];
@@ -116,7 +121,7 @@ public:
         serverType = jsonData["serverType"];
     }
     void copy(M_BYREF(HyperCubeInfo,other)) {
-        M_BASECLASS(CommonInfoBase, copy(other)),
+        M_BASECLASS(CommonInfoBase, copyBase(other));
         serverName = other.serverName;
         appUUID = other.appUUID;
         appInstallUUID = other.appInstallUUID;
@@ -142,8 +147,7 @@ public:
     CONNECTIONINFO_ACCESS access = M_ENUM(CONNECTIONINFO_ACCESS,ANY);
     ConnectionInfo() {}
     M_JSON to_json() {
-        return {
-            M_BASECLASS(CommonInfoBase, to_json()),
+        M_JSON jdata = {
             M_JSONPAIR("connectionName", connectionName),
             M_JSONPAIR("appUUID", appUUID),
             M_JSONPAIR("appInstallUUID", appInstallUUID),
@@ -154,9 +158,11 @@ public:
             M_JSONPAIR("displayName", displayName),
             M_JSONPAIR("access", M_ENUMINDEX(access))
         };
+        M_BASECLASS(CommonInfoBase, updateJson(jdata));
+        return jdata;
     }
     void from_json(M_JSONORDYNAMIC jsonData) {
-        M_BASECLASS(CommonInfoBase, from_json(jsonData)),        
+        M_BASECLASS(CommonInfoBase, from_json(jsonData));        
         connectionName = jsonData["connectionName"];
         appUUID = jsonData["appUUID"];
         appInstallUUID = jsonData["appInstallUUID"];
@@ -168,7 +174,7 @@ public:
         access = M_INTTODARTENUM(CONNECTIONINFO_ACCESS,jsonData["access"]);
     }
     void copy(M_BYREF(ConnectionInfo,other)) {
-        M_BASECLASS(CommonInfoBase, copy(other));
+        M_BASECLASS(CommonInfoBase, copyBase(other));
         connectionName = other.connectionName;
         appUUID = other.appUUID;
         appInstallUUID = other.appInstallUUID;
@@ -204,9 +210,9 @@ class ConnectionInfoAck : public ConnectionInfo
     public:
     std::string alternateHyperCubeIp = "alternateHyperCubeIp";
     M_JSON to_json() {
-        M_JSON jsonData = M_BASECLASS(ConnectionInfo, to_json());
-        jsonData["alternateHyperCubeIp"] = alternateHyperCubeIp;
-        return jsonData;
+        M_JSON jdata = M_BASECLASS(ConnectionInfo, to_json());
+        jdata["alternateHyperCubeIp"] = alternateHyperCubeIp;
+        return jdata;
     }
     void copyConnectonInfo(M_BYREF(ConnectionInfo,other)) {
         M_BASECLASS(ConnectionInfo, copy(other));
@@ -230,14 +236,15 @@ class GroupInfo : public CommonInfoBase {
         GroupInfo() {}
 
         M_JSON to_json() {
-            return {
-                M_BASECLASS(CommonInfoBase, to_json()),
+            M_JSON jdata = {
                 M_JSONPAIR("groupName", groupName),
                 M_JSONPAIR("creator", creatorConnectionInfo.to_json())
             };
+            M_BASECLASS(CommonInfoBase, updateJson(jdata));
+            return jdata;
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
-            M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+            M_BASECLASS(CommonInfoBase, from_json(jsonData));
             groupName = jsonData["groupName"];
             creatorConnectionInfo.from_json(jsonData["creator"]);
         }
@@ -259,13 +266,14 @@ class SubscriberInfo : public CommonInfoBase {
         SubscriberInfo() {}
 
         M_JSON to_json() {
-            return {
-                M_BASECLASS(CommonInfoBase, to_json()),
+            M_JSON jdata = {
                 M_JSONPAIR("groupName", groupName)
             };
+            M_BASECLASS(CommonInfoBase, updateJson(jdata));
+            return jdata;
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
-            M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+            M_BASECLASS(CommonInfoBase, from_json(jsonData));
             groupName = jsonData["groupName"];
         }
 
@@ -285,14 +293,15 @@ public:
     PublishInfo() {}
 
     M_JSON to_json() {
-        return {
-            M_BASECLASS(CommonInfoBase, to_json()),
+        M_JSON jdata = {
             M_JSONPAIR("groupName", groupName),
             M_JSONPAIR("publishData", publishData)
         };
+        M_BASECLASS(CommonInfoBase, updateJson(jdata));
+        return jdata;
     }
     void from_json(M_JSONORDYNAMIC jsonData) {
-        M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+        M_BASECLASS(CommonInfoBase, from_json(jsonData));
         groupName = jsonData["groupName"];
         publishData = jsonData["publishData "];
     }
@@ -307,15 +316,16 @@ class GetGroupsInfo : public CommonInfoBase {
         GetGroupsInfo() {}
 
         M_JSON to_json() {
-            return {
-                M_BASECLASS(CommonInfoBase, to_json()),
+            M_JSON jdata = {
                 M_JSONPAIR("searchWord", searchWord),
                 M_JSONPAIR("startingIndex", startingIndex),
                 M_JSONPAIR("maxItems", maxItems)
             };
+            M_BASECLASS(CommonInfoBase, updateJson(jdata));
+            return jdata;
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
-            M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+            M_BASECLASS(CommonInfoBase, from_json(jsonData));
             searchWord = jsonData["searchWord"];
             startingIndex = jsonData["startingIndex"];
             maxItems = jsonData["maxItems"];
@@ -335,10 +345,11 @@ class GroupsInfoList : public CommonInfoBase {
                 M_JSON jgroupInfo = groupInfo.to_json();
                 M_JSONPUSHBACK(jgroupInfoList,jgroupInfo);
             }            
-            return { 
-                M_BASECLASS(CommonInfoBase, to_json()),
+            M_JSON jdata = { 
                 M_JSONPAIR("list", jgroupInfoList) 
             };
+            M_BASECLASS(CommonInfoBase, updateJson(jdata));
+            return jdata;
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
             M_BASECLASS(CommonInfoBase, from_json(jsonData));
@@ -360,15 +371,16 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
         AlternateHyperCubeInfo() {}
 
         M_JSON to_json() {
-            return {
-                M_BASECLASS(CommonInfoBase, to_json()),
+            M_JSON jdata = {
                 M_JSONPAIR("targetIp", targetIp),
                 M_JSONPAIR("ipMask", maskIp),
                 M_JSONPAIR("alternateHyperCubeIp", alternateHyperCubeIp)
             };
+            M_BASECLASS(CommonInfoBase, updateJson(jdata));
+            return jdata;
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
-            M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+            M_BASECLASS(CommonInfoBase, from_json(jsonData));
             targetIp = jsonData["targetIp"];
             maskIp = jsonData["ipMask"];
             alternateHyperCubeIp = jsonData["alternateHyperCubeIp"];
@@ -384,28 +396,27 @@ class LineList : public CommonInfoBase {
 
         LineList() {}
 
-        M_JSONL to_json() {
-            M_JSON jdata;
+        M_JSON to_json() {
             M_DECLAREJSONLIST(jlineList);
             M_LISTFORLOOPSTART(item,list)
                 std::string line = item;
                 M_JSONPUSHBACK(jlineList, line);
             }
-            return {
-                M_BASECLASS(CommonInfoBase, to_json()),
+            M_JSON jdata = {
                 M_JSONPAIR("startingIndex", startingIndex),
                 M_JSONPAIR("moreAvailable", moreAvailable),
                 M_JSONPAIR("lineList", jlineList)
             };
+            M_BASECLASS(CommonInfoBase, updateJson(jdata));
+            return jdata;
         }
         void from_json(M_JSONORDYNAMIC jsonData) {
-            M_BASECLASS(CommonInfoBase, from_json(jsonData)),
+            M_BASECLASS(CommonInfoBase, from_json(jsonData));
             startingIndex = jsonData["startingIndex"];
             moreAvailable = jsonData["moreAvailable"];
-            M_JSON jlist = jsonData["lineList"];
+            M_JSONL jlist = jsonData["lineList"];
             M_LISTFORLOOPSTART(item,jlist)
-                M_DECLAREVARIABLE(std::string,line);
-                line = item;
+                std::string line = item;
                 M_LISTPUSHBACK(list, line);
             }
         }

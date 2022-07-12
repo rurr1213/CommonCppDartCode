@@ -44,14 +44,33 @@ enum HYPERCUBECOMMANDS {
     PUBLISHINFO,
     ALTERNATEHYPERCUBEIP,
     ALTERNATEHYPERCUBEIPACK,
-    CLOSEDFORDATA
+    CLOSEDFORDATA,
+    GETHYPERCUBEINFO,
+    GETHYPERCUBEINFOACK,
+    GETSTATUS,
+    GETSTATUSACK,
+    GETLOGLINES,
+    GETLOGLINESACK
 }
 
 class CommonInfoBase {
     
+    int version = 100;
     CommonInfoBase();
-    fromJson(dynamic jsonData) { }
-    dynamic toJson() { return 0; }
+    fromJson(Map<String, dynamic> jsonData) {
+        version = jsonData["commonInfoVersion"];
+    }
+    Map<String, dynamic> toJson() { 
+        return {
+            "commonInfoVersion": version
+        }; 
+    }
+    updateJson(Map<String, dynamic> jsonData) { 
+        jsonData["commonInfoVersion"] = version;
+    }
+    copyBase(CommonInfoBase other) {
+        version = other.version;
+    }
 }
 
 class StringInfo extends CommonInfoBase {
@@ -59,12 +78,59 @@ class StringInfo extends CommonInfoBase {
     String data = "";
     StringInfo();
     Map<String, dynamic> toJson() {
-        return {
+        Map<String, dynamic> jdata = {
             "data": data
         };
+        super. updateJson(jdata);
+        return jdata;
     }
     fromJson(dynamic jsonData) {
+        super. fromJson(jsonData);
         data = jsonData["data"];
+    }
+}
+
+class HyperCubeInfo extends CommonInfoBase {
+
+    String systemName = "unknown";
+    String serverName = "undefined";
+    String appUUID = "undefined";
+    String appInstallUUID = "noUUID";
+    String serverIpAddress = "notset";
+    int serverType = 1;
+    HyperCubeInfo();
+    Map<String, dynamic> toJson() {
+        Map<String, dynamic> jdata = {
+            "systemName": systemName,
+            "serverName": serverName,
+            "appUUID": appUUID,
+            "appInstallUUID": appInstallUUID,
+            "serverIpAddress": serverIpAddress,
+            "serverType": serverType
+        };
+        super. updateJson(jdata);
+        return jdata;
+    }
+    fromJson(dynamic jsonData) {
+        super. fromJson(jsonData);
+        systemName = jsonData["systemName"];
+        serverName = jsonData["serverName"];
+        appUUID = jsonData["appUUID"];
+        appInstallUUID = jsonData["appInstallUUID"];
+        serverIpAddress = jsonData["serverIpAddress"];
+        serverType = jsonData["serverType"];
+    }
+    copy(HyperCubeInfo other) {
+        super. copyBase(other);
+        serverName = other.serverName;
+        appUUID = other.appUUID;
+        appInstallUUID = other.appInstallUUID;
+        systemName = other.systemName;
+        serverIpAddress = other.serverIpAddress;
+        serverType = other.serverType;
+    }
+    String toString() {
+        return serverName;
     }
 }
 
@@ -81,7 +147,8 @@ class ConnectionInfo extends CommonInfoBase {
     CONNECTIONINFO_ACCESS access = CONNECTIONINFO_ACCESS.ANY;
     ConnectionInfo();
     Map<String, dynamic> toJson() {
-        return {
+        Map<String, dynamic> jbase = super. toJson();
+        Map<String, dynamic> jdata = {
             "connectionName": connectionName,
             "appUUID": appUUID,
             "appInstallUUID": appInstallUUID,
@@ -92,8 +159,11 @@ class ConnectionInfo extends CommonInfoBase {
             "displayName": displayName,
             "access": access.index
         };
+        super. updateJson(jdata);
+        return jdata;
     }
     fromJson(dynamic jsonData) {
+        super. fromJson(jsonData);        
         connectionName = jsonData["connectionName"];
         appUUID = jsonData["appUUID"];
         appInstallUUID = jsonData["appInstallUUID"];
@@ -105,6 +175,7 @@ class ConnectionInfo extends CommonInfoBase {
         access = CONNECTIONINFO_ACCESS.values[jsonData["access"]];
     }
     copy(ConnectionInfo other) {
+        super. copyBase(other);
         connectionName = other.connectionName;
         appUUID = other.appUUID;
         appInstallUUID = other.appInstallUUID;
@@ -140,9 +211,9 @@ class ConnectionInfoAck extends ConnectionInfo
     
     String alternateHyperCubeIp = "alternateHyperCubeIp";
     Map<String, dynamic> toJson() {
-        Map<String, dynamic> jsonData = super. toJson();
-        jsonData["alternateHyperCubeIp"] = alternateHyperCubeIp;
-        return jsonData;
+        Map<String, dynamic> jdata = super. toJson();
+        jdata["alternateHyperCubeIp"] = alternateHyperCubeIp;
+        return jdata;
     }
     copyConnectonInfo(ConnectionInfo other) {
         super. copy(other);
@@ -166,12 +237,15 @@ class GroupInfo extends CommonInfoBase {
         GroupInfo();
 
         Map<String, dynamic> toJson() {
-            return {
+            Map<String, dynamic> jdata = {
                 "groupName": groupName,
                 "creator": creatorConnectionInfo.toJson()
             };
+            super. updateJson(jdata);
+            return jdata;
         }
         fromJson(dynamic jsonData) {
+            super. fromJson(jsonData);
             groupName = jsonData["groupName"];
             creatorConnectionInfo.fromJson(jsonData["creator"]);
         }
@@ -193,11 +267,14 @@ class SubscriberInfo extends CommonInfoBase {
         SubscriberInfo();
 
         Map<String, dynamic> toJson() {
-            return {
+            Map<String, dynamic> jdata = {
                 "groupName": groupName
             };
+            super. updateJson(jdata);
+            return jdata;
         }
         fromJson(dynamic jsonData) {
+            super. fromJson(jsonData);
             groupName = jsonData["groupName"];
         }
 
@@ -217,12 +294,15 @@ class PublishInfo extends CommonInfoBase {
     PublishInfo();
 
     Map<String, dynamic> toJson() {
-        return {
+        Map<String, dynamic> jdata = {
             "groupName": groupName,
             "publishData": publishData
         };
+        super. updateJson(jdata);
+        return jdata;
     }
     fromJson(dynamic jsonData) {
+        super. fromJson(jsonData);
         groupName = jsonData["groupName"];
         publishData = jsonData["publishData "];
     }
@@ -237,13 +317,16 @@ class GetGroupsInfo extends CommonInfoBase {
         GetGroupsInfo();
 
         Map<String, dynamic> toJson() {
-            return {
+            Map<String, dynamic> jdata = {
                 "searchWord": searchWord,
                 "startingIndex": startingIndex,
                 "maxItems": maxItems
             };
+            super. updateJson(jdata);
+            return jdata;
         }
         fromJson(dynamic jsonData) {
+            super. fromJson(jsonData);
             searchWord = jsonData["searchWord"];
             startingIndex = jsonData["startingIndex"];
             maxItems = jsonData["maxItems"];
@@ -256,17 +339,23 @@ class GroupsInfoList extends CommonInfoBase {
 
         GroupsInfoList();
 
-        List<dynamic> toJson() {
+        Map<String, dynamic> toJson() {
             List<dynamic> jgroupInfoList = [];
             for ( var item in list ) {
                 GroupInfo groupInfo = item;
                 Map<String, dynamic> jgroupInfo = groupInfo.toJson();
                 jgroupInfoList.add(jgroupInfo);
             }            
-            return jgroupInfoList;
+            Map<String, dynamic> jdata = { 
+                "list": jgroupInfoList 
+            };
+            super. updateJson(jdata);
+            return jdata;
         }
         fromJson(dynamic jsonData) {
-            for ( var item in jsonData ) {
+            super. fromJson(jsonData);
+            dynamic jlist = jsonData["list"];
+            for ( var item in jlist ) {
                 var groupInfo = GroupInfo();
                 groupInfo.fromJson(item);
                 list.add( groupInfo);
@@ -283,16 +372,54 @@ class AlternateHyperCubeInfo extends CommonInfoBase {
         AlternateHyperCubeInfo();
 
         Map<String, dynamic> toJson() {
-            return {
+            Map<String, dynamic> jdata = {
                 "targetIp": targetIp,
                 "ipMask": maskIp,
                 "alternateHyperCubeIp": alternateHyperCubeIp
             };
+            super. updateJson(jdata);
+            return jdata;
         }
         fromJson(dynamic jsonData) {
+            super. fromJson(jsonData);
             targetIp = jsonData["targetIp"];
             maskIp = jsonData["ipMask"];
             alternateHyperCubeIp = jsonData["alternateHyperCubeIp"];
+        }
+}
+
+class LineList extends CommonInfoBase {
+    
+        int startingIndex = 0;
+        bool moreAvailable = false;
+
+        List<String> list = [];
+
+        LineList();
+
+        Map<String, dynamic> toJson() {
+            List<dynamic> jlineList = [];
+            for ( var item in list ) {
+                String line = item;
+                jlineList.add( line);
+            }
+            Map<String, dynamic> jdata = {
+                "startingIndex": startingIndex,
+                "moreAvailable": moreAvailable,
+                "lineList": jlineList
+            };
+            super. updateJson(jdata);
+            return jdata;
+        }
+        fromJson(dynamic jsonData) {
+            super. fromJson(jsonData);
+            startingIndex = jsonData["startingIndex"];
+            moreAvailable = jsonData["moreAvailable"];
+            List<dynamic> jlist = jsonData["lineList"];
+            for ( var item in jlist ) {
+                String line = item;
+                list.add( line);
+            }
         }
 }
 
@@ -301,6 +428,7 @@ class AlternateHyperCubeInfo extends CommonInfoBase {
 
 class HyperCubeCommand {
     Map<String, dynamic> _jsonData = Map<String, dynamic>();
+    int version = 100;
 
     HYPERCUBECOMMANDS command = HYPERCUBECOMMANDS.NONE;
     dynamic jsonData;
@@ -314,6 +442,7 @@ class HyperCubeCommand {
         ack = false;
     }
     fromJson(Map<String, dynamic> __jsonData) {
+        version = __jsonData["version"];
         int _command = __jsonData["command"];
         command = HYPERCUBECOMMANDS.values[_command];
         if (__jsonData["data"] != null) {
@@ -324,6 +453,7 @@ class HyperCubeCommand {
     }
     Map<String, dynamic> toJson() {
         return {
+            "version": version,
             "command": command.index,
             "data": jsonData,
             "status": status,
@@ -337,6 +467,7 @@ class HyperCubeCommand {
         ack = false;
     }
     copy(HyperCubeCommand other) {
+        version = other.version;
         command = other.command;
         jsonData = other.jsonData;
         status = other.status;
