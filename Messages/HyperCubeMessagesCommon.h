@@ -390,6 +390,7 @@ class AlternateHyperCubeInfo : public CommonInfoBase {
 class LineList : public CommonInfoBase {
     public:
         int startingIndex = 0;
+        int numItems = 10;
         bool moreAvailable = false;
 
         M_DECLARELIST(List<std::string>,list);
@@ -404,6 +405,7 @@ class LineList : public CommonInfoBase {
             }
             M_JSON jdata = {
                 M_JSONPAIR("startingIndex", startingIndex),
+                M_JSONPAIR("numItems", numItems),
                 M_JSONPAIR("moreAvailable", moreAvailable),
                 M_JSONPAIR("lineList", jlineList)
             };
@@ -413,6 +415,7 @@ class LineList : public CommonInfoBase {
         void from_json(M_JSONORDYNAMIC jsonData) {
             M_BASECLASS(CommonInfoBase, from_json(jsonData));
             startingIndex = jsonData["startingIndex"];
+            numItems = jsonData["numItems"];
             moreAvailable = jsonData["moreAvailable"];
             M_JSONL jlist = jsonData["lineList"];
             M_LISTFORLOOPSTART(item,jlist)
