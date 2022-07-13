@@ -147,7 +147,6 @@ class ConnectionInfo extends CommonInfoBase {
     CONNECTIONINFO_ACCESS access = CONNECTIONINFO_ACCESS.ANY;
     ConnectionInfo();
     Map<String, dynamic> toJson() {
-        Map<String, dynamic> jbase = super. toJson();
         Map<String, dynamic> jdata = {
             "connectionName": connectionName,
             "appUUID": appUUID,
