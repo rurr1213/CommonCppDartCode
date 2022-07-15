@@ -390,6 +390,7 @@ class AlternateHyperCubeInfo extends CommonInfoBase {
 class LineList extends CommonInfoBase {
     
         int startingIndex = 0;
+        int numItems = 10;
         bool moreAvailable = false;
 
         List<String> list = [];
@@ -404,6 +405,7 @@ class LineList extends CommonInfoBase {
             }
             Map<String, dynamic> jdata = {
                 "startingIndex": startingIndex,
+                "numItems": numItems,
                 "moreAvailable": moreAvailable,
                 "lineList": jlineList
             };
@@ -413,6 +415,7 @@ class LineList extends CommonInfoBase {
         fromJson(dynamic jsonData) {
             super. fromJson(jsonData);
             startingIndex = jsonData["startingIndex"];
+            numItems = jsonData["numItems"];
             moreAvailable = jsonData["moreAvailable"];
             List<dynamic> jlist = jsonData["lineList"];
             for ( var item in jlist ) {
