@@ -1,4 +1,4 @@
-
+#pragma once
 /* -------------------------------------------------------------------------------------------
 
    This is common code that is used by both the C++ code and the Dart compiler.
@@ -21,28 +21,46 @@
         2) ONLY add new IDs at the END of the list to maintain compatibility
 */
 
-const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
+inline const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
 
-enum GROUPIDS {
-    INVALID_GROUPID,
-    NETWORKING,
+inline const int COMMON_PACKETSIZE_MAX = 64 * 1000;
+
+enum class GROUPIDS {
+    INVALID,
+    NET,    //
     CPU,
     GPU,
+    MEM,    //
+    DISK,   //
     APP
 };
 
-enum STATIDS {
-    INVALID_STATID,
-    PING_GATEWAY,      // PING - gateway 
-    PING_SITES,     // PING - Sites
-    CPU_SPEED,     // CPU Speed
-    CPU_BUSY,      // CPU Busy
-    CPU_CLOCK,      // CPU Clock
-    GPU_FPS,      // GPU FPS
+enum class STATIDS {
+    INVALID,
+    CPU_SPEED,    
+    CPU_BUSY,     
+    CPU_CLOCK,    
+    GPU_FPS,
+    GPU_BUSY,
+    MEM_PAGEF,       // page faults
+    MEM_COMM,        // commited bytes
+    NET_TRAFFIC,     // Network transfers      
+    DISK_TRANSFERS,  // Disk transfers
+    PING_GATEWAY,    // PING - gateway 
+    PING_SITE_1,     // PING - Sites
+    PING_SITE_2,     // PING - Sites
+    PING_SITE_3,     // PING - Sites
+    PING_SITE_4,     // PING - Sites
+    PING_SITE_5,     // PING - Sites
     APP_STATS,
-
-    // add new IDs here
 };
 
-
-
+enum class QUERY_FUNCTION 
+{
+    INVALID,
+    AVG,
+    MAX,
+    MIN,
+    COUNT,
+    SUMMARY1
+};

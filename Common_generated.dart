@@ -23,26 +23,44 @@
 
 const int GROUPSTATID_VERSION = 1;        // This could be used and changed if there are significant changes that need to maintain compabitility with older code
 
+const int COMMON_PACKETSIZE_MAX = 64 * 1000;
+
 enum GROUPIDS {
-    INVALID_GROUPID,
-    NETWORKING,
+    INVALID,
+    NET,    //
     CPU,
     GPU,
+    MEM,    //
+    DISK,   //
     APP
 }
 
 enum STATIDS {
-    INVALID_STATID,
-    PING_GATEWAY,      // PING - gateway 
-    PING_SITES,     // PING - Sites
-    CPU_SPEED,     // CPU Speed
-    CPU_BUSY,      // CPU Busy
-    CPU_CLOCK,      // CPU Clock
-    GPU_FPS,      // GPU FPS
+    INVALID,
+    CPU_SPEED,    
+    CPU_BUSY,     
+    CPU_CLOCK,    
+    GPU_FPS,
+    GPU_BUSY,
+    MEM_PAGEF,       // page faults
+    MEM_COMM,        // commited bytes
+    NET_TRAFFIC,     // Network transfers      
+    DISK_TRANSFERS,  // Disk transfers
+    PING_GATEWAY,    // PING - gateway 
+    PING_SITE_1,     // PING - Sites
+    PING_SITE_2,     // PING - Sites
+    PING_SITE_3,     // PING - Sites
+    PING_SITE_4,     // PING - Sites
+    PING_SITE_5,     // PING - Sites
     APP_STATS,
-
-    // add new IDs here
 }
 
-
-
+enum QUERY_FUNCTION 
+{
+    INVALID,
+    AVG,
+    MAX,
+    MIN,
+    COUNT,
+    SUMMARY1
+}

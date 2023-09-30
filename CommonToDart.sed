@@ -11,6 +11,9 @@ s/RSerDes/SerDes/g
 s/virtual //g
 s/int64_t/int/g
 s/statList;/statList = [];/g
+s/enum class/enum/g
+s/inline //g
+s/#pragma once//g
 #
 # The following take a word of the form
 # M_XXX(parm1,parm2) where each parm is identfied by
