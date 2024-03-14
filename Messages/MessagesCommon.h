@@ -370,7 +370,7 @@ public:
         listLength = 0;
 	}
     int size() {
-        int _size = M_BASECLASS(Msg, size());;
+        int _size = M_BASECLASS(Msg, size());
         _size += M_SIZE(name) + 1;
         _size += M_SIZE(description) + 1;
         _size += 4 * 2;
