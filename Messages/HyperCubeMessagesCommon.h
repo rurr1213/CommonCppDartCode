@@ -440,7 +440,6 @@ class LineList : public CommonInfoBase {
 // -----------------------------------------------------------------------------------------------------------------
 
 class HyperCubeCommand {
-    M_JSON _jsonData = M_JSONNULL;
     int version = 100;
 public:
     HYPERCUBECOMMANDS command = M_ENUM(HYPERCUBECOMMANDS,NONE);

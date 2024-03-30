@@ -417,7 +417,7 @@ public:
         command = STATS_STATINFO;
     }
     int size() {
-        int _size = M_BASECLASS(Msg, size());;
+        int _size = M_BASECLASS(Msg, size());
         _size += M_SIZE(jsonStatInfoString) + 1;
         return _size;
     }
