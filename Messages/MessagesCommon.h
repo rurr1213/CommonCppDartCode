@@ -72,7 +72,9 @@ inline const int OBJ_LOGGER_LOGLINE                        = 1;
 inline const int OBJ_LOGGER_STATELIST                      = 2;
 inline const int OBJ_LOGGER_COMMAND_TO_MATRIX              = 3;
 inline const int OBJ_LOGGER_JCOMMAND_REQUEST_LOGS               = 1;
+inline const int OBJ_LOGGER_JCOMMAND_DELETE_LOGS                = 2;
 inline const int OBJ_LOGGER_JRESPONSE_FROM_MATRIX          = 4;
+inline const int OBJ_LOGGER_JRESPONSE_DELETED_LOGS = 2;
 
 inline const int OBJ_APPMGR                        = 3;
 inline const int OBJ_APPMGR_APPINFOLIST                     = 1;
