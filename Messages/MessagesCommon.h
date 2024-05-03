@@ -29,6 +29,8 @@
 #include M_SERDES
 
 inline const int PROTOCOL_CODE = 1122;
+inline const int FLAGS_NOTENCRYPTED = 0x00;
+inline const int FLAGS_ENCRYPTED    = 0x01;
 
 inline const int SUBSYS_SIG                = 10;  // route signalling system
 inline const int SIG_JSON                  = 1;
@@ -127,17 +129,21 @@ inline const int OBJ_STATSMGR_JRESPONSE_FPS_GETINFO             = 9;
 class Msg {
 public:
     short int prot = 0;             // this should alway be set to the PROTOCOL_CODE
-    int length = 0;           // this will be updated by the SerDes class on calls to length()
+    short int flags = 0;            // bit field on protocol
+                                    // bit 0: 0 = no encryption, 1 = encrypted
+    int length = 0;                 // this will be updated by the SerDes class on calls to length()
     short int subSys = 0;           // to be set by derived classes
     short int command = 0;          // to be set by derived classes
     int argument = 0;               // optional command argument / data
     short int deviceAppKey = 0;     // a device and app identifier
-    short int sessionKey = 0;    // a session number / key
+    short int sessionKey = 0;       // a session number / key
     int seqNumber = 0;              // sequence number within the session
     int localParam1 = 0;            // Local parameter is NOT SERIALIZED. Used to embed local data
     short int crc = 0;              // header crc
+    short int msgCrc = 0;           // msg crc
     Msg() {
         prot = PROTOCOL_CODE;
+        flags = FLAGS_NOTENCRYPTED;
         length = 0;
         subSys = 0;
         command = 0;
@@ -146,10 +152,12 @@ public:
         sessionKey = 0;
         seqNumber = 0;
         crc = 0;
+        msgCrc = 0;
     }
     M_CPPONLY(virtual ~Msg() {})
     virtual int serialize(RSerDes sd) {
         sd.setInt16(prot);
+        sd.setInt16(flags);
         sd.setLength32(length);
         sd.setInt16(subSys);
         sd.setInt16(command);
@@ -158,6 +166,7 @@ public:
         sd.setInt16(sessionKey);
         sd.setInt32(seqNumber);
         sd.setCrc16(0);
+        sd.setMsgCrc16(msgCrc);
 
         length = sd.updateLength();
         sd.updateCrc(calcCrc());
@@ -165,6 +174,7 @@ public:
     }
     virtual int deserialize(RSerDes sd) {
         prot = sd.getProtocolCodeAndCheckEndian(PROTOCOL_CODE);
+        flags = sd.getInt16();
         length = sd.getInt32();
         subSys = sd.getInt16();
         command = sd.getInt16();
@@ -173,18 +183,20 @@ public:
         sessionKey = sd.getInt16();
         seqNumber = sd.getInt32();
         crc = sd.getInt16();
+        msgCrc = sd.getInt16();
         return sd.length();
     }
     virtual short int calcCrc() {
-        int crc = prot ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
+        int crc = prot ^ flags ^ length ^ subSys ^ command ^ seqNumber ^ sessionKey ^ deviceAppKey;
         crc &= 0x7FF;
         return crc;
     }
 
-    virtual int size() { return 24; }     // bytes
+    virtual int size() { return 32; }     // bytes
 
     bool copy(Msg otherMsg) {
       prot = otherMsg.prot;
+      flags = otherMsg.flags;
       length = otherMsg.length;
       subSys = otherMsg.subSys;
       command = otherMsg.command;
@@ -194,6 +206,7 @@ public:
       seqNumber = otherMsg.seqNumber;
       localParam1 = otherMsg.localParam1;
       crc = otherMsg.crc;
+      msgCrc = otherMsg.msgCrc;
       return true;
     }
 
@@ -230,6 +243,7 @@ public:
         sd.setString(jsonData);
         length = sd.updateLength();
         sd.updateCrc(calcCrc());
+        sd.updateMsgCrc(calcMsgCrc());
         return sd.finalize();
     }
 
@@ -239,6 +253,10 @@ public:
         return sd.length();
     }
     virtual short int calcCrc() {
+        short int _headerCrc = M_BASECLASS(Msg, calcCrc());
+        return _headerCrc;
+    }
+    virtual short int calcMsgCrc() {
         short int _headerCrc = M_BASECLASS(Msg, calcCrc());
         short int _dataCrc = M_BASECLASS(Msg, calcCrcOnString(jsonData));
 //        M_LISTFORLOOPSTART(character, jsonData)
@@ -471,6 +489,7 @@ public:
         sd.setString(jsonObjectString);
         length = sd.updateLength();
         sd.updateCrc(calcCrc());
+        sd.updateMsgCrc(calcMsgCrc());
         return sd.finalize();
     }
 
@@ -480,7 +499,7 @@ public:
         jsonObjectString = sd.getString();
         return sd.length();
     }
-    virtual short int calcCrc() {
+    virtual short int calcMsgCrc() {
         short int _headerCrc = M_BASECLASS(Msg, calcCrc());
         short int _dataCrc = M_BASECLASS(Msg, calcCrcOnString(jsonObjectString));
         _dataCrc ^= objectId;
