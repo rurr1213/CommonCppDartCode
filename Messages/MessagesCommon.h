@@ -90,6 +90,7 @@ inline const int OBJ_APPMGR_JCOMMAND_REPLACE_SUSPENDLISTITEMS   = 4;
 //inline const int OBJ_APPMGR_JCOMMAND_SUSPEND_ON_OFF             = 6;
 inline const int OBJ_APPMGR_JCOMMAND_CLEARALL_SUSPENDLISTITEMS  = 7;
 inline const int OBJ_APPMGR_JCOMMAND_UPDATE_APPLISTNOW          = 8;
+inline const int OBJ_APPMGR_JCOMMAND_REQUEST_BOOSTEDLIST        = 9;
 
 inline const int OBJ_APPMGR_RESPONSE_FROM_MATRIX            = 4;
 inline const int OBJ_APPMGR_JRESPONSE_REQUEST_SUSPENDLIST       = 1;
@@ -100,6 +101,8 @@ inline const int OBJ_APPMGR_JRESPONSE_SUSPEND_GETSTATUS         = 5;
 inline const int OBJ_APPMGR_JRESPONSE_SUSPEND_ON_OFF            = 6;
 inline const int OBJ_APPMGR_JRESPONSE_CLEARALL_SUSPENDLISTITEMS = 7;
 inline const int OBJ_APPMGR_JRESPONSE_UPDATE_APPLISTNOW         = 8;
+inline const int OBJ_APPMGR_JRESPONSE_REQUEST_BOOSTEDLIST       = 9;
+
 
 inline const int OBJ_STATSMGR                       = 4;
 inline const int OBJ_STATSMGR_COMMAND_TO_MATRIX            = 1;
