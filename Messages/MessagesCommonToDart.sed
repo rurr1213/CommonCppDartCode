@@ -24,7 +24,7 @@ s/void //g
 s/enum class /enum /g
 s/ {}/;/g
 s/NULL/null/g
-s/M_SERDES/\'\/Tools\/SerDes.dart\';/g
+s/M_SERDES/\'\..\/..\/Tools\/SerDes.dart\';/g
 s/#include/import/g
 
 #
