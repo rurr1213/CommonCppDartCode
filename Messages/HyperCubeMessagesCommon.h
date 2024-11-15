@@ -11,6 +11,9 @@
     -------------------------------------------------------------------------------------------
 */
 
+// ignore_for_file: camel_case_types
+////////Test Flag - Grant
+
 inline const int HC_APPID_VORTEX = 1000;
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -141,6 +144,7 @@ public:
     std::string appInstallUUID = "noUUID";
     std::string systemName = "unknown";
     std::string serverIpAddress = "notset";
+    std::string clientIpAddress = "notset";
     std::string userName = "notset";
     std::string userUUID = "noUUID";
     std::string displayName = "notSet";
@@ -153,6 +157,7 @@ public:
             M_JSONPAIR("appInstallUUID", appInstallUUID),
             M_JSONPAIR("systemName", systemName),
             M_JSONPAIR("serverIpAddress", serverIpAddress),
+            M_JSONPAIR("clientIpAddress", clientIpAddress),
             M_JSONPAIR("userName", userName),
             M_JSONPAIR("userUUID", userUUID),
             M_JSONPAIR("displayName", displayName),
@@ -168,6 +173,7 @@ public:
         appInstallUUID = jsonData["appInstallUUID"];
         systemName = jsonData["systemName"];
         serverIpAddress = jsonData["serverIpAddress"];
+        clientIpAddress = jsonData["clientIpAddress"];
         userName = jsonData["userName"];
         userUUID = jsonData["userUUID"];
         displayName = jsonData["displayName"];
@@ -180,6 +186,7 @@ public:
         appInstallUUID = other.appInstallUUID;
         systemName = other.systemName;
         serverIpAddress = other.serverIpAddress;
+        clientIpAddress = other.clientIpAddress;
         userName = other.userName;
         userUUID = other.userUUID;
         displayName = other.displayName;
@@ -196,6 +203,10 @@ public:
         stat = M_FIND(userName, searchWord);
         if (stat) return stat;
         stat = M_FIND(userUUID, searchWord);
+        if (stat) return stat;
+        stat = M_FIND(serverIpAddress, searchWord);
+        if (stat) return stat;
+        stat = M_FIND(clientIpAddress, searchWord);
         if (stat) return stat;
         stat = M_FIND(displayName, searchWord);
         return stat;
@@ -429,7 +440,6 @@ class LineList : public CommonInfoBase {
 // -----------------------------------------------------------------------------------------------------------------
 
 class HyperCubeCommand {
-    M_JSON _jsonData = M_JSONNULL;
     int version = 100;
 public:
     HYPERCUBECOMMANDS command = M_ENUM(HYPERCUBECOMMANDS,NONE);

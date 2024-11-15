@@ -11,6 +11,8 @@
     -------------------------------------------------------------------------------------------
 */
 
+// ignore_for_file: camel_case_types
+////////Test Flag - Grant
 
 /* The following are constants used on the PC side and Dart side. This info is passed to flutter/dart embedded in messages 
     sent over. 
