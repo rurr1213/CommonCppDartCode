@@ -1,8 +1,8 @@
 /* -------------------------------------------------------------------------------------------
 
    This is HyperCube specific common code used by both the C++ compiler and then coverted to Dart code
-   The code used here is carefully chosen to be easily coverted to Dart code using 
-   sed and a sed script. 
+   The code used here is carefully chosen to be easily coverted to Dart code using
+   sed and a sed script.
 
    See comments in messageCommont.h, which are applicable to this file as well
 
@@ -14,7 +14,8 @@
 // ignore_for_file: camel_case_types
 ////////Test Flag - Grant
 
-inline const int HC_APPID_VORTEX = 1000;
+inline const int HC_APPID_VORTEX    = 1000;
+inline const int HC_APPID_STARGATE  = 1100;
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -63,12 +64,12 @@ class CommonInfoBase {
     virtual void from_json(M_JSON jsonData) {
         version = jsonData["commonInfoVersion"];
     }
-    virtual M_JSON to_json() { 
+    virtual M_JSON to_json() {
         return {
             M_JSONPAIR("commonInfoVersion", version)
-        }; 
+        };
     }
-    virtual void updateJson(M_JSONREF jsonData) { 
+    virtual void updateJson(M_JSONREF jsonData) {
         jsonData["commonInfoVersion"] = version;
     }
     virtual void copyBase(M_BYREF(CommonInfoBase,other)) {
@@ -167,7 +168,7 @@ public:
         return jdata;
     }
     void from_json(M_JSONORDYNAMIC jsonData) {
-        M_BASECLASS(CommonInfoBase, from_json(jsonData));        
+        M_BASECLASS(CommonInfoBase, from_json(jsonData));
         connectionName = jsonData["connectionName"];
         appUUID = jsonData["appUUID"];
         appInstallUUID = jsonData["appInstallUUID"];
@@ -216,7 +217,7 @@ public:
     }
 };
 
-class ConnectionInfoAck : public ConnectionInfo 
+class ConnectionInfoAck : public ConnectionInfo
 {
     public:
     std::string alternateHyperCubeIp = "alternateHyperCubeIp";
@@ -355,9 +356,9 @@ class GroupsInfoList : public CommonInfoBase {
                 GroupInfo groupInfo = item;
                 M_JSON jgroupInfo = groupInfo.to_json();
                 M_JSONPUSHBACK(jgroupInfoList,jgroupInfo);
-            }            
-            M_JSON jdata = { 
-                M_JSONPAIR("list", jgroupInfoList) 
+            }
+            M_JSON jdata = {
+                M_JSONPAIR("list", jgroupInfoList)
             };
             M_BASECLASS(CommonInfoBase, updateJson(jdata));
             return jdata;
@@ -446,7 +447,7 @@ public:
     M_JSONORDYNAMIC jsonData;
     bool status = true;
     bool ack = false;
-    HyperCubeCommand(HYPERCUBECOMMANDS _command, M_JSONORDYNAMIC _jsonData, bool _status) 
+    HyperCubeCommand(HYPERCUBECOMMANDS _command, M_JSONORDYNAMIC _jsonData, bool _status)
     {
         command = _command;
         jsonData = _jsonData;
