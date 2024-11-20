@@ -1,13 +1,13 @@
 # This script uses windows sed and is run from the command line
 #       sed -f MessagesInc_toDart.sed Messages.inc > Messages_generated.dart
-#1s/^/import \'..\/..\/Tools\/SerDes.dart\';/
+#1s/^/import \'..\/..\/tools\/ser_des.dart\';/
 s/^};/}/g
 s/:.*public/extends/g
 s/public://g
 s/short int/int/g
 s/std::string/String/g
 s/std::list/List/g
-s/RSerDes/SerDes/g
+s/RSerDes/ser_des/g
 s/virtual //g
 s/int64_t/int/g
 s/statList;/statList = [];/g
