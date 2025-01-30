@@ -35,7 +35,7 @@ LogEvent::LogEvent(std::uint64_t utcStartTime, int _timeMSecs, EVENTTYPE _type, 
 	timeMSecs(_timeMSecs),
 	type(_type),
 	name(_name),
-	description(_des) 
+	description(_des)
 {
 	timeUTCMSecs = utcStartTime + _timeMSecs;
 	file = _file;
@@ -148,14 +148,17 @@ LLogger::LLogger()
 LLogger::~LLogger() {
 }
 
-bool LLogger::add(LogEvent botEvent) 
+bool LLogger::add(LogEvent botEvent)
 {
+	if ( botEvent.type > logLevel)
+		return false;
+		
 	std::lock_guard<std::mutex> lk(io_mutex);
 
 	botEvent.timeMSecs = (int) getRelativeTimeInMilliSecs();
 	cout << botEvent.toString() << "\n";
 	LLogEvent* pllogEvent = (LLogEvent*)&botEvent;
-	std::string line = pllogEvent->to_json().dump(); 
+	std::string line = pllogEvent->to_json().dump();
 	logBuffer.add(*pllogEvent);
 	logFile << line << "\n";
 	return true;
@@ -175,7 +178,7 @@ void LLogger::setStateString(string keyName, string value, unsigned int flags) {
 //	stateStore.setStateString(keyName, value, flags);
 }
 
-void LLogger::setStateInt(string keyName, int value, unsigned int flags) 
+void LLogger::setStateInt(string keyName, int value, unsigned int flags)
 {
 //	stateStore.setStateInt(keyName, value, flags);
 }
@@ -219,7 +222,7 @@ void LLogger::printf(LPCWSTR pFormat, ...) {
 	*/
 }
 
-void LLogger::exception(const std::exception& e) 
+void LLogger::exception(const std::exception& e)
 {
 /*	Cwt::Cwtools tools;
 	wstring ewhat = tools.getExceptionString(e);
@@ -257,7 +260,7 @@ void LLogger::flushLogs(std::string name)
 }
 // ----------------------------------------------------
 
-double LLogger::getCurrentTimeInSecs(void) 
+double LLogger::getCurrentTimeInSecs(void)
 {
 	/*
 	struct timespec	spec;
@@ -272,10 +275,10 @@ double LLogger::getCurrentTimeInSecs(void)
 	return (int)seconds;
 }
 
-double LLogger::getRelativeTimeInMilliSecs(void) 
+double LLogger::getRelativeTimeInMilliSecs(void)
 {
 	static double utcStartTime = 0;
-	if (utcStartTime==0) { 
+	if (utcStartTime==0) {
 		utcStartTime = getCurrentTimeInSecs();
 		return 0;
 	}

@@ -62,6 +62,8 @@ public:
 };
 
 class Logger {
+protected:
+	LogEvent::EVENTTYPE logLevel = LogEvent::EVENTTYPE::INFO;
 public:
 	Logger() {};
 	~Logger() {};
@@ -105,6 +107,7 @@ public:
 		}
 	}
 	virtual bool getLogLines(int startIndex, int numLines, std::list<std::string>& _list) { return false;};
+	void setLogLevel(LogEvent::EVENTTYPE level) { logLevel = level; }
 };
 
 extern Logger* g_pLogger;
@@ -143,4 +146,4 @@ extern Logger* g_pLogger;
 
 #define LOG_REMOVEJSON(_word) LOG_GP()->removeAnyJsonDelimiters(_word)
 #define LOG_GETLOGLINES(start, num, list) LOG_GP()->getLogLines(start, num, list)
-
+#define LOG_SETLOGLEVEL(level) LOG_GP()->setLogLevel(level)
