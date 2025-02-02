@@ -15,8 +15,6 @@ include_directories(
 # Gather source files from the cpp subdirectory
 file(GLOB_RECURSE SOURCES "cpp/*.cpp") # Recursively finds all .cpp files
 
+# create an OBJECT library
 set(LIB_NAME "${ROOT_PROJECT_NAME}CommonCppDartCodeObjects")
 add_library(${LIB_NAME} OBJECT ${SOURCES})
-
-# Set the library output directory (relative to the top-level build directory)
-#set_target_properties(${LIB_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
