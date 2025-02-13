@@ -126,16 +126,20 @@ std::unique_ptr<Msg> MsgExt::factoryMethod(const PacketEx& rpacket)
 		break;
 	case SUBSYS_CMD:
 		{
-			pmsg = std::make_unique<MsgCmd>("");
-			pmsg->deserialize(sd);
-			short int _calcCrc = pmsg->calcCrc();
-			LOG_ASSERT(pmsg->crc == _calcCrc);
 			switch (command) {
+				case CMD_JSON:
+					pmsg = std::make_unique<MsgJson>();
+					pmsg->deserialize(sd);
+					break;
 				case CMD_PCJSON:
+					pmsg = std::make_unique<MsgCmd>("");
+					pmsg->deserialize(sd);
 					break;
 				default:
 					break;
-				}
+			}
+			short int _calcCrc = pmsg->calcCrc();
+			LOG_ASSERT(pmsg->crc == _calcCrc);
 		}
 		break;
 	case SUBSYS_OBJ:
@@ -161,6 +165,30 @@ std::unique_ptr<Msg> MsgExt::factoryMethod(const PacketEx& rpacket)
 	return pmsg;
 }
 
+bool MsgExt::checkMsgJson(MsgJson& rmsgJson)
+{
+    short int calcCrc = rmsgJson.calcCrc();
+    if (rmsgJson.crc != calcCrc) {
+        std::stringstream ss;
+        ss << "LastMsg S:" << rmsgJson.subSys << " C:" << rmsgJson.command << " A:" << rmsgJson.argument << " L:" << rmsgJson.length << "\n";
+        ss << rmsgJson.jsonData;
+        std::string errorMsg = "json CRC failed " + ss.str();
+        throw std::runtime_error(errorMsg);
+    }
+    try {
+       if (rmsgJson.jsonData.find("{")!=std::string::npos) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch(std::exception& e) {
+        std::cout << "ERROR! - MSerDes::packetToMsgJson, Failed to decode json " << std::string(e.what()) << "\n";
+        assert(false);
+        return false;
+    }
+    return true;
+
+}
 // -------------------------------------
 
 MsgCmdExt::MsgCmdExt(std::string command, json data) :

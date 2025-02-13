@@ -343,6 +343,7 @@ public:
 class PublishInfoAck : public CommonInfoBase {
 public:
     std::string groupName = "";
+    std::string publishInfoUUID = "";
     uint64_t destinationConnectionId = 0;       // use this for faster lookup
     std::string responderUUID = "";
     std::string destinationUUID = "";
@@ -353,6 +354,7 @@ public:
     M_JSON to_json() {
         M_JSON jdata = {
             M_JSONPAIR("groupName", groupName),
+            M_JSONPAIR("publishInfoUUID", publishInfoUUID),
             M_JSONPAIR("destinationConnectionId", destinationConnectionId),
             M_JSONPAIR("responderUUID", responderUUID),
             M_JSONPAIR("destinationUUID", destinationUUID),
@@ -364,6 +366,7 @@ public:
     void from_json(M_JSONORDYNAMIC jsonData) {
         M_BASECLASS(CommonInfoBase, from_json(jsonData));
         groupName = jsonData["groupName"];
+        publishInfoUUID = jsonData["publishInfoUUID"];
         destinationConnectionId = jsonData["destinationConnectionId"];
         responderUUID = jsonData["responderUUID"];
         destinationUUID = jsonData["destinationUUID"];
