@@ -36,7 +36,8 @@ public:
 enum class DEVICEID {
 	UNKNOWN = -200,
 	ALLDEVICES = -100,
-	BACKCHANNEL = -99
+	BACKCHANNEL = -99,
+	HK = -98
 };
 
 class PacketEx {

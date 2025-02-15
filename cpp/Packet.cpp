@@ -6,9 +6,9 @@
 #include "Logger.h"
 #include "MsgExt.h"
 
-#include <iostream> 
-#include <string> 
-#include <sstream> 
+#include <iostream>
+#include <string>
+#include <sstream>
 
 Packet::Packet() :
 	pdata(nullptr),
@@ -25,16 +25,16 @@ Packet::Packet(const int size) :
 	init(size);
 }
 
-void Packet::init(const int size) 
+void Packet::init(const int size)
 {
 	usedLength = 0;
 
 	// if no change in size, use previous allocation
 	if ((pdata) && (allocatedLength == size)) return;
 
-	// else allocate 
+	// else allocate
 	if (pdata) {
-		delete pdata;	// if already allocate
+		delete[] pdata;	// if already allocate
 		pdata = 0;
 	}
 	allocatedLength = size ;
@@ -43,7 +43,7 @@ void Packet::init(const int size)
 
 void Packet::deinit() {
 	if (pdata != nullptr) {
-		delete pdata;
+		delete[] pdata;
 		pdata = nullptr;
 	}
 	allocatedLength = 0;
@@ -66,7 +66,7 @@ Packet::Packet(const Packet& other) :
 // copy assignment operator
 Packet& Packet::operator=(const Packet& other) {
 	if (this != &other) {
-		if (pdata != nullptr) delete pdata;
+		if (pdata != nullptr) delete[] pdata;
 		allocatedLength = other.allocatedLength;
 		pdata = new char[other.allocatedLength];
 		std::copy(other.pdata, other.pdata + other.allocatedLength, pdata);
@@ -89,7 +89,7 @@ Packet::Packet(Packet&& other) :
 // move assignment operator
 Packet& Packet::operator=(Packet&& other) {
 	if (this != &other) {
-		if (pdata != nullptr) delete pdata;
+		if (pdata != nullptr) delete[] pdata;
 		allocatedLength = other.allocatedLength;
 		usedLength = other.usedLength;
 		pdata = other.pdata;
@@ -187,7 +187,7 @@ RecvPacketBuilder::READSTATUS  RecvPacketBuilder::readPacket(Packet& packetRead)
 		//Msg* pdebugLastMsg = &debugLastMsg;
 		//int* pdebugLastNeededLength = &debugLastNeededLength;
 		if (msg.prot!=PROTOCOL_CODE) {
-			std::unique_ptr<MsgDiagnostics> pMsgDiagnostic = 
+			std::unique_ptr<MsgDiagnostics> pMsgDiagnostic =
 				std::make_unique<MsgDiagnostics>(debugLastMsg, msg, porigin, "RecvPacketBuilder::readPacket(): packet invalid protocol code");
 			throw pMsgDiagnostic;
 		}
@@ -220,14 +220,14 @@ WritePacketBuilder::WritePacketBuilder(int _defaultPacketLength) :
 	init();
 }
 
-void WritePacketBuilder::init(void) 
+void WritePacketBuilder::init(void)
 {
 	packet.init(defaultPacketLength);
 	offset = 0;
 	porigin = packet.getpData();
 }
 
-void WritePacketBuilder::deinit(void) 
+void WritePacketBuilder::deinit(void)
 {
 	packet.deinit();
 	offset = 0;
@@ -235,7 +235,7 @@ void WritePacketBuilder::deinit(void)
 	defaultPacketLength = 0;
 }
 
-bool WritePacketBuilder::addNew(Packet& _packet) 
+bool WritePacketBuilder::addNew(Packet& _packet)
 {
 	packet = _packet;
 	porigin = packet.getpData();

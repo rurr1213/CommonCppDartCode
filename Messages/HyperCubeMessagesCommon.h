@@ -26,6 +26,8 @@ enum class CONNECTIONINFO_ACCESS {
 };
 
 enum class HYPERCUBECOMMANDS {
+    // ----------------------------
+    // SIG commands
     NONE,
     LOCALPING,
     REMOTEPING,
@@ -45,7 +47,6 @@ enum class HYPERCUBECOMMANDS {
     UNSUBSCRIBER,
     GETGROUPS,
     GETGROUPSACK,
-    PUBLISHINFO,
     ALTERNATEHYPERCUBEIP,
     ALTERNATEHYPERCUBEIPACK,
     CLOSEDFORDATA,
@@ -54,26 +55,40 @@ enum class HYPERCUBECOMMANDS {
     GETSTATUS,
     GETSTATUSACK,
     GETLOGLINES,
-    GETLOGLINESACK
+    GETLOGLINESACK,
+
+    //-----------------------------
+    // CMD commands
+    PUBLISHINFO,
+    PUBLISHINFOACK
 };
+
+std::string createUUIDString(void);
 
 class CommonInfoBase {
     public:
     int version = 100;
-    CommonInfoBase() {}
+    std::string uuid = "";
+    CommonInfoBase() {
+        uuid = createUUIDString();
+    }
     virtual void from_json(M_JSON jsonData) {
         version = jsonData["commonInfoVersion"];
+        uuid = jsonData["uuid"];
     }
     virtual M_JSON to_json() {
         return {
-            M_JSONPAIR("commonInfoVersion", version)
+            M_JSONPAIR("commonInfoVersion", version),
+            M_JSONPAIR("uuid", uuid)
         };
     }
     virtual void updateJson(M_JSONREF jsonData) {
         jsonData["commonInfoVersion"] = version;
+        jsonData["uuid"] = uuid;
     }
     virtual void copyBase(M_BYREF(CommonInfoBase,other)) {
         version = other.version;
+        uuid = other.uuid;
     }
 };
 
@@ -300,6 +315,8 @@ class SubscriberInfo : public CommonInfoBase {
 class PublishInfo : public CommonInfoBase {
 public:
     std::string groupName = "";
+    uint64_t originatingConnectionId = 0;       // use this for faster lookup
+    std::string originatorUUID = "";
     std::string publishData = "";
 
     PublishInfo() {}
@@ -307,6 +324,8 @@ public:
     M_JSON to_json() {
         M_JSON jdata = {
             M_JSONPAIR("groupName", groupName),
+            M_JSONPAIR("originatingConnectionId", originatingConnectionId),
+            M_JSONPAIR("originatorUUID", originatorUUID),
             M_JSONPAIR("publishData", publishData)
         };
         M_BASECLASS(CommonInfoBase, updateJson(jdata));
@@ -315,7 +334,43 @@ public:
     void from_json(M_JSONORDYNAMIC jsonData) {
         M_BASECLASS(CommonInfoBase, from_json(jsonData));
         groupName = jsonData["groupName"];
-        publishData = jsonData["publishData "];
+        originatingConnectionId = jsonData["originatingConnectionId"];
+        originatorUUID = jsonData["originatorUUID"];
+        publishData = jsonData["publishData"];
+    }
+};
+
+class PublishInfoAck : public CommonInfoBase {
+public:
+    std::string groupName = "";
+    std::string publishInfoUUID = "";
+    uint64_t destinationConnectionId = 0;       // use this for faster lookup
+    std::string responderUUID = "";
+    std::string destinationUUID = "";
+    std::string publishAckData = "";
+
+    PublishInfoAck() {}
+
+    M_JSON to_json() {
+        M_JSON jdata = {
+            M_JSONPAIR("groupName", groupName),
+            M_JSONPAIR("publishInfoUUID", publishInfoUUID),
+            M_JSONPAIR("destinationConnectionId", destinationConnectionId),
+            M_JSONPAIR("responderUUID", responderUUID),
+            M_JSONPAIR("destinationUUID", destinationUUID),
+            M_JSONPAIR("publishAckData", publishAckData)
+        };
+        M_BASECLASS(CommonInfoBase, updateJson(jdata));
+        return jdata;
+    }
+    void from_json(M_JSONORDYNAMIC jsonData) {
+        M_BASECLASS(CommonInfoBase, from_json(jsonData));
+        groupName = jsonData["groupName"];
+        publishInfoUUID = jsonData["publishInfoUUID"];
+        destinationConnectionId = jsonData["destinationConnectionId"];
+        responderUUID = jsonData["responderUUID"];
+        destinationUUID = jsonData["destinationUUID"];
+        publishAckData = jsonData["publishAckData"];
     }
 };
 

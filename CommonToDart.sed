@@ -10,6 +10,7 @@ s/std::list/List/g
 s/RSerDes/ser_des/g
 s/virtual //g
 s/int64_t/int/g
+s/uint64_t/int/g
 s/statList;/statList = [];/g
 s/enum class/enum/g
 s/inline //g

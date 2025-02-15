@@ -9,6 +9,7 @@ s/std::list/List/g
 s/RSerDes/SerDes/g
 s/virtual //g
 s/int64_t/int/g
+s/uint64_t/int/g
 s/statList;/statList = [];/g
 s/inline//g
 s/M_JSONNULL/Map<String, dynamic>()/g

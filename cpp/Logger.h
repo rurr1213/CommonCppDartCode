@@ -1,5 +1,6 @@
 #pragma once
 #include <stdlib.h>
+#include <stdint.h>
 #include <string>
 #include <list>
 
@@ -26,7 +27,7 @@ public:
 
 class LogEvent {
 public:
-	std::uint64_t timeUTCMSecs = {0};	// absolute UTC time in Mseconds, to merge data in future
+	uint64_t timeUTCMSecs = {0};	// absolute UTC time in Mseconds, to merge data in future
 	int timeMSecs = 0;	// time delay since start
 	enum class EVENTTYPE {
 		INIT = 0,
@@ -52,7 +53,7 @@ public:
 	int value = 0;
 	LogEvent();
 	LogEvent(EVENTTYPE _type, std::string _name, std::string _des);
-	LogEvent(std::uint64_t  utcStartTime, int _timeMSecs, EVENTTYPE _type, std::string _name, std::string _des, std::string _file, std::string _func, int _line, int _value);
+	LogEvent(uint64_t  utcStartTime, int _timeMSecs, EVENTTYPE _type, std::string _name, std::string _des, std::string _file, std::string _func, int _line, int _value);
 	~LogEvent();
 	std::string toString(bool fullString = false);
 //	json toJson(void);
@@ -61,6 +62,8 @@ public:
 };
 
 class Logger {
+protected:
+	LogEvent::EVENTTYPE logLevel = LogEvent::EVENTTYPE::INFO;
 public:
 	Logger() {};
 	~Logger() {};
@@ -104,6 +107,7 @@ public:
 		}
 	}
 	virtual bool getLogLines(int startIndex, int numLines, std::list<std::string>& _list) { return false;};
+	void setLogLevel(LogEvent::EVENTTYPE level) { logLevel = level; }
 };
 
 extern Logger* g_pLogger;
@@ -142,4 +146,4 @@ extern Logger* g_pLogger;
 
 #define LOG_REMOVEJSON(_word) LOG_GP()->removeAnyJsonDelimiters(_word)
 #define LOG_GETLOGLINES(start, num, list) LOG_GP()->getLogLines(start, num, list)
-
+#define LOG_SETLOGLEVEL(level) LOG_GP()->setLogLevel(level)

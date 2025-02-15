@@ -20,6 +20,7 @@ public:
 	~MsgExt();
 	operator std::string();
 	static std::unique_ptr<Msg> factoryMethod(const PacketEx& rpacket);
+	static bool checkMsgJson(MsgJson& rmsgJson);
 };
 
 class MsgCmdExt : public MsgCmd {

@@ -1,8 +1,8 @@
 /* -------------------------------------------------------------------------------------------
 
    This is common code used by both the C++ compiler and then coverted to Dart code
-   The code used here is carefully chosen to be easily coverted to Dart code using 
-   sed and a sed script. 
+   The code used here is carefully chosen to be easily coverted to Dart code using
+   sed and a sed script.
 
    To use in C++
    This file is included in the Message.h file and by default is standard C++.
@@ -416,7 +416,7 @@ public:
         sd.updateCrc(calcCrc());
         return sd.finalize();
     }
-    
+
     int deserialize(RSerDes sd) {
         M_BASECLASS(Msg, deserialize(sd));
         name = sd.getString();

@@ -9,9 +9,9 @@
 
 #include "json.hpp"
 
-#include <iostream> 
-#include <string> 
-#include <sstream> 
+#include <iostream>
+#include <string>
+#include <sstream>
 
 using json = nlohmann::json;
 
@@ -62,7 +62,7 @@ bool MSerDes::packetToMsgJson(const Packet* ppacket, MsgJson& rmsgJson, json& _j
     }
     try {
        if (rmsgJson.jsonData.find("{")!=std::string::npos) {
-            _json = json::parse(rmsgJson.jsonData);    
+            _json = json::parse(rmsgJson.jsonData);
             return true;
         } else {
             return false;
@@ -71,6 +71,6 @@ bool MSerDes::packetToMsgJson(const Packet* ppacket, MsgJson& rmsgJson, json& _j
         std::cout << "ERROR! - MSerDes::packetToMsgJson, Failed to decode json " << std::string(e.what()) << "\n";
         assert(false);
         return false;
-    }        
+    }
     return true;
 }
