@@ -64,31 +64,44 @@ enum class HYPERCUBECOMMANDS {
 };
 
 std::string createUUIDString(void);
+uint64_t getUnixTime(void);
 
 class CommonInfoBase {
     public:
     int version = 100;
     std::string uuid = "";
+    uint64_t timeStamp = 0; // unix time stamp
     CommonInfoBase() {
         uuid = createUUIDString();
+        updateTimeStamp();
     }
     virtual void from_json(M_JSON jsonData) {
         version = jsonData["commonInfoVersion"];
         uuid = jsonData["uuid"];
+        timeStamp = jsonData["timeStamp"];
     }
     virtual M_JSON to_json() {
         return {
             M_JSONPAIR("commonInfoVersion", version),
-            M_JSONPAIR("uuid", uuid)
+            M_JSONPAIR("uuid", uuid),
+            M_JSONPAIR("timeStamp", timeStamp)
         };
     }
     virtual void updateJson(M_JSONREF jsonData) {
         jsonData["commonInfoVersion"] = version;
         jsonData["uuid"] = uuid;
+        jsonData["timeStamp"] = timeStamp;
     }
     virtual void copyBase(M_BYREF(CommonInfoBase,other)) {
         version = other.version;
         uuid = other.uuid;
+        timeStamp = other.timeStamp;
+    }
+    bool olderThan(uint64_t time) {
+        return timeStamp<time;
+    }
+    void updateTimeStamp(void) {
+        timeStamp = getUnixTime();
     }
 };
 
