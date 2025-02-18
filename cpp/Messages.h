@@ -29,6 +29,7 @@
 #define M_BYREF(value, other) value& other
 #define M_SERDES "serdes.h"
 #define M_JSONORDYNAMIC json
+#define M_UTILS_H "Utils.h"
 
 template <typename T>
 class List : public std::list<T> {

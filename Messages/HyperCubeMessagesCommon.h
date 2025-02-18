@@ -11,6 +11,8 @@
     -------------------------------------------------------------------------------------------
 */
 
+#include M_UTILS_H
+
 // ignore_for_file: camel_case_types
 ////////Test Flag - Grant
 
@@ -63,9 +65,6 @@ enum class HYPERCUBECOMMANDS {
     PUBLISHINFOACK
 };
 
-std::string createUUIDString(void);
-uint64_t getUnixTime(void);
-
 class CommonInfoBase {
     public:
     int version = 100;
@@ -100,7 +99,7 @@ class CommonInfoBase {
     bool olderThan(uint64_t time) {
         return timeStamp<time;
     }
-    void updateTimeStamp(void) {
+    void updateTimeStamp() {
         timeStamp = getUnixTime();
     }
 };

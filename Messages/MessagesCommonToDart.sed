@@ -8,8 +8,8 @@ s/std::string/String/g
 s/std::list/List/g
 s/RSerDes/SerDes/g
 s/virtual //g
-s/int64_t/int/g
 s/uint64_t/int/g
+s/int64_t/int/g
 s/statList;/statList = [];/g
 s/inline//g
 s/M_JSONNULL/Map<String, dynamic>()/g
@@ -26,6 +26,7 @@ s/enum class /enum /g
 s/ {}/;/g
 s/NULL/null/g
 s/M_SERDES/\'\..\/..\/tools\/ser_des.dart\';/g
+s/M_UTILS_H/'..\/dart\/utils.dart';/g
 s/#include/import/g
 
 #
