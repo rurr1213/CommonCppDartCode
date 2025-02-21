@@ -103,15 +103,15 @@ MsgExt::operator std::string() {
 	return ss.str();
 }
 
-std::unique_ptr<Msg> MsgExt::factoryMethod(const PacketEx& rpacket)
+std::unique_ptr<Msg> MsgExt::factoryMethod(const PacketEx& rpacket, short int& subSys, short int& command)
 {
 	char* pdata = rpacket.packet.getpData();
 	int lengthOffset = sizeof(prot) + sizeof(flags);
 	int subSysOffset = lengthOffset + sizeof(length);
 	int commandOffset = subSysOffset + sizeof(subSys);
 	int length = *((int*)(pdata + lengthOffset));
-	short int subSys = *((short int*)(pdata + subSysOffset));
-	short int command = *((short int*)(pdata + commandOffset));
+	subSys = *((short int*)(pdata + subSysOffset));
+	command = *((short int*)(pdata + commandOffset));
 	length = ntohl(length);
 	subSys = ntohs(subSys);
 	command = ntohs(command);
@@ -128,12 +128,16 @@ std::unique_ptr<Msg> MsgExt::factoryMethod(const PacketEx& rpacket)
 		{
 			switch (command) {
 				case CMD_JSON:
-					pmsg = std::make_unique<MsgJson>();
-					pmsg->deserialize(sd);
+					{
+						pmsg = std::make_unique<MsgJsonCmd>("");
+						pmsg->deserialize(sd);
+					}
 					break;
 				case CMD_PCJSON:
-					pmsg = std::make_unique<MsgCmd>("");
-					pmsg->deserialize(sd);
+					{
+						pmsg = std::make_unique<MsgCmd>("");
+						pmsg->deserialize(sd);
+					}
 					break;
 				default:
 					break;
