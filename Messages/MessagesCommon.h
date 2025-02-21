@@ -461,7 +461,7 @@ public:
 
 
 //---------------------------------------
-
+// THIS IS OBSOLUTE DO NOT USE, USE MsgJsonCmd instead
 class MsgCmd :public MsgJson {
 public:
     MsgCmd(String _jsonSubCmd) {
@@ -469,6 +469,12 @@ public:
     }
 };
 
+class MsgJsonCmd :public MsgJson {
+public:
+    MsgJsonCmd(String _jsonSubCmd) {
+        set(SUBSYS_CMD, CMD_JSON, _jsonSubCmd);
+    }
+};
 
 class MsgObject :public Msg {
 public:
