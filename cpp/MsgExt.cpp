@@ -339,6 +339,11 @@ std::string MsgDiagnostics::dumpReport(void) {
 
 //** -----------------------------------------------------------------
 
+MsgContext::MsgContext():
+	ppacket(0), hyperCubeCommand(HYPERCUBECOMMANDS::NONE, NULL, true)
+{
+}
+
 MsgContext::MsgContext(TPacketSharedPtr _ppacket):
 	ppacket(_ppacket), hyperCubeCommand(HYPERCUBECOMMANDS::NONE, NULL, true)
 {
@@ -349,10 +354,10 @@ MsgContext::~MsgContext()
 
 }
 
-bool MsgContext::checkMsgJson(MsgJson& rmsgJson)
+bool MsgContext::checkMsgJsonCmd(MsgJsonCmd& rmsgJsonCmd)
 {
-    short int calcCrc = rmsgJson.calcCrc();
-    if (rmsgJson.crc != calcCrc) {
+    short int calcCrc = rmsgJsonCmd.calcCrc();
+    if (rmsgJsonCmd.crc != calcCrc) {
 		LOG_ERROR("MsgContext::checkMsgJson", "crc check failed", 0);
 		return false;
     }
@@ -382,10 +387,17 @@ processing will be needed to handle this message.
 */
 bool MsgContext::decodePacketToMsg(void)
 {
+	PacketEx rpacket;
+	assert(ppacket);
+	rpacket.packet = *ppacket;
+	rpacket.deviceId = DEVICEID::ALLDEVICES;
+	return decodePacketToMsg(rpacket);
+	return false;
+}
+
+bool MsgContext::decodePacketToMsg(PacketEx& rpacket)
+{
 	try{
-		PacketEx rpacket;
-		rpacket.packet = *ppacket;
-		rpacket.deviceId = DEVICEID::ALLDEVICES;
 		// Use the factory method to create the message as it knows the message strcuture
 		// and can create the correct message type.
 		pmsg = MsgExt::factoryMethod(rpacket, subSys, command);
@@ -415,7 +427,7 @@ bool MsgContext::decodeMsgToHyperCubeCommand(void)
 			return false;
 		}
 
-		if (!checkMsgJson(*pmsgJsonCmd)) {
+		if (!checkMsgJsonCmd(*pmsgJsonCmd)) {
 			LOG_WARNING("MsgContext::decodeMsgPayload()", "Json checksum error", 0);
 			return false;
 		}

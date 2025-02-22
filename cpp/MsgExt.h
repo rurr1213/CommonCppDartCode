@@ -24,7 +24,7 @@ public:
 	operator std::string();
 	static std::unique_ptr<Msg> factoryMethod(const PacketEx& rpacket, short int& subSys, short int& command);
 	static std::unique_ptr<Msg> decodePacketInContext(MsgContext& msgContext);
-	static bool checkMsgJson(MsgJson& rmsgJson);
+	static bool checkMsgJsonCmd(MsgJsonCmd& rmsgJsonCmd);
 };
 
 class MsgCmdExt : public MsgCmd {
@@ -89,10 +89,12 @@ class MsgContext {
 		std::unique_ptr<CommonInfoBase> pcommonInfoBase;		// decoded payload info
 		// -----------------------------------------------------------
 
+		MsgContext();
 		MsgContext(TPacketSharedPtr _ppacket);
 		~MsgContext();
 
-		bool checkMsgJson(MsgJson& rmsgJson);
+		bool checkMsgJsonCmd(MsgJsonCmd&);
 		bool decodePacketToMsg(void);
+		bool decodePacketToMsg(PacketEx&);
 		bool decodeMsgToHyperCubeCommand(void);
 };
