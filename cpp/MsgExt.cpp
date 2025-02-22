@@ -169,30 +169,7 @@ std::unique_ptr<Msg> MsgExt::factoryMethod(const PacketEx& rpacket, short int& s
 	return pmsg;
 }
 
-bool MsgExt::checkMsgJson(MsgJson& rmsgJson)
-{
-    short int calcCrc = rmsgJson.calcCrc();
-    if (rmsgJson.crc != calcCrc) {
-        std::stringstream ss;
-        ss << "LastMsg S:" << rmsgJson.subSys << " C:" << rmsgJson.command << " A:" << rmsgJson.argument << " L:" << rmsgJson.length << "\n";
-        ss << rmsgJson.jsonData;
-        std::string errorMsg = "json CRC failed " + ss.str();
-        throw std::runtime_error(errorMsg);
-    }
-    try {
-       if (rmsgJson.jsonData.find("{")!=std::string::npos) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch(std::exception& e) {
-        std::cout << "ERROR! - MSerDes::packetToMsgJson, Failed to decode json " << std::string(e.what()) << "\n";
-        assert(false);
-        return false;
-    }
-    return true;
 
-}
 // -------------------------------------
 
 MsgCmdExt::MsgCmdExt(std::string command, json data) :
@@ -359,3 +336,102 @@ std::string MsgDiagnostics::dumpReport(void) {
 	ss << "P " << prot << " F " << flags << " L " << length;
 	return ss.str();
 }
+
+//** -----------------------------------------------------------------
+
+MsgContext::MsgContext(TPacketSharedPtr _ppacket):
+	ppacket(_ppacket), hyperCubeCommand(HYPERCUBECOMMANDS::NONE, NULL, true)
+{
+}
+
+MsgContext::~MsgContext()
+{
+
+}
+
+bool MsgContext::checkMsgJson(MsgJson& rmsgJson)
+{
+    short int calcCrc = rmsgJson.calcCrc();
+    if (rmsgJson.crc != calcCrc) {
+		LOG_ERROR("MsgContext::checkMsgJson", "crc check failed", 0);
+		return false;
+    }
+    return true;
+
+}
+
+//-----------------------------------------------------------------
+/**
+* @brief This method is used to decode the payload of the packet.
+
+All information it needs is in the msgContext, including the
+incoming packat and the connection it came on.
+
+All partially decoded info, such as msg subsys and command is added
+to the msgContext to avoid having to recompute them later if needed.
+
+If the message has a known payload (SUBSYS_CMD:CMD_JSON, CMD_PCJSON, etc) then
+the payload is decoded and the decoded payload is stored in the msgContext and
+the return value is set accordingly.
+
+If the payload is not known, then the return value is false and subsequent
+processing will be needed to handle this message.
+
+* @param msgContext - the context of the message
+* @return true if the payload was decoded
+*/
+bool MsgContext::decodePacketToMsg(void)
+{
+	try{
+		PacketEx rpacket;
+		rpacket.packet = *ppacket;
+		rpacket.deviceId = DEVICEID::ALLDEVICES;
+		// Use the factory method to create the message as it knows the message strcuture
+		// and can create the correct message type.
+		pmsg = MsgExt::factoryMethod(rpacket, subSys, command);
+		if (pmsg) {
+			short int _calcCrc = pmsg->calcCrc();
+			LOG_ASSERT(pmsg->crc == _calcCrc);
+			decodedPayload = true;
+			pmsg = std::move(pmsg);
+			return true;
+		}
+	} catch (const std::exception& e) {
+		LOG_WARNING("MsgContext::decodePacketToMsg()", "Failed to decode json" + std::string(e.what()), 0);
+		return false;
+	}
+	return false;
+}
+
+bool MsgContext::decodeMsgToHyperCubeCommand(void)
+{
+	try {
+		if (!decodedPayload) return false;
+
+		MsgJsonCmd* pmsgJsonCmd = dynamic_cast<MsgJsonCmd*>(pmsg.get());
+
+		if (!pmsgJsonCmd) {
+			LOG_WARNING("MsgContext::decodeMsgPayload()", "Not a MsgJsonCmd", 0);
+			return false;
+		}
+
+		if (!checkMsgJson(*pmsgJsonCmd)) {
+			LOG_WARNING("MsgContext::decodeMsgPayload()", "Json checksum error", 0);
+			return false;
+		}
+
+		json jsonData =json::parse(pmsgJsonCmd->jsonData);
+
+		bool msgProcessed = false;
+		std::string cmdString;
+
+		hyperCubeCommand.from_json(jsonData);
+
+	} catch (const std::exception& e) {
+		LOG_WARNING("MsgContext::decodeMsgPayload()", "Failed to decode json" + std::string(e.what()), 0);
+		return false;
+	}
+
+	return true;
+}
+

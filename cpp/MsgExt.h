@@ -7,10 +7,13 @@
 
 #include "Packet.h"
 #include "Messages.h"
+#include "TContext.h"
 #include <string>
 
 #include "json.hpp"
 using json = nlohmann::json;
+
+class MsgContext;
 
 // This is an extended version of the Msg object used by both C++ and Dart
 // This extended object is only used by the Matrix and has parameters relavant to its use
@@ -20,6 +23,7 @@ public:
 	~MsgExt();
 	operator std::string();
 	static std::unique_ptr<Msg> factoryMethod(const PacketEx& rpacket, short int& subSys, short int& command);
+	static std::unique_ptr<Msg> decodePacketInContext(MsgContext& msgContext);
 	static bool checkMsgJson(MsgJson& rmsgJson);
 };
 
@@ -63,3 +67,32 @@ class MsgDiagnostics {
 	std::string dumpReport(void);
 };
 
+/** -----------------------------------------------------------------
+ * @brief hold all context info for an incomming packet as its decoded.
+ * This is done to speed up decoding by providing all the information
+ * thats needed in one place and avoid recomputing it.
+*/
+class MsgContext {
+	public:
+		// -----------------------------------------------------------
+		// STAGE 0 : originating / input data
+		TPacketSharedPtr ppacket;			// original packet data
+
+		// STAGE 1: data from message decoding input data
+		std::unique_ptr<Msg> pmsg = nullptr;// new decoded message
+		short int subSys = 0;				// copy of decoded info
+		short int command = 0;				// copy of decoded info
+		bool decodedPayload = false;		// decoded payload info
+
+		// STAGE 2: decoded from msg payload
+		HyperCubeCommand hyperCubeCommand;
+		std::unique_ptr<CommonInfoBase> pcommonInfoBase;		// decoded payload info
+		// -----------------------------------------------------------
+
+		MsgContext(TPacketSharedPtr _ppacket);
+		~MsgContext();
+
+		bool checkMsgJson(MsgJson& rmsgJson);
+		bool decodePacketToMsg(void);
+		bool decodeMsgToHyperCubeCommand(void);
+};

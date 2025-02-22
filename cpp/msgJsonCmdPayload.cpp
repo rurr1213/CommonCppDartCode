@@ -129,6 +129,7 @@ bool MsgDecoder::decode(PacketEx& packetEx)
 	return true;
 }
 */
+/*
 bool MsgJsonCmdPayload::decode(MsgJsonCmd& rmsgJsonCmd, std::unique_ptr<CommonInfoBase> &pcommonInfoBase, HYPERCUBECOMMANDS &command)
 {
 	json jsonData =json::parse(rmsgJsonCmd.jsonData);
@@ -155,6 +156,33 @@ bool MsgJsonCmdPayload::decode(MsgJsonCmd& rmsgJsonCmd, std::unique_ptr<CommonIn
 				cmdString= "PUBLISHINFOACK";
 				pcommonInfoBase = std::make_unique<PublishInfoAck>();
 				return getObjFromSrcObjJson(*pcommonInfoBase, hyperCubeCommand, cmdString);
+			} break;
+			default:
+				break;
+		}
+	} catch (const std::exception& e) {
+		LOG_WARNING("MsgDecoder::decode()", "Failed to decode json" + std::string(e.what()), 0);
+	}
+
+	return false;
+}
+*/
+bool MsgJsonCmdPayload::decode(MsgContext& msgContext)
+{
+
+	try{
+		switch(msgContext.hyperCubeCommand.command) {
+			case HYPERCUBECOMMANDS::PUBLISHINFO:
+			{
+				std::string cmdString= "PUBLISHINFO";
+				msgContext.pcommonInfoBase = std::make_unique<PublishInfo>();
+				return getObjFromSrcObjJson(*msgContext.pcommonInfoBase, msgContext.hyperCubeCommand, cmdString);
+			} break;
+			case HYPERCUBECOMMANDS::PUBLISHINFOACK:
+			{
+				std::string cmdString= "PUBLISHINFOACK";
+				msgContext.pcommonInfoBase = std::make_unique<PublishInfoAck>();
+				return getObjFromSrcObjJson(*msgContext.pcommonInfoBase, msgContext.hyperCubeCommand, cmdString);
 			} break;
 			default:
 				break;

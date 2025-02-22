@@ -28,13 +28,14 @@ public:
 class MsgJsonCmdPayload
 {
 	template <typename T>
-	bool getCommandFromJson(T& obj, const json& jsonData, const std::string& command);
+	static bool getCommandFromJson(T& obj, const json& jsonData, const std::string& command);
 	template <typename T, typename U>
-	bool getObjFromSrcObjJson(T& obj, U& srcObj, const std::string& command);
+	static bool getObjFromSrcObjJson(T& obj, U& srcObj, const std::string& command);
 public:
 //    bool onNewPacket(PacketEx& packetEx);
 //    virtual bool decode(PacketEx& packetEx);
-	bool decode(MsgJsonCmd& rmsgJsonCmd, std::unique_ptr<CommonInfoBase> &pcommonInfoBase, HYPERCUBECOMMANDS &command);
+	static bool decode(MsgJsonCmd& rmsgJsonCmd, std::unique_ptr<CommonInfoBase> &pcommonInfoBase, HYPERCUBECOMMANDS &command);
+	static bool decode(MsgContext& msgContext);
 };
 
 
