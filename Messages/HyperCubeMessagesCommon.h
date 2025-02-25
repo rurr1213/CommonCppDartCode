@@ -70,6 +70,7 @@ class CommonInfoBase {
     int version = 100;
     std::string uuid = "";
     uint64_t timeStamp = 0; // unix time stamp
+    bool ack = false;
     CommonInfoBase() {
         uuid = createUUIDString();
         updateTimeStamp();
@@ -78,23 +79,27 @@ class CommonInfoBase {
         version = jsonData["commonInfoVersion"];
         uuid = jsonData["uuid"];
         timeStamp = jsonData["timeStamp"];
+        ack = jsonData["ack"];
     }
     virtual M_JSON to_json() {
         return {
             M_JSONPAIR("commonInfoVersion", version),
             M_JSONPAIR("uuid", uuid),
-            M_JSONPAIR("timeStamp", timeStamp)
+            M_JSONPAIR("timeStamp", timeStamp),
+            M_JSONPAIR("ack", ack)
         };
     }
     virtual void updateJson(M_JSONREF jsonData) {
         jsonData["commonInfoVersion"] = version;
         jsonData["uuid"] = uuid;
         jsonData["timeStamp"] = timeStamp;
+        jsonData["ack"] = ack;
     }
     virtual void copyBase(M_BYREF(CommonInfoBase,other)) {
         version = other.version;
         uuid = other.uuid;
         timeStamp = other.timeStamp;
+        ack = other.ack;
     }
     bool olderThan(uint64_t time) {
         return timeStamp<time;
