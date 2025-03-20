@@ -27,9 +27,9 @@
 #define M_FIND(base, word) (base.find(word)!=std::string::npos)
 #define M_INTTODARTENUM(base, word) (base)word
 #define M_BYREF(value, other) value& other
-#define M_SERDES "serdes.h"
+#define M_SERDES "../cpp/serdes.h"
 #define M_JSONORDYNAMIC json
-#define M_UTILS_H "Utils.h"
+#define M_UTILS_H "../cpp/Utils.h"
 
 template <typename T>
 class List : public std::list<T> {
@@ -42,7 +42,7 @@ typedef SerDes& RSerDes;
 
 // -----------------------------------------------------------------------
 // Json is also used in messages include path uere
-#include "json.hpp"
+#include "json/json.hpp"
 using json = nlohmann::json;
 
 // -----------------------------------------------------------------------
@@ -50,8 +50,8 @@ using json = nlohmann::json;
 // The following include file has the message declarations.
 // See the comments in the include file for further information
 
-#include "MessagesCommon.h"
-#include "HyperCubeMessagesCommon.h"
+#include "../Messages/MessagesCommon.h"
+#include "../Messages/HyperCubeMessagesCommon.h"
 
 // -----------------------------------------------------------------------
 

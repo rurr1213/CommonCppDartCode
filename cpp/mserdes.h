@@ -7,10 +7,10 @@
 
 #include "serdes.h"
 #include "Packet.h"
-#include "Common.h"
+#include "../Common.h"
 #include "Messages.h"
 
-#include "json.hpp"
+#include "json/json.hpp"
 
 using json = nlohmann::json;
 
